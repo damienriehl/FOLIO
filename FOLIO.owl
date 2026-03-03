@@ -78454,6 +78454,22 @@ Excluded from this subsector are establishment primarily engaged in manufacturin
         <skos:altLabel xml:lang="zh-cn">协议</skos:altLabel>
         <skos:altLabel xml:lang="ja-jp">合意書</skos:altLabel>
         <skos:definition>Agreements are written documents that establish a legally binding understanding between two or more parties, outlining the terms and conditions of a transaction or relationship.</skos:definition>
+        <skos:hiddenLabel>Agreement</skos:hiddenLabel>
+        <skos:hiddenLabel>Contract</skos:hiddenLabel>
+        <skos:hiddenLabel>Accord</skos:hiddenLabel>
+        <skos:hiddenLabel>Accords</skos:hiddenLabel>
+        <skos:hiddenLabel>Pact</skos:hiddenLabel>
+        <skos:hiddenLabel>Pacts</skos:hiddenLabel>
+        <skos:hiddenLabel>Covenant</skos:hiddenLabel>
+        <skos:hiddenLabel>Covenants</skos:hiddenLabel>
+        <skos:hiddenLabel>Compact</skos:hiddenLabel>
+        <skos:hiddenLabel>Compacts</skos:hiddenLabel>
+        <skos:hiddenLabel>Undertaking</skos:hiddenLabel>
+        <skos:hiddenLabel>Undertakings</skos:hiddenLabel>
+        <skos:hiddenLabel>Indenture</skos:hiddenLabel>
+        <skos:hiddenLabel>Indentures</skos:hiddenLabel>
+        <skos:hiddenLabel>Concordat</skos:hiddenLabel>
+        <skos:hiddenLabel>Concordats</skos:hiddenLabel>
         <skos:prefLabel>Contracts</skos:prefLabel>
     </owl:Class>
     
