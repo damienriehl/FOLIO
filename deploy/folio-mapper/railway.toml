@@ -1,0 +1,19 @@
+# folio-mapper has two services: backend (FastAPI) and web (Vite/React)
+# Deploy each as a separate Railway service in the same project.
+#
+# This config is for the BACKEND service.
+# For the frontend, create a second service pointing to the same repo
+# with rootDirectory = "apps/web" and a static build.
+
+[build]
+# No Dockerfile exists yet -- use Nixpacks (auto-detects Python)
+builder = "nixpacks"
+buildCommand = "cd backend && pip install -e '.[embedding]'"
+
+[deploy]
+startCommand = "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+[service]
+internalPort = 8000

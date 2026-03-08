@@ -1,0 +1,15 @@
+# folio-mapper FRONTEND service config
+# Deploy as a separate Railway service in the same project as the backend.
+# Set the root directory to the repo root (pnpm workspace).
+
+[build]
+builder = "nixpacks"
+buildCommand = "corepack enable && pnpm install --frozen-lockfile && pnpm --filter @folio-mapper/web build"
+
+[deploy]
+startCommand = "npx serve apps/web/dist -l $PORT"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+[service]
+internalPort = 3000

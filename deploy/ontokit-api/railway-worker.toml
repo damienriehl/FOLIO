@@ -1,0 +1,14 @@
+# OntoKit background worker (arq task queue)
+# Deploy as a separate Railway service in the same project.
+# Uses the same repo and Dockerfile but a different start command.
+
+[build]
+dockerfilePath = "Dockerfile.prod"
+
+[deploy]
+# Override the default CMD to run the arq worker instead of uvicorn
+startCommand = "python -m arq ontokit.worker.WorkerSettings"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+# No port needed -- worker is not an HTTP service
