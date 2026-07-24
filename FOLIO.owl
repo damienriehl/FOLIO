@@ -72073,7 +72073,6 @@ Certain taxes are calculated not only on line items, but also include another ta
     <!-- https://folio.openlegalstandard.org/R7yQYf6cDb3K2dwaEPoftwf -->
 
     <owl:Class rdf:about="https://folio.openlegalstandard.org/R7yQYf6cDb3K2dwaEPoftwf">
-        <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/R7N6wsHsNyqgPE4xFK8wKJx"/>
         <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RDOvAHsvY8TKJ1O1orXPM9o"/>
         <rdfs:label>Tlingit</rdfs:label>
         <skos:definition>A Native American language spoken by the Tlingit people of Alaska and Canada, characterized by its complex grammar and extensive use of consonant clusters.</skos:definition>
@@ -86805,7 +86804,6 @@ Note that the EXTEND_HEADER option was purposely omitted from this segment.
     <!-- https://folio.openlegalstandard.org/R8NcEcKGyel5bjJtbeSaJpa -->
 
     <owl:Class rdf:about="https://folio.openlegalstandard.org/R8NcEcKGyel5bjJtbeSaJpa">
-        <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/R7N6wsHsNyqgPE4xFK8wKJx"/>
         <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RDOvAHsvY8TKJ1O1orXPM9o"/>
         <rdfs:label>Tsimshian</rdfs:label>
         <skos:altLabel xml:lang="de-de">Tsimshian</skos:altLabel>
@@ -88488,7 +88486,6 @@ Note that the EXTEND_HEADER option was purposely omitted from this segment.
     <!-- https://folio.openlegalstandard.org/R8RHDWYB8AvApZyPoBsWSOP -->
 
     <owl:Class rdf:about="https://folio.openlegalstandard.org/R8RHDWYB8AvApZyPoBsWSOP">
-        <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RC1ceWXE3emNHpYlrOvvmxG"/>
         <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RDOvAHsvY8TKJ1O1orXPM9o"/>
         <rdfs:label>Mohawk</rdfs:label>
         <skos:altLabel xml:lang="de-de">Mohawk</skos:altLabel>
@@ -100009,7 +100006,7 @@ This figure includes Withholding Taxes and Tiered Taxes applicable to this invoi
     <!-- https://folio.openlegalstandard.org/R8rExiAKFQ6kZTpB6w0TgqC -->
 
     <owl:Class rdf:about="https://folio.openlegalstandard.org/R8rExiAKFQ6kZTpB6w0TgqC">
-        <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RDWljjqIvgyFd309wsZciqi"/>
+        <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RC1ceWXE3emNHpYlrOvvmxG"/>
         <rdfs:label>Caddo Nation of Oklahoma</rdfs:label>
     </owl:Class>
     
@@ -123692,7 +123689,6 @@ Establishments operating telecommunications facilities and infrastructure and di
     <!-- https://folio.openlegalstandard.org/R9cpO77McrTR1StEo2esQZk -->
 
     <owl:Class rdf:about="https://folio.openlegalstandard.org/R9cpO77McrTR1StEo2esQZk">
-        <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RC1ceWXE3emNHpYlrOvvmxG"/>
         <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RDOvAHsvY8TKJ1O1orXPM9o"/>
         <rdfs:label>Arapaho</rdfs:label>
         <skos:altLabel xml:lang="de-de">Arapaho</skos:altLabel>
@@ -161724,7 +161720,6 @@ The EXTEND_HEADER option was purposely omitted from this segment.
     <!-- https://folio.openlegalstandard.org/RBmWpxwSfdFkvTqxJf9wSgx -->
 
     <owl:Class rdf:about="https://folio.openlegalstandard.org/RBmWpxwSfdFkvTqxJf9wSgx">
-        <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RC1ceWXE3emNHpYlrOvvmxG"/>
         <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RDOvAHsvY8TKJ1O1orXPM9o"/>
         <rdfs:label>Choctaw</rdfs:label>
         <skos:altLabel xml:lang="de-de">Choctaw</skos:altLabel>
@@ -207042,7 +207037,6 @@ Use ISO 4217 currency codes set forth by International Standards Organization (w
     <!-- https://folio.openlegalstandard.org/RDLSiIZBb3Cx0FiRItlmtvB -->
 
     <owl:Class rdf:about="https://folio.openlegalstandard.org/RDLSiIZBb3Cx0FiRItlmtvB">
-        <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/R7N6wsHsNyqgPE4xFK8wKJx"/>
         <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RDOvAHsvY8TKJ1O1orXPM9o"/>
         <rdfs:label>Aleut</rdfs:label>
         <skos:altLabel xml:lang="de-de">Aleuten</skos:altLabel>
@@ -211594,7 +211588,6 @@ A null value defaults to &quot;&quot;TM&quot;&quot;.
     <!-- https://folio.openlegalstandard.org/RDWljjqIvgyFd309wsZciqi -->
 
     <owl:Class rdf:about="https://folio.openlegalstandard.org/RDWljjqIvgyFd309wsZciqi">
-        <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RC1ceWXE3emNHpYlrOvvmxG"/>
         <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RDOvAHsvY8TKJ1O1orXPM9o"/>
         <rdfs:label>Caddo</rdfs:label>
         <skos:altLabel xml:lang="de-de">Caddo</skos:altLabel>
@@ -214477,7 +214470,6 @@ A null value defaults to &quot;&quot;TM&quot;&quot;.
     <!-- https://folio.openlegalstandard.org/RDeHRgHYGz10XjAP70xATcX -->
 
     <owl:Class rdf:about="https://folio.openlegalstandard.org/RDeHRgHYGz10XjAP70xATcX">
-        <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RC1ceWXE3emNHpYlrOvvmxG"/>
         <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RDOvAHsvY8TKJ1O1orXPM9o"/>
         <rdfs:label>Cree</rdfs:label>
         <skos:altLabel xml:lang="de-de">Cree</skos:altLabel>
@@ -223285,7 +223277,6 @@ In addition, in situations where the submission corrects an invoice rejected by 
     <!-- https://folio.openlegalstandard.org/RDzw3uGoITu0I0TexwT0BbK -->
 
     <owl:Class rdf:about="https://folio.openlegalstandard.org/RDzw3uGoITu0I0TexwT0BbK">
-        <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RC1ceWXE3emNHpYlrOvvmxG"/>
         <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RDOvAHsvY8TKJ1O1orXPM9o"/>
         <rdfs:label>Cheyenne</rdfs:label>
         <skos:altLabel xml:lang="de-de">Cheyenne</skos:altLabel>
@@ -248118,7 +248109,7 @@ Use the value &quot;&quot;TOP&quot;&quot; to indicate that the top tier extends 
     <!-- https://folio.openlegalstandard.org/RVQwTKjFwIPykDMq1LkiB3 -->
 
     <owl:Class rdf:about="https://folio.openlegalstandard.org/RVQwTKjFwIPykDMq1LkiB3">
-        <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RDWljjqIvgyFd309wsZciqi"/>
+        <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RC1ceWXE3emNHpYlrOvvmxG"/>
         <rdfs:label>Caddo Adais Indians</rdfs:label>
     </owl:Class>
     
@@ -257163,7 +257154,6 @@ The total of the Withholding Tax(es) do not have to equal to the other taxes on 
     <!-- https://folio.openlegalstandard.org/RfdsGohesGRhPjCfwDdBlK -->
 
     <owl:Class rdf:about="https://folio.openlegalstandard.org/RfdsGohesGRhPjCfwDdBlK">
-        <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RC1ceWXE3emNHpYlrOvvmxG"/>
         <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RDOvAHsvY8TKJ1O1orXPM9o"/>
         <rdfs:label>Luiseno</rdfs:label>
         <skos:altLabel xml:lang="de-de">Luiseno</skos:altLabel>
@@ -265711,7 +265701,6 @@ The total of the Withholding Tax(es) do not have to equal to the other taxes on 
     <!-- https://folio.openlegalstandard.org/RpUpIzhmShj7awqjJo07Xu -->
 
     <owl:Class rdf:about="https://folio.openlegalstandard.org/RpUpIzhmShj7awqjJo07Xu">
-        <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/R7N6wsHsNyqgPE4xFK8wKJx"/>
         <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RDOvAHsvY8TKJ1O1orXPM9o"/>
         <rdfs:label>Haida</rdfs:label>
         <skos:altLabel xml:lang="de-de">Haida</skos:altLabel>
@@ -268897,7 +268886,6 @@ The total of the Withholding Tax(es) do not have to equal to the other taxes on 
     <!-- https://folio.openlegalstandard.org/Rsz1ZKYTNGjBNHN0a1utqV -->
 
     <owl:Class rdf:about="https://folio.openlegalstandard.org/Rsz1ZKYTNGjBNHN0a1utqV">
-        <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RC1ceWXE3emNHpYlrOvvmxG"/>
         <rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/RDOvAHsvY8TKJ1O1orXPM9o"/>
         <rdfs:label>Cherokee</rdfs:label>
         <skos:altLabel xml:lang="de-de">Cherokee</skos:altLabel>
