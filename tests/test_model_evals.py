@@ -12,6 +12,7 @@ from ontology_qa.evals import (
     evaluate_predictions,
     load_cases,
     load_model_policy,
+    load_slice_controls,
     qualification_identity,
 )
 from ontology_qa.records import content_hash
@@ -65,6 +66,51 @@ def test_underrepresented_slice_is_unsupported():
     result = evaluate_predictions(cases, predictions, minimum_cases_per_slice=2)
     assert {"family": "definition", "locale": "en", "count": 4} not in result["unsupported_slices"]
     assert result["unsupported_slices"]
+
+
+def test_each_required_slice_has_independent_quality_metrics():
+    cases = [
+        {
+            "case_id": "clean", "family": "translation", "locale": "ja-jp",
+            "authority": "deterministic-gold", "expected_verdict": "pass",
+        },
+        {
+            "case_id": "defect", "family": "translation", "locale": "ja-jp",
+            "authority": "deterministic-gold", "expected_verdict": "defect",
+        },
+    ]
+    result = evaluate_predictions(
+        cases, {"clean": "pass", "defect": "pass"},
+        minimum_cases_per_slice=2,
+        required_slices={("translation", "ja-jp"), ("translation", "zh-cn")},
+    )
+    assert result["slice_metrics"] == [{
+        "family": "translation", "locale": "ja-jp", "scored_count": 2,
+        "missing_case_ids": [], "accuracy": 0.5, "defect_recall": 0.0,
+        "false_accept_rate": 1.0,
+    }]
+    assert {
+        "family": "translation", "locale": "zh-cn", "count": 0,
+    } in result["unsupported_slices"]
+
+
+def test_frozen_controls_cover_every_policy_slice():
+    policy = load_model_policy(ROOT / "qa/ontology/model-policy.yaml")
+    required = {
+        (family, locale)
+        for family, locales in policy["required_slices"].items()
+        for locale in locales
+    }
+    controls = load_slice_controls(
+        ROOT / "qa/ontology/evals/slice-controls.json", required
+    )
+    assert len(controls) == len(required) * 2
+    assert {
+        (case["family"], case["locale"]) for case in controls
+    } == required
+    assert {
+        case["expected_verdict"] for case in controls
+    } == {"pass", "defect"}
 
 
 def test_model_consensus_cannot_create_gold(tmp_path):

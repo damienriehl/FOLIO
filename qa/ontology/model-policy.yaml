@@ -34,6 +34,33 @@ terminal_verdicts:
   - abstain
 minimum_confidence: 0.90
 minimum_scored_cases_per_slice: 2
+required_slices:
+  definition: [en, en-us]
+  example: [en, en-us]
+  translation:
+    - ar-sa
+    - de-de
+    - en-au
+    - en-ca
+    - en-gb
+    - en-us
+    - es
+    - es-es
+    - es-mx
+    - fr
+    - fr-fr
+    - he
+    - he-il
+    - hi
+    - hi-in
+    - it-it
+    - ja
+    - ja-jp
+    - ko-kr
+    - pt-br
+    - ru-ru
+    - zh
+    - zh-cn
 qualification:
   minimum_accuracy: 0.90
   minimum_defect_recall: 0.95
@@ -42,10 +69,10 @@ qualification:
   require_repeat_stability: true
 operations:
   batch_size: 25
-  maximum_output_tokens_per_request: 4096
+  maximum_output_tokens_per_request: 16384
   maximum_requests: 1000
   maximum_input_tokens: 5000000
-  maximum_output_tokens: 1000000
+  maximum_output_tokens: 5000000
   maximum_cost_usd: 250.00
   pricing:
     "openai:gpt-5.6-sol":

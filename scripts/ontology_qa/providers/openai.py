@@ -38,8 +38,15 @@ class OpenAIAdapter:
                     "name": "ontology_reviews",
                     "strict": True,
                     "schema": {
-                        "type": "array",
-                        "items": request.schema,
+                        "type": "object",
+                        "additionalProperties": False,
+                        "properties": {
+                            "responses": {
+                                "type": "array",
+                                "items": request.schema,
+                            }
+                        },
+                        "required": ["responses"],
                     },
                 }
             },
@@ -76,8 +83,15 @@ def _responses_transport(payload: dict) -> dict:
         with urllib.request.urlopen(request, timeout=120) as response:
             raw = json.load(response)
     except urllib.error.HTTPError as exc:
+        detail = ""
+        try:
+            error_body = json.loads(exc.read().decode("utf-8"))
+            detail = str(error_body.get("error", {}).get("message", ""))[:500]
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+            pass
         raise ProviderError(
-            f"OpenAI request failed with HTTP {exc.code}",
+            f"OpenAI request failed with HTTP {exc.code}"
+            + (f": {detail}" if detail else ""),
             transient=exc.code in {408, 409, 429} or exc.code >= 500,
         ) from exc
     except (OSError, ValueError) as exc:
@@ -90,7 +104,8 @@ def _responses_transport(payload: dict) -> dict:
                     text = content.get("text")
                     break
     try:
-        responses = json.loads(text) if isinstance(text, str) else None
+        parsed = json.loads(text) if isinstance(text, str) else None
+        responses = parsed.get("responses") if isinstance(parsed, dict) else None
     except json.JSONDecodeError as exc:
         raise ProviderError("OpenAI returned invalid structured JSON") from exc
     return {

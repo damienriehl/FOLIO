@@ -38,13 +38,42 @@ def create_qualification(
         raise ValueError(f"unsupported qualification role: {role}")
     if requested_model != actual_model:
         raise ValueError("served model does not match pinned model")
+    slice_metrics = metrics.get("slice_metrics", [])
+    slices_pass = all(
+        not item.get("missing_case_ids")
+        and item.get("accuracy", 0) >= thresholds["minimum_accuracy"]
+        and item.get("defect_recall", 0) >= thresholds["minimum_defect_recall"]
+        and item.get("false_accept_rate", 1)
+        <= thresholds["maximum_false_accept_rate"]
+        for item in slice_metrics
+    )
     passes = (
         not metrics.get("missing_case_ids")
         and not metrics.get("unsupported_slices")
+        and slices_pass
         and metrics.get("accuracy", 0) >= thresholds["minimum_accuracy"]
         and metrics.get("defect_recall", 0) >= thresholds["minimum_defect_recall"]
         and metrics.get("false_accept_rate", 1) <= thresholds["maximum_false_accept_rate"]
+        and (
+            not thresholds.get("require_repeat_stability", False)
+            or metrics.get("repeat_stability") is True
+        )
     )
+    metrics = {
+        **metrics,
+        "qualified_slices": [
+            {"family": item["family"], "locale": item["locale"]}
+            for item in slice_metrics
+            if (
+                not item.get("missing_case_ids")
+                and item.get("accuracy", 0) >= thresholds["minimum_accuracy"]
+                and item.get("defect_recall", 0)
+                >= thresholds["minimum_defect_recall"]
+                and item.get("false_accept_rate", 1)
+                <= thresholds["maximum_false_accept_rate"]
+            )
+        ],
+    }
     body = {
         "role": role, "route_id": route_id, "provider": provider,
         "requested_model": requested_model, "actual_model": actual_model,

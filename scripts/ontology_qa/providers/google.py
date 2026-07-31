@@ -102,7 +102,12 @@ def _gemini_transport(payload: dict) -> dict:
         text = raw["candidates"][0]["content"]["parts"][0]["text"]
         responses = json.loads(text)
     except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
-        raise ProviderError("Google returned invalid structured JSON") from exc
+        candidate = (raw.get("candidates") or [{}])[0]
+        reason = candidate.get("finishReason") or raw.get("promptFeedback")
+        raise ProviderError(
+            f"Google returned invalid structured JSON"
+            + (f": {str(reason)[:500]}" if reason else "")
+        ) from exc
     usage = raw.get("usageMetadata") or {}
     return {
         "model": raw.get("modelVersion", model), "responses": responses,

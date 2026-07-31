@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-from collections import Counter
 import json
 import os
 import re
@@ -22,6 +21,7 @@ from ontology_qa.delta import build_hydration_manifest
 from ontology_qa.context import build_graph_context
 from ontology_qa.evals import (
     corpus_identity, evaluate_predictions, load_cases, load_model_policy,
+    load_slice_controls,
 )
 from ontology_qa.execution import (
     BudgetExceeded, ImmutableReviewCache, ReviewBudget, ReviewExecutor,
@@ -30,7 +30,7 @@ from ontology_qa.execution import (
 from ontology_qa.providers.base import ProviderError, ReviewRequest
 from ontology_qa.providers.google import GoogleAdapter
 from ontology_qa.providers.openai import OpenAIAdapter
-from ontology_qa.qualification import create_qualification
+from ontology_qa.qualification import create_qualification, validate_role_separation
 from ontology_qa.reconcile import reconcile
 from ontology_qa.records import artifact_envelope, canonical_json, content_hash
 from ontology_qa.reporting import ArtifactBundle, build_release_report
@@ -98,6 +98,23 @@ def _tool_manifest() -> dict[str, Any]:
     return {"tool_hash": content_hash(canonical_json(body)), **body}
 
 
+def _provider_schema(schema: dict[str, Any]) -> dict[str, Any]:
+    """Project the closed schema onto provider-supported structural keywords."""
+    unsupported = {"allOf", "if", "then", "else", "uniqueItems"}
+    return {
+        key: (
+            _provider_schema(value) if isinstance(value, dict)
+            else [
+                _provider_schema(item) if isinstance(item, dict) else item
+                for item in value
+            ] if isinstance(value, list)
+            else value
+        )
+        for key, value in schema.items()
+        if key not in unsupported
+    }
+
+
 def _call(
     adapter,
     records: list[dict[str, Any]],
@@ -114,15 +131,16 @@ def _call(
     validator = Draft202012Validator(schema)
     for offset in range(0, len(records), batch_size):
         batch = records[offset:offset + batch_size]
+        request_schema = _provider_schema(schema)
         request_id = request_identity(
             provider=adapter.provider, model=adapter.model,
             reasoning=adapter.reasoning, prompt=prompt, records=batch,
-            schema=schema, qualification_hash=qualification_hash,
+            schema=request_schema, qualification_hash=qualification_hash,
             policy_hash=policy_hash, candidate_hash=candidate_hash,
         )
         request = ReviewRequest(
             request_id=request_id, model=adapter.model, prompt=prompt,
-            records=tuple(batch), schema=schema,
+            records=tuple(batch), schema=request_schema,
             context_hash=content_hash(canonical_json(batch)),
         )
         receipt = None
@@ -152,54 +170,76 @@ def _qualify(
     paths = [
         ROOT / "qa/ontology/evals/cases.jsonl",
         ROOT / "qa/ontology/evals/held-out.jsonl",
+        ROOT / "qa/ontology/evals/slice-controls.json",
     ]
-    cases = [case for path in paths for case in load_cases(path)]
+    required_slices = {
+        (family, locale)
+        for family, locales in policy["required_slices"].items()
+        for locale in locales
+    }
+    cases = [
+        case
+        for path in paths[:2]
+        for case in load_cases(path)
+    ] + load_slice_controls(paths[2], required_slices)
     id_map = {content_hash(case["case_id"]): case["case_id"] for case in cases}
     records = [
         {
             "record_id": hashed,
             "family": case["family"],
             "locale": case["locale"],
-            "annotation": case["input"],
+            "source": case["input"].get("source"),
+            "annotation": case["input"].get("candidate"),
+            "benchmark_input": case["input"],
         }
         for hashed, case_id in id_map.items()
         for case in cases if case["case_id"] == case_id
     ]
-    responses = []
+    response_rounds: list[list[dict[str, Any]]] = []
     prompts = _prompts()
+    qualification_error = None
     try:
-        for family in ("definition", "example", "translation"):
-            family_records = [
-                record for record in records if record["family"] == family
-            ]
-            responses.extend(
-                _call(
-                    adapter, family_records, schema, prompt=prompts[family],
-                    executor=executor, qualification_hash="qualification-eval",
-                    policy_hash=policy_hash,
-                    candidate_hash=corpus_identity(paths),
-                    batch_size=int(policy["operations"]["batch_size"]),
+        for repeat in range(2):
+            responses: list[dict[str, Any]] = []
+            for family in ("definition", "example", "translation"):
+                family_records = [
+                    record for record in records if record["family"] == family
+                ]
+                responses.extend(
+                    _call(
+                        adapter, family_records, schema,
+                        prompt=prompts[family], executor=executor,
+                        qualification_hash=f"qualification-eval:{repeat + 1}",
+                        policy_hash=policy_hash,
+                        candidate_hash=corpus_identity(paths),
+                        batch_size=int(policy["operations"]["batch_size"]),
+                    )
                 )
-            )
-    except (BudgetExceeded, ProviderError, ValueError):
-        responses = []
+            response_rounds.append(responses)
+    except (BudgetExceeded, ProviderError, ValueError) as exc:
+        qualification_error = str(exc)
+        response_rounds = [[], []]
+    responses = response_rounds[0]
     predictions = {
         id_map[item["record_id"]]: item["verdict"] for item in responses
     }
     metrics = evaluate_predictions(
         cases, predictions,
         minimum_cases_per_slice=int(policy["minimum_scored_cases_per_slice"]),
+        required_slices=required_slices,
     )
-    scored_counts = Counter(
-        (case["family"], case["locale"])
-        for case in cases
-        if case["authority"] != "unscored-challenge"
+    metrics["repeat_stability"] = (
+        len(response_rounds) == 2
+        and {
+            item["record_id"]: item["verdict"]
+            for item in response_rounds[0]
+        }
+        == {
+            item["record_id"]: item["verdict"]
+            for item in response_rounds[1]
+        }
     )
-    metrics["qualified_slices"] = [
-        {"family": family, "locale": locale}
-        for (family, locale), count in sorted(scored_counts.items())
-        if count >= int(policy["minimum_scored_cases_per_slice"])
-    ]
+    metrics["qualification_error"] = qualification_error
     now = datetime.now(UTC)
     route = next(
         value for value in policy["routes"].values()
@@ -538,6 +578,7 @@ def main() -> int:
             ("review-schema.json", ROOT / model_policy["review_schema"]),
             ("eval-cases.jsonl", ROOT / "qa/ontology/evals/cases.jsonl"),
             ("eval-held-out.jsonl", ROOT / "qa/ontology/evals/held-out.jsonl"),
+            ("eval-slice-controls.json", ROOT / "qa/ontology/evals/slice-controls.json"),
             ("prompt-definition.md", ROOT / "qa/ontology/prompts/definition-review.md"),
             ("prompt-example.md", ROOT / "qa/ontology/prompts/example-review.md"),
             ("prompt-translation.md", ROOT / "qa/ontology/prompts/translation-review.md"),
@@ -567,24 +608,43 @@ def main() -> int:
             )
 
         maximum_output = int(operations["maximum_output_tokens_per_request"])
-        primary_adapter = _adapter(
-            model_policy["routes"]["primary"],
-            maximum_output_tokens=maximum_output,
+        role_routes = {
+            "production-primary": "primary",
+            "production-independent": "independent",
+            "benchmark-adjudicator": "benchmark_adjudicator",
+            "correction-proposer": "correction_proposer",
+            "correction-verifier-1": "correction_verifier_1",
+            "correction-verifier-2": "correction_verifier_2",
+        }
+        adapters = {
+            role: _adapter(
+                model_policy["routes"][route_name],
+                maximum_output_tokens=maximum_output,
+            )
+            for role, route_name in role_routes.items()
+        }
+        qualifications = {
+            role: _qualify(
+                adapter, role, model_policy, schema, policy_hash,
+                executor=executor,
+            )
+            for role, adapter in adapters.items()
+        }
+        validate_role_separation(list(qualifications.values()))
+        rejected_roles = sorted(
+            role for role, qualification in qualifications.items()
+            if qualification["status"] != "qualified"
         )
-        independent_adapter = _adapter(
-            model_policy["routes"]["independent"],
-            maximum_output_tokens=maximum_output,
-        )
-        primary_q = _qualify(
-            primary_adapter, "production-primary", model_policy, schema,
-            policy_hash, executor=executor,
-        )
-        independent_q = _qualify(
-            independent_adapter, "production-independent", model_policy, schema,
-            policy_hash, executor=executor,
-        )
-        bundle.publish_qualification("primary_qualification", primary_q)
-        bundle.publish_qualification("independent_qualification", independent_q)
+        if rejected_roles:
+            raise ValueError(f"model routes failed qualification: {rejected_roles}")
+        for role, qualification in qualifications.items():
+            bundle.publish_qualification(
+                f"{role.replace('-', '_')}_qualification", qualification
+            )
+        primary_adapter = adapters["production-primary"]
+        independent_adapter = adapters["production-independent"]
+        primary_q = qualifications["production-primary"]
+        independent_q = qualifications["production-independent"]
         candidate_graph = Graph().parse(args.candidate, format="xml")
         records = _changed_review_records(
             manifest,

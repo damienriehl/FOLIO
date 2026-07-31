@@ -118,7 +118,11 @@ def replay_bundle(bundle_path: str | Path, *, report_schema_path: str | Path) ->
             )
         }))
         corpus_hash = corpus_identity(
-            [root / "eval-cases.jsonl", root / "eval-held-out.jsonl"]
+            [
+                root / "eval-cases.jsonl",
+                root / "eval-held-out.jsonl",
+                root / "eval-slice-controls.json",
+            ]
         )
         for qualification in (primary_q, independent_q):
             if (

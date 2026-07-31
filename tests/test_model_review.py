@@ -12,6 +12,7 @@ from ontology_qa.context import build_graph_context
 from ontology_qa.providers.google import GoogleAdapter
 from ontology_qa.providers.openai import OpenAIAdapter
 from ontology_qa.providers.base import ProviderError, ReviewRequest
+from run_trusted_ontology_qa import _provider_schema
 
 ROOT = Path(__file__).parents[1]
 SCHEMA = json.loads((ROOT / "schemas/ontology-review.schema.json").read_text())
@@ -124,3 +125,17 @@ def test_graph_context_is_bounded_hashed_and_ontology_grounded():
     assert first["ancestors"] == ["Procedure"]
     assert first["siblings"] == ["Review"]
     assert len(first["context_hash"]) == 64
+
+
+def test_provider_schema_removes_unsupported_composition_only():
+    schema = {
+        "type": "object",
+        "properties": {"verdict": {"type": "string"}},
+        "required": ["verdict"],
+        "additionalProperties": False,
+        "allOf": [{"if": {}, "then": {}}],
+    }
+    projected = _provider_schema(schema)
+    assert "allOf" not in projected
+    assert projected["required"] == ["verdict"]
+    assert projected["additionalProperties"] is False

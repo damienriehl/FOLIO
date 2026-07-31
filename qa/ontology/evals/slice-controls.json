@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "controls": [
+    {
+      "id": "identity",
+      "source": "Case 42",
+      "candidate": "Case 42",
+      "translation_source": "42",
+      "translation_candidate": "42",
+      "expected_verdict": "pass",
+      "expected_defect_types": [],
+      "source_kind": "synthetic-control",
+      "source_ref": "control:exact-preservation"
+    },
+    {
+      "id": "number",
+      "source": "Case 42",
+      "candidate": "Case 24",
+      "translation_source": "42",
+      "translation_candidate": "24",
+      "expected_verdict": "defect",
+      "expected_defect_types": ["number"],
+      "source_kind": "synthetic-mutation",
+      "source_ref": "mutation:42-to-24"
+    }
+  ]
+}
