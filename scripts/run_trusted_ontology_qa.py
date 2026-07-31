@@ -29,7 +29,9 @@ from ontology_qa.reconcile import reconcile
 from ontology_qa.records import artifact_envelope, canonical_json, content_hash
 from ontology_qa.reporting import ArtifactBundle, build_release_report
 from ontology_qa.sampling import evaluate_surveillance, select_surveillance_sample
-from ontology_qa.validators import TARGET_PREDICATES, validate_ontology
+from ontology_qa.validators import (
+    TARGET_PREDICATES, compare_validation_results, validate_ontology,
+)
 
 ROOT = Path(__file__).parents[1]
 FAMILY = {
@@ -164,12 +166,10 @@ def _census_artifact(baseline: Path, candidate: Path, manifest, run_id, attempt_
     }
     before = validate_ontology(baseline, **kwargs)
     after = validate_ontology(candidate, **kwargs)
-    known = {canonical_json(item) for item in before["failures"]}
-    blocking = [item for item in after["failures"] if canonical_json(item) not in known]
-    payload = {
-        **after, "failures": blocking, "legacy_failures": before["failures"],
-        "candidate_failure_count": len(after["failures"]),
-    }
+    payload = compare_validation_results(before, after)
+    blocking = payload["failures"]
+    payload["legacy_failures"] = before["failures"]
+    payload["candidate_failure_count"] = len(payload["all_candidate_failures"])
     return artifact_envelope(
         payload=payload, run_id=run_id, attempt_id=attempt_id,
         parent_hashes=[manifest["artifact_hash"]],

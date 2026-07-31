@@ -206,3 +206,29 @@ def validate_ontology(
         "semantic_review_risks": [asdict(item) for item in risks],
         "shacl_conforms": bool(conforms),
     }
+
+
+def compare_validation_results(
+    baseline: dict[str, Any], candidate: dict[str, Any]
+) -> dict[str, Any]:
+    """Classify candidate findings without forgiving newly introduced debt."""
+    known = {canonical_finding(item) for item in baseline.get("failures", [])}
+    candidate_failures = candidate.get("failures", [])
+    regressions = [
+        item for item in candidate_failures if canonical_finding(item) not in known
+    ]
+    return {
+        **candidate,
+        "status": "failed" if regressions else "complete",
+        "failures": regressions,
+        "all_candidate_failures": candidate_failures,
+        "legacy_failure_count": len(candidate_failures) - len(regressions),
+        "baseline_failure_count": len(baseline.get("failures", [])),
+    }
+
+
+def canonical_finding(finding: dict[str, Any]) -> tuple[str, str, str, str, str]:
+    return tuple(
+        str(finding.get(field, ""))
+        for field in ("code", "severity", "subject", "predicate", "message")
+    )

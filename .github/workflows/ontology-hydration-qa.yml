@@ -40,6 +40,9 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -47,7 +50,9 @@ jobs:
       - name: Run tests and full deterministic census
         run: |
           pytest -q tests
+          git show "${{ github.event.pull_request.base.sha }}:FOLIO.owl" > baseline.owl
           python scripts/validate_ontology_annotations.py FOLIO.owl \
+            --baseline baseline.owl \
             --output deterministic-census.json
       - name: Upload deterministic evidence
         if: always()

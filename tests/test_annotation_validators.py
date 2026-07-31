@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "scripts"))
-from ontology_qa.validators import validate_ontology
+from ontology_qa.validators import compare_validation_results, validate_ontology
 
 ROOT = Path(__file__).parents[1]
 
@@ -90,3 +90,23 @@ def test_clean_annotation_passes_and_is_fully_counted(tmp_path):
     result = run(tmp_path, '<skos:definition xml:lang="en">A legal definition.</skos:definition>')
     assert result["status"] == "complete"
     assert result["population_count"] == result["inspected_count"] == 1
+
+
+def test_baseline_debt_is_reported_but_only_new_failures_block(tmp_path):
+    baseline = run(tmp_path, "<skos:definition>NULL</skos:definition>")
+    same = run(tmp_path, "<skos:definition>NULL</skos:definition>")
+    comparison = compare_validation_results(baseline, same)
+    assert comparison["status"] == "complete"
+    assert comparison["failures"] == []
+    assert comparison["legacy_failure_count"] == 1
+
+    candidate = run(
+        tmp_path,
+        "<skos:definition>NULL</skos:definition>"
+        "<skos:altLabel>['new defect']</skos:altLabel>",
+    )
+    regression = compare_validation_results(baseline, candidate)
+    assert regression["status"] == "failed"
+    assert {item["code"] for item in regression["failures"]} == {
+        "serialized_container"
+    }
