@@ -4,11 +4,13 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 sys.path.insert(0, str(Path(__file__).parents[1] / "scripts"))
 from ontology_qa.model_review import run_blind_review
 from ontology_qa.providers.google import GoogleAdapter
 from ontology_qa.providers.openai import OpenAIAdapter
-from ontology_qa.providers.base import ProviderError
+from ontology_qa.providers.base import ProviderError, ReviewRequest
 
 ROOT = Path(__file__).parents[1]
 SCHEMA = json.loads((ROOT / "schemas/ontology-review.schema.json").read_text())
@@ -72,3 +74,22 @@ def test_transient_failure_retries_same_immutable_request():
     assert result["status"] == "complete"
     assert result["payload"]["retry_count"] == 1
     assert calls[0] == calls[1]
+
+
+@pytest.mark.parametrize(
+    ("adapter", "variable"),
+    [
+        (OpenAIAdapter("gpt-5.6-sol"), "OPENAI_API_KEY"),
+        (GoogleAdapter("gemini-3.5-flash"), "GOOGLE_API_KEY"),
+    ],
+)
+def test_default_live_transport_fails_closed_without_credentials(
+    monkeypatch, adapter, variable
+):
+    monkeypatch.delenv(variable, raising=False)
+    request = ReviewRequest(
+        request_id="request", model=adapter.model, prompt="review",
+        records=(), schema={"type": "object"}, context_hash="context",
+    )
+    with pytest.raises(ProviderError, match=variable):
+        adapter.assess(request)

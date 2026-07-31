@@ -2,6 +2,11 @@
 
 from __future__ import annotations
 
+import json
+import os
+import urllib.error
+import urllib.parse
+import urllib.request
 from typing import Callable
 
 from .base import ProviderError, ProviderReceipt, ReviewRequest
@@ -10,9 +15,13 @@ from .base import ProviderError, ProviderReceipt, ReviewRequest
 class GoogleAdapter:
     provider = "google"
 
-    def __init__(self, model: str, transport: Callable[[dict], dict]):
+    def __init__(
+        self, model: str, transport: Callable[[dict], dict] | None = None,
+        *, reasoning: str = "high",
+    ):
         self.model = model
-        self._transport = transport
+        self.reasoning = reasoning
+        self._transport = transport or _gemini_transport
 
     def assess(self, request: ReviewRequest) -> ProviderReceipt:
         if request.model != self.model:
@@ -24,6 +33,7 @@ class GoogleAdapter:
             "generation_config": {
                 "response_mime_type": "application/json",
                 "response_json_schema": {"type": "array", "items": request.schema},
+                "thinking_config": {"thinking_level": self.reasoning},
             },
         }
         raw = self._transport(payload)
@@ -34,3 +44,54 @@ class GoogleAdapter:
         if not isinstance(responses, list):
             raise ProviderError("Google response omitted structured responses")
         return ProviderReceipt(self.provider, self.model, actual, request.request_id, tuple(responses))
+
+
+def _gemini_transport(payload: dict) -> dict:
+    api_key = os.environ.get("GOOGLE_API_KEY")
+    if not api_key:
+        raise ProviderError("GOOGLE_API_KEY is not configured")
+    model = payload["model"]
+    config = payload["generation_config"]
+    body = {
+        "systemInstruction": {
+            "parts": [{"text": payload["system_instruction"]}]
+        },
+        "contents": [
+            {
+                "role": "user",
+                "parts": [{"text": json.dumps(payload["contents"])}],
+            }
+        ],
+        "generationConfig": {
+            "responseMimeType": config["response_mime_type"],
+            "responseJsonSchema": config["response_json_schema"],
+            "thinkingConfig": {
+                "thinkingLevel": config["thinking_config"]["thinking_level"].upper()
+            },
+        },
+    }
+    url = (
+        "https://generativelanguage.googleapis.com/v1beta/models/"
+        f"{urllib.parse.quote(model, safe='')}:generateContent?key="
+        f"{urllib.parse.quote(api_key, safe='')}"
+    )
+    request = urllib.request.Request(
+        url, data=json.dumps(body).encode("utf-8"),
+        headers={"Content-Type": "application/json"}, method="POST",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=120) as response:
+            raw = json.load(response)
+    except urllib.error.HTTPError as exc:
+        raise ProviderError(
+            f"Google request failed with HTTP {exc.code}",
+            transient=exc.code in {408, 409, 429} or exc.code >= 500,
+        ) from exc
+    except (OSError, ValueError) as exc:
+        raise ProviderError(f"Google request failed: {exc}", transient=True) from exc
+    try:
+        text = raw["candidates"][0]["content"]["parts"][0]["text"]
+        responses = json.loads(text)
+    except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
+        raise ProviderError("Google returned invalid structured JSON") from exc
+    return {"model": raw.get("modelVersion", model), "responses": responses}

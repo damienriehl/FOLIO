@@ -1,0 +1,44 @@
+name: Ontology Hydration QA - Automatic Trusted Trigger
+
+on:
+  workflow_run:
+    workflows: [Ontology Hydration QA]
+    types: [completed]
+
+permissions:
+  actions: write
+  contents: read
+  pull-requests: read
+
+jobs:
+  dispatch-trusted-review:
+    if: >-
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve immutable pull-request endpoints
+        id: endpoints
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          PR_NUMBER="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/pull_requests" --jq '.[0].number')"
+          test -n "$PR_NUMBER"
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" > pr.json
+          ONTOLOGY_CHANGED="$(gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files" --jq 'any(.[][]; .filename == "FOLIO.owl")')"
+          echo "ontology_changed=$ONTOLOGY_CHANGED" >> "$GITHUB_OUTPUT"
+          echo "reviewed_sha=$(jq -r .head.sha pr.json)" >> "$GITHUB_OUTPUT"
+          echo "baseline_sha=$(jq -r .base.sha pr.json)" >> "$GITHUB_OUTPUT"
+          echo "candidate_repository=$(jq -r .head.repo.full_name pr.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Dispatch protected model-bearing workflow
+        if: steps.endpoints.outputs.ontology_changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run ontology-hydration-qa.yml \
+            --ref "${{ github.event.repository.default_branch }}" \
+            -f reviewed_sha="${{ steps.endpoints.outputs.reviewed_sha }}" \
+            -f baseline_sha="${{ steps.endpoints.outputs.baseline_sha }}" \
+            -f candidate_repository="${{ steps.endpoints.outputs.candidate_repository }}"

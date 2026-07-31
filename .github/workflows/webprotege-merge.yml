@@ -14,6 +14,11 @@ on:
 jobs:
   generate-merge:
     runs-on: ubuntu-latest
+    permissions:
+      attestations: read
+      contents: read
+      id-token: write
+      packages: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,7 +29,39 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install -r scripts/requirements.txt
+        run: pip install -r scripts/requirements.txt jsonschema
+
+      - name: Resolve and verify accepted ontology evidence
+        uses: oras-project/setup-oras@v1
+      - name: Resolve and verify accepted ontology evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ONTOLOGY_HASH="$(sha256sum FOLIO.owl | cut -d' ' -f1)"
+          gh attestation verify FOLIO.owl --repo "$GITHUB_REPOSITORY" \
+            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/ontology-hydration-qa.yml" \
+            --predicate-type https://folio.openlegalstandard.org/attestation/ontology-qa/v1 \
+            --format json > attestation.json
+          test "$(jq length attestation.json)" = 1
+          jq '.[0].verificationResult.statement.predicate' attestation.json > acceptance-predicate.json
+          echo "$GH_TOKEN" | oras login ghcr.io -u "${{ github.actor }}" --password-stdin
+          oras pull "ghcr.io/${GITHUB_REPOSITORY,,}/ontology-qa-evidence:$ONTOLOGY_HASH"
+          tar -xzf evidence.tgz
+          REVIEWED_SHA="$(jq -r .commit_sha acceptance-predicate.json)"
+          REVIEWED_TREE="$(jq -r .tree_sha acceptance-predicate.json)"
+          CANDIDATE_REPOSITORY="$(jq -r .candidate_repository acceptance-predicate.json)"
+          EXPECTED_WORKFLOW="$GITHUB_REPOSITORY/.github/workflows/ontology-hydration-qa.yml@refs/heads/${{ github.event.repository.default_branch }}"
+          test "$(gh api "repos/$CANDIDATE_REPOSITORY/commits/$REVIEWED_SHA" --jq .sha)" = "$REVIEWED_SHA"
+          test "$(gh api "repos/$CANDIDATE_REPOSITORY/git/commits/$REVIEWED_SHA" --jq .tree.sha)" = "$REVIEWED_TREE"
+          python scripts/verify_acceptance_handoff.py \
+            --predicate acceptance-predicate.json \
+            --candidate FOLIO.owl --bundle evidence \
+            --bundle-archive evidence.tgz \
+            --report-schema schemas/ontology-qa-report.schema.json \
+            --repository "$GITHUB_REPOSITORY" \
+            --candidate-repository "$CANDIDATE_REPOSITORY" \
+            --workflow-ref "$EXPECTED_WORKFLOW" \
+            --commit-sha "$REVIEWED_SHA" --tree-sha "$REVIEWED_TREE"
 
       - name: Download WebProtégé export (if URL provided)
         if: inputs.webprotege_zip_url != ''
@@ -37,11 +74,17 @@ jobs:
           else
             WP_INPUT=FOLIO-webprotege-merge-output.owl
           fi
+          python -c 'from scripts.generate_webprotege_merge import load_webprotege_base; import pathlib,sys; pathlib.Path("webprotege-base.owl").write_text(load_webprotege_base(sys.argv[1]), encoding="utf-8")' "$WP_INPUT"
           python scripts/generate_webprotege_merge.py \
             --github-owl FOLIO.owl \
             --webprotege-input "$WP_INPUT" \
             --output FOLIO-webprotege-merge-output.owl \
             --verbose
+          python scripts/verify_webprotege_fidelity.py \
+            --webprotege-base webprotege-base.owl \
+            --merge-output FOLIO-webprotege-merge-output.owl \
+            --manifest evidence/manifest.json \
+            --report evidence/report.json
 
       - name: Upload merge artifact
         uses: actions/upload-artifact@v4

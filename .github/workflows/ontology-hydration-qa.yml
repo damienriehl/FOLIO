@@ -1,0 +1,174 @@
+name: Ontology Hydration QA
+
+on:
+  pull_request:
+    paths:
+      - FOLIO.owl
+      - scripts/**
+      - schemas/**
+      - qa/ontology/**
+      - tests/**
+      - .github/workflows/ontology-hydration-qa.yml
+  workflow_dispatch:
+    inputs:
+      reviewed_sha:
+        description: Exact pull-request head commit to review
+        required: true
+        type: string
+      baseline_sha:
+        description: Exact baseline commit
+        required: true
+        type: string
+      candidate_repository:
+        description: Repository containing the candidate commit
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ontology-hydration-qa-${{ github.event.pull_request.number || inputs.reviewed_sha || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deterministic-pr:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r scripts/requirements.txt pytest jsonschema
+      - name: Run tests and full deterministic census
+        run: |
+          pytest -q tests
+          python scripts/validate_ontology_annotations.py FOLIO.owl \
+            --output deterministic-census.json
+      - name: Upload deterministic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ontology-deterministic-${{ github.event.pull_request.head.sha }}
+          path: deterministic-census.json
+          if-no-files-found: warn
+
+  trusted-model-review:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: ontology-qa
+    permissions:
+      actions: read
+      artifact-metadata: write
+      attestations: write
+      checks: write
+      contents: read
+      id-token: write
+      packages: write
+    env:
+      REVIEWED_SHA: ${{ inputs.reviewed_sha }}
+      BASELINE_SHA: ${{ inputs.baseline_sha }}
+      CANDIDATE_REPOSITORY: ${{ inputs.candidate_repository || github.repository }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout protected QA runner only
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          path: trusted-runner
+          persist-credentials: false
+
+      - name: Fetch candidate and baseline ontology strictly as data
+        run: |
+          mkdir -p inputs evidence
+          test "$(gh api "repos/$CANDIDATE_REPOSITORY/commits/$REVIEWED_SHA" --jq .sha)" = "$REVIEWED_SHA"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/commits/$BASELINE_SHA" --jq .sha)" = "$BASELINE_SHA"
+          gh api "repos/$CANDIDATE_REPOSITORY/contents/FOLIO.owl?ref=$REVIEWED_SHA" --jq .content | base64 -d > inputs/candidate.owl
+          gh api "repos/$GITHUB_REPOSITORY/contents/FOLIO.owl?ref=$BASELINE_SHA" --jq .content | base64 -d > inputs/baseline.owl
+          test "$(git -C trusted-runner rev-parse HEAD)" = "$(gh api "repos/$GITHUB_REPOSITORY/commits/${{ github.event.repository.default_branch }}" --jq .sha)"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install protected runner dependencies
+        run: pip install -r trusted-runner/scripts/requirements.txt pytest jsonschema
+
+      - name: Run trusted model QA
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: |
+          python trusted-runner/scripts/run_trusted_ontology_qa.py \
+            --baseline inputs/baseline.owl \
+            --candidate inputs/candidate.owl \
+            --reviewed-sha "$REVIEWED_SHA" \
+            --bundle evidence
+
+      - name: Fence stale completion
+        run: |
+          test "$(gh api "repos/$CANDIDATE_REPOSITORY/commits/$REVIEWED_SHA" --jq .sha)" = "$REVIEWED_SHA"
+          test "$(sha256sum inputs/candidate.owl | cut -d' ' -f1)" = "$(jq -r .candidate_hash evidence/report.json)"
+
+      - name: Publish durable evidence bundle
+        id: evidence
+        uses: oras-project/setup-oras@v1
+      - name: Push durable evidence bundle
+        id: evidence-push
+        run: |
+          ONTOLOGY_HASH="$(sha256sum inputs/candidate.owl | cut -d' ' -f1)"
+          tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 -czf evidence.tgz evidence
+          BUNDLE_DIGEST="sha256:$(sha256sum evidence.tgz | cut -d' ' -f1)"
+          echo "$GH_TOKEN" | oras login ghcr.io -u "${{ github.actor }}" --password-stdin
+          oras push "ghcr.io/${GITHUB_REPOSITORY,,}/ontology-qa-evidence:$ONTOLOGY_HASH" \
+            evidence.tgz:application/vnd.folio.ontology-qa.bundle.v1+gzip
+          echo "ontology_hash=$ONTOLOGY_HASH" >> "$GITHUB_OUTPUT"
+          echo "bundle_digest=$BUNDLE_DIGEST" >> "$GITHUB_OUTPUT"
+
+      - name: Create acceptance predicate
+        run: |
+          TREE_SHA="$(gh api "repos/$GITHUB_REPOSITORY/git/commits/$REVIEWED_SHA" --jq .tree.sha)"
+          EXPIRES_AT="$(date -u -d '+180 days' +%Y-%m-%dT%H:%M:%SZ)"
+          python trusted-runner/scripts/create_acceptance_predicate.py \
+            --report evidence/report.json --output acceptance-predicate.json \
+            --repository "$GITHUB_REPOSITORY" \
+            --candidate-repository "$CANDIDATE_REPOSITORY" \
+            --workflow-ref "$GITHUB_WORKFLOW_REF" \
+            --commit-sha "$REVIEWED_SHA" --tree-sha "$TREE_SHA" \
+            --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT" \
+            --bundle-digest "${{ steps.evidence-push.outputs.bundle_digest }}" \
+            --expires-at "$EXPIRES_AT"
+
+      - name: Sign acceptance with GitHub OIDC
+        uses: actions/attest@v4
+        with:
+          subject-path: inputs/candidate.owl
+          predicate-type: https://folio.openlegalstandard.org/attestation/ontology-qa/v1
+          predicate-path: acceptance-predicate.json
+
+      - name: Publish stable required check
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          CONCLUSION=failure
+          test "$JOB_STATUS" = success && CONCLUSION=success
+          gh api --method POST "repos/$GITHUB_REPOSITORY/check-runs" \
+            -f name=ontology-hydration-qa \
+            -f head_sha="$REVIEWED_SHA" \
+            -f status=completed \
+            -f conclusion="$CONCLUSION"
+
+      - name: Upload bounded failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ontology-qa-failure-${{ inputs.reviewed_sha }}-${{ github.run_attempt }}
+          path: |
+            evidence/
+            acceptance-predicate.json
+          if-no-files-found: warn
+          retention-days: 30

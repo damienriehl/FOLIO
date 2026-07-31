@@ -28,7 +28,7 @@ def test_authority_tiers_and_challenges_are_preserved():
         if case["expected_verdict"] is not None
     }
     result = evaluate_predictions(cases, predictions, minimum_cases_per_slice=2)
-    assert result["scored_count"] == 10
+    assert result["scored_count"] == 14
     assert result["challenge_count"] == 1
     assert result["accuracy"] == 1
 
