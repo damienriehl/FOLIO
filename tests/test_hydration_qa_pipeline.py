@@ -42,10 +42,16 @@ def evidence(candidate_hash="c" * 64, state="accepted"):
         "failures": [], "population_count": 1, "inspected_count": 1,
     })
     primary = stage("primary", candidate_hash, {
-        "qualification_hash": primary_qualification["qualification_hash"], "responses": [{"record_id": RID}],
+        "provider": "openai", "model": "gpt-5.6-sol",
+        "actual_model": "gpt-5.6-sol",
+        "qualification_hash": primary_qualification["qualification_hash"],
+        "responses": [{"record_id": RID, "verdict": "pass", "confidence": .99}],
     })
     independent = stage("independent", candidate_hash, {
-        "qualification_hash": independent_qualification["qualification_hash"], "responses": [{"record_id": RID}],
+        "provider": "google", "model": "gemini-3.5-flash",
+        "actual_model": "gemini-3.5-flash",
+        "qualification_hash": independent_qualification["qualification_hash"],
+        "responses": [{"record_id": RID, "verdict": "pass", "confidence": .99}],
     })
     surveillance = stage("surveillance", candidate_hash, {"decision": "pass"})
     reconciliation = {"status": "complete", "records": {RID: state}}

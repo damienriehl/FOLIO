@@ -7,7 +7,10 @@ from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
+import yaml
 
+from .evals import corpus_identity
+from .reconcile import reconcile
 from .records import canonical_json, content_hash
 from .reporting import validate_artifact_hash, validate_qualification_hash
 
@@ -72,6 +75,76 @@ def replay_bundle(bundle_path: str | Path, *, report_schema_path: str | Path) ->
         != artifacts["independent_qualification"]["qualification_hash"]
     ):
         raise ValueError("assessment and qualification bindings differ")
+    primary_q = artifacts["primary_qualification"]
+    independent_q = artifacts["independent_qualification"]
+    if primary_q.get("status") != "qualified" or independent_q.get("status") != "qualified":
+        raise ValueError("release uses an unqualified model route")
+    if (
+        artifacts["primary"].get("status") != "complete"
+        or artifacts["independent"].get("status") != "complete"
+    ):
+        raise ValueError("release uses incomplete model assessments")
+    for assessment, qualification in (
+        (artifacts["primary"], primary_q),
+        (artifacts["independent"], independent_q),
+    ):
+        if (
+            assessment["payload"].get("provider") != qualification["provider"]
+            or assessment["payload"].get("model") != qualification["requested_model"]
+            or assessment["payload"].get("actual_model") != qualification["actual_model"]
+        ):
+            raise ValueError("assessment route differs from qualification")
+
+    model_policy_path = root / "model-policy.yaml"
+    if model_policy_path.exists():
+        review_policy_path = root / "review-policy.yaml"
+        expected_policy_hash = content_hash(
+            model_policy_path.read_bytes() + review_policy_path.read_bytes()
+        )
+        if expected_policy_hash != report["policy_hash"]:
+            raise ValueError("snapshotted policy hash mismatch")
+        model_policy = yaml.safe_load(model_policy_path.read_text(encoding="utf-8"))
+        minimum_confidence = float(model_policy["minimum_confidence"])
+        schema = _read_json(root / "review-schema.json")
+        schema_hash = content_hash(canonical_json(schema))
+        prompt = "\n\n".join(
+            (root / name).read_text(encoding="utf-8")
+            for name in (
+                "prompt-definition.md", "prompt-example.md",
+                "prompt-translation.md",
+            )
+        )
+        prompt_hash = content_hash(prompt)
+        corpus_hash = corpus_identity(
+            [root / "eval-cases.jsonl", root / "eval-held-out.jsonl"]
+        )
+        for qualification in (primary_q, independent_q):
+            if (
+                qualification["schema_hash"] != schema_hash
+                or qualification["prompt_hash"] != prompt_hash
+                or qualification["corpus_hash"] != corpus_hash
+                or qualification["policy_hash"] != report["policy_hash"]
+            ):
+                raise ValueError("qualification inputs differ from snapshots")
+        tool_manifest = _read_json(root / "tool-manifest.json", canonical=True)
+        claimed_tool_hash = tool_manifest.pop("tool_hash", None)
+        if (
+            content_hash(canonical_json(tool_manifest)) != claimed_tool_hash
+            or claimed_tool_hash != report["tool_hash"]
+        ):
+            raise ValueError("tool manifest hash mismatch")
+    else:
+        minimum_confidence = 0.9
+
+    reconstructed = reconcile(
+        sorted(manifest_ids), artifacts["primary"], artifacts["independent"],
+        minimum_confidence=minimum_confidence,
+        expected_candidate_hash=report["candidate_hash"],
+        expected_primary_qualification=primary_q["qualification_hash"],
+        expected_independent_qualification=independent_q["qualification_hash"],
+    )
+    if reconstructed["records"] != report["payload"]["record_states"]:
+        raise ValueError("record states do not match provider assessments")
     decision = report["payload"]["release_decision"]
     recomputed_pass = (
         report["status"] == "complete"
@@ -80,6 +153,8 @@ def replay_bundle(bundle_path: str | Path, *, report_schema_path: str | Path) ->
         == artifacts["census"]["payload"].get("inspected_count")
         and all(value == "accepted" for value in report["payload"]["record_states"].values())
         and artifacts["surveillance"]["payload"].get("decision") == "pass"
+        and primary_q["status"] == independent_q["status"] == "qualified"
+        and reconstructed["status"] == "complete"
     )
     if (decision == "merge_gate_passed") != recomputed_pass:
         raise ValueError("release decision does not match replayed evidence")

@@ -42,9 +42,7 @@ def load_cases(path: str | Path) -> list[dict[str, Any]]:
 
 
 def corpus_identity(paths: Iterable[str | Path]) -> str:
-    members = []
-    for raw_path in sorted(map(Path, paths), key=lambda value: str(value)):
-        members.append({"path": str(raw_path), "hash": content_hash(raw_path.read_bytes())})
+    members = sorted(content_hash(Path(raw_path).read_bytes()) for raw_path in paths)
     return content_hash(canonical_json({"members": members}))
 
 

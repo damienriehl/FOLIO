@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 import json
 import os
 import re
@@ -55,6 +56,19 @@ def _prompt() -> str:
         ROOT / "qa/ontology/prompts/translation-review.md",
     ]
     return "\n\n".join(path.read_text(encoding="utf-8") for path in paths)
+
+
+def _tool_manifest() -> dict[str, Any]:
+    paths = [Path(__file__), *(ROOT / "scripts/ontology_qa").rglob("*.py")]
+    members = [
+        {
+            "path": path.relative_to(ROOT).as_posix(),
+            "hash": content_hash(path.read_bytes()),
+        }
+        for path in sorted(paths)
+    ]
+    body = {"members": members}
+    return {"tool_hash": content_hash(canonical_json(body)), **body}
 
 
 def _call(adapter, records: list[dict[str, Any]], schema: dict[str, Any]) -> list[dict[str, Any]]:
@@ -119,6 +133,16 @@ def _qualify(
         cases, predictions,
         minimum_cases_per_slice=int(policy["minimum_scored_cases_per_slice"]),
     )
+    scored_counts = Counter(
+        (case["family"], case["locale"])
+        for case in cases
+        if case["authority"] != "unscored-challenge"
+    )
+    metrics["qualified_slices"] = [
+        {"family": family, "locale": locale}
+        for (family, locale), count in sorted(scored_counts.items())
+        if count >= int(policy["minimum_scored_cases_per_slice"])
+    ]
     now = datetime.now(UTC)
     route = next(
         value for value in policy["routes"].values()
@@ -142,6 +166,16 @@ def _review_artifact(
 ):
     if qualification["status"] != "qualified":
         raise ValueError(f"{qualification['role']} route failed qualification")
+    qualified_slices = {
+        (item["family"], item["locale"])
+        for item in qualification["metrics"].get("qualified_slices", [])
+    }
+    unsupported = sorted({
+        (record["family"], record["locale"]) for record in records
+        if (record["family"], record["locale"]) not in qualified_slices
+    })
+    if unsupported:
+        raise ValueError(f"route is unqualified for semantic slices: {unsupported}")
     responses = _call(adapter, records, schema)
     return artifact_envelope(
         payload={
@@ -205,6 +239,112 @@ def _legacy_records(candidate: Path, changed_ids: set[str]) -> list[dict[str, An
     return sorted(records, key=lambda item: item["record_id"])
 
 
+def _unresolved_confirmed_debt(candidate: Path) -> list[str]:
+    debt = json.loads(
+        (ROOT / "qa/ontology/confirmed-defects.json").read_text(encoding="utf-8")
+    )
+    graph = Graph().parse(candidate, format="xml")
+    present = {
+        (
+            str(subject), str(predicate), value.language,
+            str(value.datatype) if value.datatype else None,
+            content_hash(canonical_json({
+                "subject": str(subject), "predicate": str(predicate),
+                "object_kind": "literal", "language": value.language,
+                "datatype": str(value.datatype) if value.datatype else None,
+                "lexical": str(value),
+            })),
+        )
+        for subject, predicate, value in graph
+        if isinstance(subject, URIRef) and isinstance(value, Literal)
+    }
+    unresolved = []
+    for item in debt:
+        identity = (
+            item["subject"], item["predicate"], item.get("language"),
+            item.get("datatype"), item["current_hash"],
+        )
+        if item["state"] == "open" and identity in present:
+            unresolved.append(item["debt_id"])
+    return sorted(unresolved)
+
+
+def _surveillance_results(
+    *,
+    sample: dict[str, Any],
+    legacy: list[dict[str, Any]],
+    primary_adapter,
+    independent_adapter,
+    primary_q,
+    independent_q,
+    manifest,
+    run_id,
+    attempt_id,
+    policy_hash,
+    tool_hash,
+    schema,
+    model_policy,
+    review_policy,
+) -> dict[str, Any]:
+    results: dict[str, dict[str, Any]] = {}
+    while True:
+        selected = {
+            record_id for value in sample["strata"].values()
+            for record_id in value["selected_ids"]
+        }
+        pending = selected - set(results)
+        records = [item for item in legacy if item["record_id"] in pending]
+        if records:
+            left = _review_artifact(
+                primary_adapter, records, primary_q, manifest=manifest,
+                run_id=run_id, attempt_id=attempt_id, policy_hash=policy_hash,
+                tool_hash=tool_hash, schema=schema,
+            )
+            right = _review_artifact(
+                independent_adapter, records, independent_q, manifest=manifest,
+                run_id=run_id, attempt_id=attempt_id, policy_hash=policy_hash,
+                tool_hash=tool_hash, schema=schema,
+            )
+            reconciled = reconcile(
+                sorted(pending), left, right,
+                minimum_confidence=float(model_policy["minimum_confidence"]),
+                expected_candidate_hash=manifest["candidate_hash"],
+                expected_primary_qualification=primary_q["qualification_hash"],
+                expected_independent_qualification=independent_q["qualification_hash"],
+            )
+            for record_id, state in reconciled["records"].items():
+                responses = [
+                    item for artifact in (left, right)
+                    for item in artifact["payload"]["responses"]
+                    if item["record_id"] == record_id
+                ]
+                defect_types = sorted({
+                    defect for response in responses
+                    for defect in response.get("defect_types", [])
+                })
+                results[record_id] = {
+                    "verdict": "pass" if state == "accepted" else "defect",
+                    "defect_types": defect_types,
+                }
+        evaluated = evaluate_surveillance(sample, legacy, results, review_policy)
+        expansions = {
+            name: details["expansion_ids"]
+            for name, details in evaluated["strata"].items()
+            if details["expansion_ids"]
+        }
+        if not expansions:
+            return evaluated
+        expanded_count = len(selected) + sum(len(ids) for ids in expansions.values())
+        maximum = int(review_policy["surveillance"]["maximum_review_records"])
+        if expanded_count > maximum:
+            raise ValueError("required surveillance census exceeds review budget")
+        for name, ids in expansions.items():
+            stratum = sample["strata"][name]
+            stratum["selected_ids"] = sorted(set(stratum["selected_ids"]) | set(ids))
+            stratum["sample_count"] = len(stratum["selected_ids"])
+            stratum["census"] = True
+
+
 def _changed_review_records(manifest: dict[str, Any]) -> list[dict[str, Any]]:
     records = []
     label_predicates = {
@@ -251,7 +391,8 @@ def main() -> int:
             model_policy_path.read_bytes()
             + (ROOT / "qa/ontology/review-policy.yaml").read_bytes()
         )
-        tool_hash = content_hash(Path(__file__).read_bytes())
+        tool_manifest = _tool_manifest()
+        tool_hash = tool_manifest["tool_hash"]
         manifest = build_hydration_manifest(
             args.baseline, args.candidate, run_id=run_id, attempt_id=attempt_id,
             policy_hash=policy_hash, tool_hash=tool_hash,
@@ -260,6 +401,23 @@ def main() -> int:
         bundle.publish_json("manifest", manifest)
         bundle.snapshot("baseline.owl", args.baseline)
         bundle.snapshot("candidate.owl", args.candidate)
+        for destination, source in (
+            ("model-policy.yaml", model_policy_path),
+            ("review-policy.yaml", ROOT / "qa/ontology/review-policy.yaml"),
+            ("review-schema.json", ROOT / model_policy["review_schema"]),
+            ("eval-cases.jsonl", ROOT / "qa/ontology/evals/cases.jsonl"),
+            ("eval-held-out.jsonl", ROOT / "qa/ontology/evals/held-out.jsonl"),
+            ("prompt-definition.md", ROOT / "qa/ontology/prompts/definition-review.md"),
+            ("prompt-example.md", ROOT / "qa/ontology/prompts/example-review.md"),
+            ("prompt-translation.md", ROOT / "qa/ontology/prompts/translation-review.md"),
+        ):
+            bundle.snapshot(destination, source)
+        tool_manifest_path = bundle.root / "tool-manifest.json"
+        tool_manifest_bytes = canonical_json(tool_manifest) + b"\n"
+        if tool_manifest_path.exists() and tool_manifest_path.read_bytes() != tool_manifest_bytes:
+            raise FileExistsError("append-only tool manifest already exists")
+        if not tool_manifest_path.exists():
+            tool_manifest_path.write_bytes(tool_manifest_bytes)
         if manifest["payload"]["unrelated_semantic_drift"]:
             raise ValueError("candidate contains unrelated semantic drift")
         census = _census_artifact(
@@ -269,6 +427,11 @@ def main() -> int:
         bundle.publish_json("census", census)
         if census["payload"]["failures"]:
             raise ValueError("candidate introduced deterministic failures")
+        unresolved_debt = _unresolved_confirmed_debt(args.candidate)
+        if unresolved_debt:
+            raise ValueError(
+                f"candidate retains {len(unresolved_debt)} confirmed open defects"
+            )
 
         primary_adapter = _adapter(model_policy["routes"]["primary"])
         independent_adapter = _adapter(model_policy["routes"]["independent"])
@@ -306,35 +469,13 @@ def main() -> int:
             args.candidate, {item["record_id"] for item in records}
         )
         sample = select_surveillance_sample(legacy, review_policy)
-        selected = set(
-            record_id for value in sample["strata"].values()
-            for record_id in value["selected_ids"]
-        )
-        sample_records = [item for item in legacy if item["record_id"] in selected]
-        legacy_primary = _review_artifact(
-            primary_adapter, sample_records, primary_q, manifest=manifest,
-            run_id=run_id, attempt_id=attempt_id, policy_hash=policy_hash,
-            tool_hash=tool_hash, schema=schema,
-        )
-        legacy_independent = _review_artifact(
-            independent_adapter, sample_records, independent_q, manifest=manifest,
-            run_id=run_id, attempt_id=attempt_id, policy_hash=policy_hash,
-            tool_hash=tool_hash, schema=schema,
-        )
-        legacy_reconciliation = reconcile(
-            sorted(selected), legacy_primary, legacy_independent,
-            minimum_confidence=float(model_policy["minimum_confidence"]),
-            expected_candidate_hash=manifest["candidate_hash"],
-            expected_primary_qualification=primary_q["qualification_hash"],
-            expected_independent_qualification=independent_q["qualification_hash"],
-        )
-        results = {
-            record_id: {"verdict": "pass" if state == "accepted" else "defect",
-                        "defect_types": []}
-            for record_id, state in legacy_reconciliation["records"].items()
-        }
-        surveillance_result = evaluate_surveillance(
-            sample, legacy, results, review_policy
+        surveillance_result = _surveillance_results(
+            sample=sample, legacy=legacy, primary_adapter=primary_adapter,
+            independent_adapter=independent_adapter, primary_q=primary_q,
+            independent_q=independent_q, manifest=manifest, run_id=run_id,
+            attempt_id=attempt_id, policy_hash=policy_hash, tool_hash=tool_hash,
+            schema=schema, model_policy=model_policy,
+            review_policy=review_policy,
         )
         surveillance = artifact_envelope(
             payload=surveillance_result, run_id=run_id, attempt_id=attempt_id,
