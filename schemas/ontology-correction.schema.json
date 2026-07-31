@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://folio.openlegalstandard.org/schemas/ontology-correction.schema.json",
+  "title": "FOLIO verified ontology correction",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["root_record_id", "revision_id", "subject", "predicate", "language", "datatype", "before", "before_hash", "replacement", "replacement_hash", "proposer_route", "verifier_routes", "verifier_qualification_hashes"],
+  "properties": {
+    "root_record_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "revision_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "subject": {"type": "string", "format": "uri"},
+    "predicate": {"type": "string", "format": "uri"},
+    "language": {"type": ["string", "null"]},
+    "datatype": {"type": ["string", "null"]},
+    "before": {"type": "string"},
+    "before_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "replacement": {"type": "string"},
+    "replacement_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "proposer_route": {"type": "string", "minLength": 1},
+    "verifier_routes": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "verifier_qualification_hashes": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+  }
+}
