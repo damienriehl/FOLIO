@@ -77,6 +77,40 @@ pytest -q tests
 python scripts/validate_ontology_annotations.py FOLIO.owl
 ```
 
+Replay a downloaded durable evidence bundle without provider access:
+
+```bash
+python scripts/run_ontology_hydration_qa.py \
+  --bundle evidence \
+  --replay \
+  --report-schema schemas/ontology-qa-report.schema.json
+```
+
+Confirmed legacy defects use the same automated, bounded path as new
+hydration: two blind reviewers confirm the defect, a model proposes structured
+replacement data, two cross-provider verifier routes approve the exact
+replacement, and two cross-provider reviewers assess the corrected value. The
+runner applies the complete batch to a disposable copy and publishes nothing
+unless stale-write protection, deterministic validation, graph allowlisting,
+and final rereview all pass:
+
+```bash
+python scripts/run_confirmed_defect_corrections.py \
+  --source FOLIO.owl \
+  --output corrected.owl \
+  --ledger correction-ledger.json \
+  --evidence correction-evidence.json \
+  --cache .ontology-qa-cache
+```
+
+The ledger and evidence are canonical, append-only JSON. A trusted release that
+closes confirmed debt must supply both with `--correction-ledger` and
+`--correction-evidence`; offline replay reapplies them to the retained baseline
+and requires byte-identical candidate output. Model receipts are cached by
+provider, exact model, prompt, schema, policy, qualification, candidate, and
+record payload. The evidence budget records request and token totals plus
+projected cost.
+
 The census is expected to fail while confirmed legacy debt remains open. Do not
 weaken the policy or resample to obtain a pass. Provider, prompt, schema, rubric,
 or threshold changes invalidate route qualification and require a new trusted
@@ -84,6 +118,11 @@ run. Trusted execution requires `OPENAI_API_KEY` and `GOOGLE_API_KEY` secrets in
 the protected `ontology-qa` environment. Missing credentials, unsupported
 locales, model disagreement, failed qualification, sampling expansion, or any
 provider/budget failure blocks the check; there is no Claude route or fallback.
+Production votes and correction-verifier votes must each span distinct
+providers. Diagnose a blocked run from its census findings, qualification
+artifacts, provider receipts, reconciliation states, surveillance strata, and
+budget snapshot; never bypass a failed stage or substitute a same-provider
+route.
 
 ## Community and Support
 

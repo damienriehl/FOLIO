@@ -147,6 +147,12 @@ def _write_once(path: Path, value: Any) -> None:
     temporary.replace(path)
 
 
+def _check_write_once(path: Path, value: Any) -> None:
+    data = canonical_json(value) + b"\n"
+    if path.exists() and path.read_bytes() != data:
+        raise FileExistsError(f"append-only output exists: {path}")
+
+
 def _correction_response_schema(
     schema: dict[str, Any], *, role: str
 ) -> dict[str, Any]:
@@ -183,6 +189,8 @@ def main() -> int:
     args = parser.parse_args()
     candidate_path = args.output.with_suffix(args.output.suffix + ".pending")
     try:
+        if args.output.exists():
+            raise FileExistsError(f"output already exists: {args.output}")
         entries = load_debt(ROOT / "qa/ontology/confirmed-defects.json")
         validate_debt_targets(args.source, entries)
         records = build_debt_records(args.source, entries)
@@ -583,10 +591,10 @@ def main() -> int:
             "evidence_hash": content_hash(canonical_json(evidence)),
             **evidence,
         }
+        _check_write_once(args.ledger, corrections)
+        _check_write_once(args.evidence, evidence)
         _write_once(args.ledger, corrections)
         _write_once(args.evidence, evidence)
-        if args.output.exists():
-            raise FileExistsError(f"output already exists: {args.output}")
         candidate_path.replace(args.output)
         print(json.dumps({
             "correction_count": len(corrections),

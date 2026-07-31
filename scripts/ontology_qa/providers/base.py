@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import random
+import time
 from typing import Any, Protocol
 
 
@@ -30,9 +32,21 @@ class ProviderReceipt:
 
 
 class ProviderError(RuntimeError):
-    def __init__(self, message: str, *, transient: bool = False):
+    def __init__(
+        self, message: str, *, transient: bool = False,
+        retry_after_seconds: float | None = None,
+    ):
         super().__init__(message)
         self.transient = transient
+        self.retry_after_seconds = retry_after_seconds
+
+
+def wait_before_retry(error: ProviderError, attempt: int) -> None:
+    """Apply bounded exponential backoff with jitter and Retry-After."""
+    delay = min(30.0, 2.0 ** attempt) + random.uniform(0.0, 0.5)
+    if error.retry_after_seconds is not None:
+        delay = max(delay, min(120.0, error.retry_after_seconds))
+    time.sleep(delay)
 
 
 class ProviderAdapter(Protocol):

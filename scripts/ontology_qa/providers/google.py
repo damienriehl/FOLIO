@@ -93,12 +93,15 @@ def _gemini_transport(payload: dict) -> dict:
     }
     url = (
         "https://generativelanguage.googleapis.com/v1beta/models/"
-        f"{urllib.parse.quote(model, safe='')}:generateContent?key="
-        f"{urllib.parse.quote(api_key, safe='')}"
+        f"{urllib.parse.quote(model, safe='')}:generateContent"
     )
     request = urllib.request.Request(
         url, data=json.dumps(body).encode("utf-8"),
-        headers={"Content-Type": "application/json"}, method="POST",
+        headers={
+            "Content-Type": "application/json",
+            "x-goog-api-key": api_key,
+        },
+        method="POST",
     )
     try:
         with urllib.request.urlopen(request, timeout=120) as response:

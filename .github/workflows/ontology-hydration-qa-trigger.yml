@@ -26,9 +26,11 @@ jobs:
           PR_NUMBER="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/pull_requests" --jq '.[0].number')"
           test -n "$PR_NUMBER"
           gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" > pr.json
+          test "$(jq -r .head.sha pr.json)" = "${{ github.event.workflow_run.head_sha }}"
           ONTOLOGY_CHANGED="$(gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files" --jq 'any(.[][]; .filename == "FOLIO.owl")')"
           echo "ontology_changed=$ONTOLOGY_CHANGED" >> "$GITHUB_OUTPUT"
-          echo "reviewed_sha=$(jq -r .head.sha pr.json)" >> "$GITHUB_OUTPUT"
+          echo "pull_request_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+          echo "reviewed_sha=${{ github.event.workflow_run.head_sha }}" >> "$GITHUB_OUTPUT"
           echo "baseline_sha=$(jq -r .base.sha pr.json)" >> "$GITHUB_OUTPUT"
           echo "candidate_repository=$(jq -r .head.repo.full_name pr.json)" >> "$GITHUB_OUTPUT"
 
@@ -39,6 +41,7 @@ jobs:
         run: |
           gh workflow run ontology-hydration-qa.yml \
             --ref "${{ github.event.repository.default_branch }}" \
+            -f pull_request_number="${{ steps.endpoints.outputs.pull_request_number }}" \
             -f reviewed_sha="${{ steps.endpoints.outputs.reviewed_sha }}" \
             -f baseline_sha="${{ steps.endpoints.outputs.baseline_sha }}" \
             -f candidate_repository="${{ steps.endpoints.outputs.candidate_repository }}"

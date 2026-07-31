@@ -6,7 +6,9 @@ from typing import Any
 
 from jsonschema import Draft202012Validator, ValidationError
 
-from .providers.base import ProviderAdapter, ProviderError, ReviewRequest
+from .providers.base import (
+    ProviderAdapter, ProviderError, ReviewRequest, wait_before_retry,
+)
 from .records import artifact_envelope, canonical_json, content_hash
 
 
@@ -56,6 +58,7 @@ def run_blind_review(
                     baseline_hash=baseline_hash, candidate_hash=candidate_hash,
                     policy_hash=policy_hash, tool_hash=tool_hash, status="incomplete",
                 )
+            wait_before_retry(exc, retry)
     assert receipt is not None
     validator = Draft202012Validator(schema)
     try:

@@ -17,7 +17,6 @@ jobs:
     permissions:
       attestations: read
       contents: read
-      id-token: write
       packages: read
     steps:
       - name: Checkout repository
@@ -42,11 +41,16 @@ jobs:
             --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/ontology-hydration-qa.yml" \
             --predicate-type https://folio.openlegalstandard.org/attestation/ontology-qa/v1 \
             --format json > attestation.json
-          test "$(jq length attestation.json)" = 1
-          jq '.[0].verificationResult.statement.predicate' attestation.json > acceptance-predicate.json
+          jq '[.[].verificationResult.statement.predicate]
+              | sort_by([(.run_id | tonumber), (.run_attempt | tonumber)])
+              | last' attestation.json > acceptance-predicate.json
+          test "$(jq -r .ontology_hash acceptance-predicate.json)" = "$ONTOLOGY_HASH"
           echo "$GH_TOKEN" | oras login ghcr.io -u "${{ github.actor }}" --password-stdin
           oras pull "ghcr.io/${GITHUB_REPOSITORY,,}/ontology-qa-evidence:$ONTOLOGY_HASH"
-          tar -xzf evidence.tgz
+          python scripts/safe_extract_evidence_bundle.py \
+            --archive evidence.tgz \
+            --expected-digest "$(jq -r .evidence_bundle_digest acceptance-predicate.json)" \
+            --output evidence
           REVIEWED_SHA="$(jq -r .commit_sha acceptance-predicate.json)"
           REVIEWED_TREE="$(jq -r .tree_sha acceptance-predicate.json)"
           CANDIDATE_REPOSITORY="$(jq -r .candidate_repository acceptance-predicate.json)"
@@ -65,7 +69,9 @@ jobs:
 
       - name: Download WebProtégé export (if URL provided)
         if: inputs.webprotege_zip_url != ''
-        run: curl -L -o webprotege-export.zip "${{ inputs.webprotege_zip_url }}"
+        env:
+          WEBPROTEGE_ZIP_URL: ${{ inputs.webprotege_zip_url }}
+        run: curl --fail --location --proto '=https' --output webprotege-export.zip -- "$WEBPROTEGE_ZIP_URL"
 
       - name: Run merge pipeline
         run: |

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import io
 import sys
 from pathlib import Path
 
@@ -9,7 +10,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parents[1] / "scripts"))
 from ontology_qa.model_review import run_blind_review
 from ontology_qa.context import build_graph_context
-from ontology_qa.providers.google import GoogleAdapter
+from ontology_qa.providers.google import GoogleAdapter, _gemini_transport
 from ontology_qa.providers.openai import OpenAIAdapter
 from ontology_qa.providers.base import ProviderError, ReviewRequest
 from ontology_qa.records import canonical_json
@@ -23,7 +24,9 @@ RID = "a" * 64
 def response(record_id=RID, verdict="pass", confidence=0.99):
     return {
         "record_id": record_id, "verdict": verdict, "confidence": confidence,
-        "defect_types": [], "evidence_spans": [],
+        "defect_types": [], "evidence_spans": [
+            {"source": "annotation", "quote": RID},
+        ],
         "preserved_propositions": ["meaning preserved"], "rationale": "supported",
         "proposed_replacement": None,
     }
@@ -81,8 +84,12 @@ def test_unpinned_model_fails_without_substitution():
     assert "unpinned" in result["payload"]["error"]
 
 
-def test_transient_failure_retries_same_immutable_request():
+def test_transient_failure_retries_same_immutable_request(monkeypatch):
     calls = []
+    delays = []
+    monkeypatch.setattr(
+        "ontology_qa.providers.base.time.sleep", delays.append
+    )
     def transport(payload):
         calls.append(payload)
         if len(calls) == 1:
@@ -92,6 +99,8 @@ def test_transient_failure_retries_same_immutable_request():
     assert result["status"] == "complete"
     assert result["payload"]["retry_count"] == 1
     assert calls[0] == calls[1]
+    assert len(delays) == 1
+    assert delays[0] >= 1
 
 
 @pytest.mark.parametrize(
@@ -113,6 +122,35 @@ def test_default_live_transport_fails_closed_without_credentials(
         adapter.assess(request)
 
 
+def test_google_api_key_is_sent_in_header_not_url(monkeypatch):
+    seen = []
+
+    def urlopen(request, timeout):
+        seen.append(request)
+        return io.BytesIO(json.dumps({
+            "modelVersion": "gemini-3.5-flash",
+            "candidates": [{
+                "content": {"parts": [{"text": "[]"}]},
+            }],
+        }).encode())
+
+    monkeypatch.setenv("GOOGLE_API_KEY", "secret-key")
+    monkeypatch.setattr("urllib.request.urlopen", urlopen)
+    _gemini_transport({
+        "model": "gemini-3.5-flash",
+        "system_instruction": "review",
+        "contents": [],
+        "generation_config": {
+            "response_mime_type": "application/json",
+            "response_json_schema": {"type": "array"},
+            "thinking_config": {"thinking_level": "high"},
+            "max_output_tokens": 100,
+        },
+    })
+    assert "secret-key" not in seen[0].full_url
+    assert seen[0].get_header("X-goog-api-key") == "secret-key"
+
+
 def test_graph_context_is_bounded_hashed_and_ontology_grounded():
     from rdflib import Graph, Literal, URIRef
     from rdflib.namespace import RDFS, SKOS
@@ -122,6 +160,10 @@ def test_graph_context_is_bounded_hashed_and_ontology_grounded():
     parent = URIRef("https://example.test/P")
     sibling = URIRef("https://example.test/S")
     graph.add((concept, SKOS.prefLabel, Literal("Appeal", lang="en")))
+    graph.add((
+        concept, SKOS.definition,
+        Literal("A review by a higher court.", lang="en"),
+    ))
     graph.add((concept, RDFS.subClassOf, parent))
     graph.add((parent, SKOS.prefLabel, Literal("Procedure", lang="en")))
     graph.add((sibling, RDFS.subClassOf, parent))
@@ -140,6 +182,11 @@ def test_graph_context_is_bounded_hashed_and_ontology_grounded():
     record["context"] = first
     assert json.loads(canonical_json(record))["context"]["concept_label"] == "Appeal"
     assert first["concept_label"] == "Appeal"
+    assert first["concept_definition"] == {
+        "predicate": str(SKOS.definition),
+        "language": "en",
+        "lexical": "A review by a higher court.",
+    }
     assert first["ancestors"] == ["Procedure"]
     assert first["siblings"] == ["Review"]
     assert len(first["context_hash"]) == 64

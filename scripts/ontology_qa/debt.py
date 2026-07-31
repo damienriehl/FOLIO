@@ -63,6 +63,49 @@ def validate_debt_targets(
     return matched
 
 
+def unresolved_debt_ids(
+    ontology_path: str | Path, entries: list[dict[str, Any]]
+) -> set[str]:
+    graph = Graph().parse(ontology_path, format="xml")
+    present = {
+        (
+            str(subject), str(predicate), value.language,
+            str(value.datatype) if value.datatype else None,
+            AnnotationValue(
+                str(subject), str(predicate), str(value),
+                language=value.language,
+                datatype=str(value.datatype) if value.datatype else None,
+            ).value_hash,
+        )
+        for subject, predicate, value in graph
+        if isinstance(subject, URIRef) and isinstance(value, Literal)
+    }
+    return {
+        entry["debt_id"] for entry in entries
+        if entry.get("state") == "open"
+        and (
+            entry["subject"], entry["predicate"], entry.get("language"),
+            entry.get("datatype"), entry["current_hash"],
+        ) in present
+    }
+
+
+def closed_debt(
+    baseline_path: str | Path,
+    candidate_path: str | Path,
+    entries: list[dict[str, Any]],
+) -> tuple[list[str], set[str]]:
+    closed = sorted(
+        unresolved_debt_ids(baseline_path, entries)
+        - unresolved_debt_ids(candidate_path, entries)
+    )
+    roots = {
+        debt_root_id(entry)
+        for entry in entries if entry["debt_id"] in closed
+    }
+    return closed, roots
+
+
 def publish_migration_receipt(
     destination: str | Path,
     *,

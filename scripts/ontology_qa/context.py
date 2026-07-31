@@ -14,6 +14,8 @@ def build_context(
     record: dict[str, Any],
     *,
     concept_label: str,
+    source_annotation: dict[str, Any] | None,
+    concept_definition: dict[str, Any] | None,
     ancestors: list[str],
     siblings: list[str],
     risk_evidence: list[dict[str, Any]],
@@ -25,6 +27,8 @@ def build_context(
             key: value for key, value in record.items() if key != "context"
         },
         "concept_label": concept_label,
+        "source_annotation": source_annotation,
+        "concept_definition": concept_definition,
         "ancestors": sorted(set(ancestors))[:maximum_items],
         "siblings": sorted(set(siblings))[:maximum_items],
         "risk_evidence": risk_evidence[:maximum_items],
@@ -88,6 +92,36 @@ def build_graph_context(
         key=str,
     )
     concept_labels = labels(subject)
+    target_literal = value.get("lexical")
+
+    def annotation_values(predicate: URIRef) -> list[dict[str, Any]]:
+        return sorted(
+            [
+                {
+                    "predicate": str(predicate),
+                    "language": literal.language,
+                    "lexical": str(literal),
+                }
+                for literal in graph.objects(subject, predicate)
+                if isinstance(literal, Literal)
+            ],
+            key=lambda item: (
+                0 if (item["language"] or "").lower() in {"en", ""} else 1,
+                item["language"] or "",
+                item["lexical"],
+            ),
+        )
+
+    source_candidates = [
+        item
+        for item in annotation_values(URIRef(value["predicate"]))
+        if item["lexical"] != target_literal
+        and (item["language"] or "").lower() in {"en", ""}
+    ]
+    definitions = [
+        item for item in annotation_values(SKOS.definition)
+        if (item["language"] or "").lower() in {"en", "en-us", ""}
+    ]
     ancestors = [
         label
         for node in ancestor_nodes
@@ -110,6 +144,10 @@ def build_graph_context(
     return build_context(
         record,
         concept_label=concept_labels[0] if concept_labels else str(subject),
+        source_annotation=(
+            source_candidates[0] if len(source_candidates) == 1 else None
+        ),
+        concept_definition=definitions[0] if definitions else None,
         ancestors=ancestors,
         siblings=siblings,
         risk_evidence=relevant_risks,

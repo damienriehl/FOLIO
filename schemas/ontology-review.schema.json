@@ -39,7 +39,13 @@
     },
     {
       "if": {"properties": {"verdict": {"const": "pass"}}},
-      "then": {"properties": {"proposed_replacement": {"type": "null"}}}
+      "then": {
+        "properties": {
+          "proposed_replacement": {"type": "null"},
+          "evidence_spans": {"minItems": 1},
+          "preserved_propositions": {"minItems": 1}
+        }
+      }
     }
   ]
 }

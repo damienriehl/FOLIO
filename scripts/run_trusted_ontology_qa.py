@@ -20,7 +20,9 @@ from rdflib.namespace import RDFS, SKOS
 from ontology_qa.delta import build_hydration_manifest
 from ontology_qa.context import build_graph_context
 from ontology_qa.correction_evidence import verify_correction_lineage
-from ontology_qa.debt import debt_root_id
+from ontology_qa.debt import (
+    closed_debt, load_debt, unresolved_debt_ids,
+)
 from ontology_qa.evals import (
     corpus_identity, evaluate_predictions, load_cases, load_model_policy,
     load_slice_controls,
@@ -29,7 +31,9 @@ from ontology_qa.execution import (
     BudgetExceeded, ImmutableReviewCache, ReviewBudget, ReviewExecutor,
     request_identity,
 )
-from ontology_qa.providers.base import ProviderError, ReviewRequest
+from ontology_qa.providers.base import (
+    ProviderError, ReviewRequest, wait_before_retry,
+)
 from ontology_qa.providers.google import GoogleAdapter
 from ontology_qa.providers.openai import OpenAIAdapter
 from ontology_qa.qualification import create_qualification, validate_role_separation
@@ -145,22 +149,45 @@ def _call(
             records=tuple(batch), schema=request_schema,
             context_hash=content_hash(canonical_json(batch)),
         )
+        expected = sorted(item["record_id"] for item in batch)
+
+        def validate_receipt(receipt) -> None:
+            records_by_id = {
+                item["record_id"]: item for item in batch
+            }
+            for response in receipt.responses:
+                validator.validate(response)
+                supplied = canonical_json(
+                    records_by_id.get(response["record_id"], {})
+                ).decode("utf-8")
+                if any(
+                    span["quote"] not in supplied
+                    for span in response["evidence_spans"]
+                ):
+                    raise ValueError(
+                        "provider evidence is not grounded in request input"
+                    )
+            actual = sorted(
+                item["record_id"] for item in receipt.responses
+            )
+            if expected != actual or len(actual) != len(set(actual)):
+                raise ValueError(
+                    "provider response IDs do not exactly match request"
+                )
+
         receipt = None
         for attempt in range(3):
             try:
-                receipt = executor.assess(adapter, request)
+                receipt = executor.assess(
+                    adapter, request, validator=validate_receipt
+                )
                 break
             except ProviderError as exc:
                 if not exc.transient or attempt == 2:
                     raise
+                wait_before_retry(exc, attempt)
         if receipt is None:
             raise ValueError("provider returned no receipt")
-        for response in receipt.responses:
-            validator.validate(response)
-        expected = sorted(item["record_id"] for item in batch)
-        actual = sorted(item["record_id"] for item in receipt.responses)
-        if expected != actual or len(actual) != len(set(actual)):
-            raise ValueError("provider response IDs do not exactly match request")
         responses.extend(receipt.responses)
     return responses
 
@@ -346,13 +373,10 @@ def _census_artifact(baseline: Path, candidate: Path, manifest, run_id, attempt_
 
 
 def _legacy_records(
-    candidate: Path,
+    graph: Graph,
     changed_ids: set[str],
-    *,
-    risk_evidence: list[dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
     records = []
-    graph = Graph().parse(candidate, format="xml")
     for subject, predicate, value in graph:
         if predicate not in TARGET_PREDICATES or not isinstance(subject, URIRef) or not isinstance(value, Literal):
             continue
@@ -379,58 +403,22 @@ def _legacy_records(
                 "lexical": str(value),
             },
         }
-        raw_record["context"] = build_graph_context(
-            graph, raw_record, risk_evidence=risk_evidence or []
-        )
         records.append(raw_record)
     return sorted(records, key=lambda item: item["record_id"])
 
 
 def _unresolved_confirmed_debt(candidate: Path) -> list[str]:
-    debt = json.loads(
-        (ROOT / "qa/ontology/confirmed-defects.json").read_text(encoding="utf-8")
-    )
-    graph = Graph().parse(candidate, format="xml")
-    present = {
-        (
-            str(subject), str(predicate), value.language,
-            str(value.datatype) if value.datatype else None,
-            content_hash(canonical_json({
-                "subject": str(subject), "predicate": str(predicate),
-                "object_kind": "literal", "language": value.language,
-                "datatype": str(value.datatype) if value.datatype else None,
-                "lexical": str(value),
-            })),
-        )
-        for subject, predicate, value in graph
-        if isinstance(subject, URIRef) and isinstance(value, Literal)
-    }
-    unresolved = []
-    for item in debt:
-        identity = (
-            item["subject"], item["predicate"], item.get("language"),
-            item.get("datatype"), item["current_hash"],
-        )
-        if item["state"] == "open" and identity in present:
-            unresolved.append(item["debt_id"])
-    return sorted(unresolved)
+    debt = load_debt(ROOT / "qa/ontology/confirmed-defects.json")
+    return sorted(unresolved_debt_ids(candidate, debt))
 
 
 def _closed_confirmed_debt(
     baseline: Path, candidate: Path
 ) -> tuple[list[str], set[str]]:
-    debt = json.loads(
-        (ROOT / "qa/ontology/confirmed-defects.json").read_text(
-            encoding="utf-8"
-        )
+    return closed_debt(
+        baseline, candidate,
+        load_debt(ROOT / "qa/ontology/confirmed-defects.json"),
     )
-    baseline_open = set(_unresolved_confirmed_debt(baseline))
-    candidate_open = set(_unresolved_confirmed_debt(candidate))
-    closed = sorted(baseline_open - candidate_open)
-    roots = {
-        debt_root_id(item) for item in debt if item["debt_id"] in closed
-    }
-    return closed, roots
 
 
 def _surveillance_results(
@@ -450,6 +438,8 @@ def _surveillance_results(
     model_policy,
     review_policy,
     executor,
+    graph,
+    risk_evidence,
 ) -> dict[str, Any]:
     results: dict[str, dict[str, Any]] = {}
     while True:
@@ -458,7 +448,15 @@ def _surveillance_results(
             for record_id in value["selected_ids"]
         }
         pending = selected - set(results)
-        records = [item for item in legacy if item["record_id"] in pending]
+        records = []
+        for item in legacy:
+            if item["record_id"] not in pending:
+                continue
+            record = dict(item)
+            record["context"] = build_graph_context(
+                graph, record, risk_evidence=risk_evidence
+            )
+            records.append(record)
         if records:
             left = _review_artifact(
                 primary_adapter, records, primary_q, manifest=manifest,
@@ -540,6 +538,21 @@ def _changed_review_records(
         review_record["context"] = build_graph_context(
             graph, review_record, risk_evidence=risk_evidence
         )
+        if (
+            family == "translation"
+            and review_record["context"]["source_annotation"] is None
+        ):
+            raise ValueError(
+                f"translation lacks one unambiguous source annotation: "
+                f"{record['record_id']}"
+            )
+        if (
+            family == "example"
+            and review_record["context"]["concept_definition"] is None
+        ):
+            raise ValueError(
+                f"example lacks a concept definition: {record['record_id']}"
+            )
         records.append(review_record)
     return records
 
@@ -741,9 +754,8 @@ def main() -> int:
         )
 
         legacy = _legacy_records(
-            args.candidate,
+            candidate_graph,
             {item["record_id"] for item in records},
-            risk_evidence=census["payload"]["semantic_review_risks"],
         )
         sample = select_surveillance_sample(legacy, review_policy)
         surveillance_result = _surveillance_results(
@@ -754,6 +766,8 @@ def main() -> int:
             schema=schema, model_policy=model_policy,
             review_policy=review_policy,
             executor=executor,
+            graph=candidate_graph,
+            risk_evidence=census["payload"]["semantic_review_risks"],
         )
         surveillance = artifact_envelope(
             payload=surveillance_result, run_id=run_id, attempt_id=attempt_id,

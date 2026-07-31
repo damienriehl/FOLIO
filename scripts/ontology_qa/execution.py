@@ -6,7 +6,7 @@ import json
 import math
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from .providers.base import ProviderAdapter, ProviderReceipt, ReviewRequest
 from .records import canonical_json, content_hash
@@ -137,7 +137,8 @@ class ReviewExecutor:
         self.cache_hits = 0
 
     def assess(
-        self, adapter: ProviderAdapter, request: ReviewRequest
+        self, adapter: ProviderAdapter, request: ReviewRequest,
+        *, validator: Callable[[ProviderReceipt], None] | None = None,
     ) -> ProviderReceipt:
         cached = self.cache.load(request.request_id)
         if cached is not None:
@@ -147,6 +148,8 @@ class ReviewExecutor:
                 or cached.actual_model != adapter.model
             ):
                 raise ValueError("cached receipt route mismatch")
+            if validator is not None:
+                validator(cached)
             self.cache_hits += 1
             return cached
         input_tokens = max(
@@ -168,5 +171,7 @@ class ReviewExecutor:
             maximum_output_tokens=maximum_output_tokens,
         )
         receipt = adapter.assess(request)
+        if validator is not None:
+            validator(receipt)
         self.cache.publish(receipt)
         return receipt

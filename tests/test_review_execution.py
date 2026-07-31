@@ -83,6 +83,29 @@ def test_budget_exhaustion_fails_before_provider_call(tmp_path):
     assert adapter.calls == 0
 
 
+def test_invalid_receipt_is_not_published_to_authoritative_cache(tmp_path):
+    adapter = Adapter()
+    executor = ReviewExecutor(
+        cache=ImmutableReviewCache(tmp_path), budget=budget()
+    )
+    key = "c" * 64
+
+    def reject_first(receipt):
+        if adapter.calls == 1:
+            raise ValueError("invalid response")
+
+    with pytest.raises(ValueError, match="invalid"):
+        executor.assess(
+            adapter, request(key), validator=reject_first
+        )
+    assert not (tmp_path / f"{key}.json").exists()
+    receipt = executor.assess(
+        adapter, request(key), validator=reject_first
+    )
+    assert receipt.cache_hit is False
+    assert adapter.calls == 2
+
+
 def test_candidate_change_invalidates_request_identity():
     values = dict(
         provider="openai", model="gpt-5.6-sol", reasoning="high",

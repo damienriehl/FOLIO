@@ -172,5 +172,8 @@ class ArtifactBundle:
         data = canonical_json(index) + b"\n"
         if destination.exists() and destination.read_bytes() != data:
             raise FileExistsError("bundle index is append-only")
-        destination.write_bytes(data)
+        if not destination.exists():
+            temporary = self.root / ".index.tmp"
+            temporary.write_bytes(data)
+            temporary.replace(destination)
         return destination
