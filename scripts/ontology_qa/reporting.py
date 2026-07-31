@@ -37,6 +37,7 @@ def build_release_report(
     attempt_id: str,
     policy_hash: str,
     tool_hash: str,
+    correction_lineage: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     for artifact in (manifest, census, primary, independent, surveillance):
         validate_artifact_hash(artifact)
@@ -93,6 +94,7 @@ def build_release_report(
             "record_count": len(manifest_ids),
             "record_states": reconciliation.get("records", {}),
             "stage_hashes": stage_hashes,
+            "correction_lineage": correction_lineage,
             "evidence_summary": {
                 "deterministic_compliance": census_clean,
                 "cross_provider_concordance": provider_complete and states_accepted,

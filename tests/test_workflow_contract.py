@@ -57,6 +57,14 @@ def test_acceptance_is_oidc_signed_and_durably_published():
     assert "ghcr.io/" in workflow
 
 
+def test_confirmed_debt_correction_evidence_is_fetched_as_data():
+    workflow = text(QA)
+    assert "inputs/correction-ledger.json" in workflow
+    assert "inputs/correction-evidence.json" in workflow
+    assert "--correction-ledger" in workflow
+    assert "source_hash inputs/correction-evidence.json" in workflow
+
+
 def test_webprotege_requires_signature_and_offline_replay():
     workflow = text(MERGE)
     verify_at = workflow.index("gh attestation verify")

@@ -19,12 +19,29 @@
     "payload": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["release_decision", "record_count", "record_states", "stage_hashes", "evidence_summary", "claim"],
+      "required": ["release_decision", "record_count", "record_states", "stage_hashes", "correction_lineage", "evidence_summary", "claim"],
       "properties": {
         "release_decision": {"enum": ["merge_gate_passed", "blocked"]},
         "record_count": {"type": "integer", "minimum": 0},
         "record_states": {"type": "object", "additionalProperties": {"type": "string"}},
         "stage_hashes": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+        "correction_lineage": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["correction_count", "ledger_hash", "evidence_hash", "source_hash", "candidate_hash"],
+              "properties": {
+                "correction_count": {"type": "integer", "minimum": 1},
+                "ledger_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+                "evidence_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+                "source_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+                "candidate_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+              }
+            }
+          ]
+        },
         "evidence_summary": {
           "type": "object",
           "required": ["deterministic_compliance", "cross_provider_concordance", "eval_qualification", "legacy_surveillance", "residual_model_risk"],

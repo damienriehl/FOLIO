@@ -94,6 +94,11 @@ jobs:
           test "$(gh api "repos/$GITHUB_REPOSITORY/commits/$BASELINE_SHA" --jq .sha)" = "$BASELINE_SHA"
           gh api "repos/$CANDIDATE_REPOSITORY/contents/FOLIO.owl?ref=$REVIEWED_SHA" --jq .content | base64 -d > inputs/candidate.owl
           gh api "repos/$GITHUB_REPOSITORY/contents/FOLIO.owl?ref=$BASELINE_SHA" --jq .content | base64 -d > inputs/baseline.owl
+          CORRECTION_ROOT=qa/ontology/releases
+          if gh api "repos/$CANDIDATE_REPOSITORY/contents/$CORRECTION_ROOT/confirmed-defect-correction-evidence.json?ref=$REVIEWED_SHA" --jq .content > correction-evidence.b64 2>/dev/null; then
+            base64 -d correction-evidence.b64 > inputs/correction-evidence.json
+            gh api "repos/$CANDIDATE_REPOSITORY/contents/$CORRECTION_ROOT/confirmed-defect-correction-ledger.json?ref=$REVIEWED_SHA" --jq .content | base64 -d > inputs/correction-ledger.json
+          fi
           test "$(git -C trusted-runner rev-parse HEAD)" = "$(gh api "repos/$GITHUB_REPOSITORY/commits/${{ github.event.repository.default_branch }}" --jq .sha)"
 
       - uses: actions/setup-python@v5
@@ -113,12 +118,21 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: |
+          CORRECTION_ARGS=()
+          if [ -f inputs/correction-evidence.json ] && \
+             [ "$(jq -r .source_hash inputs/correction-evidence.json)" = "$(sha256sum inputs/baseline.owl | cut -d' ' -f1)" ]; then
+            CORRECTION_ARGS=(
+              --correction-ledger inputs/correction-ledger.json
+              --correction-evidence inputs/correction-evidence.json
+            )
+          fi
           python trusted-runner/scripts/run_trusted_ontology_qa.py \
             --baseline inputs/baseline.owl \
             --candidate inputs/candidate.owl \
             --reviewed-sha "$REVIEWED_SHA" \
             --bundle evidence \
-            --cache .ontology-qa-cache
+            --cache .ontology-qa-cache \
+            "${CORRECTION_ARGS[@]}"
 
       - name: Fence stale completion
         run: |

@@ -10,6 +10,7 @@ from jsonschema import Draft202012Validator
 import yaml
 
 from .evals import corpus_identity
+from .correction_evidence import verify_correction_lineage
 from .reconcile import reconcile
 from .records import canonical_json, content_hash
 from .reporting import validate_artifact_hash, validate_qualification_hash
@@ -141,6 +142,22 @@ def replay_bundle(bundle_path: str | Path, *, report_schema_path: str | Path) ->
             raise ValueError("tool manifest hash mismatch")
     else:
         minimum_confidence = 0.9
+
+    correction_lineage = report["payload"].get("correction_lineage")
+    if correction_lineage is not None:
+        replayed_lineage = verify_correction_lineage(
+            source_path=root / "baseline.owl",
+            candidate_path=root / "candidate.owl",
+            ledger_path=root / "correction-ledger.json",
+            evidence_path=root / "correction-evidence.json",
+            schema_path=(
+                Path(report_schema_path).parent
+                / "ontology-correction.schema.json"
+            ),
+            minimum_confidence=minimum_confidence,
+        )
+        if replayed_lineage != correction_lineage:
+            raise ValueError("correction lineage differs from release report")
 
     reconstructed = reconcile(
         sorted(manifest_ids), artifacts["primary"], artifacts["independent"],

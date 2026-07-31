@@ -19,6 +19,8 @@ from rdflib.namespace import RDFS, SKOS
 
 from ontology_qa.delta import build_hydration_manifest
 from ontology_qa.context import build_graph_context
+from ontology_qa.correction_evidence import verify_correction_lineage
+from ontology_qa.debt import debt_root_id
 from ontology_qa.evals import (
     corpus_identity, evaluate_predictions, load_cases, load_model_policy,
     load_slice_controls,
@@ -414,6 +416,23 @@ def _unresolved_confirmed_debt(candidate: Path) -> list[str]:
     return sorted(unresolved)
 
 
+def _closed_confirmed_debt(
+    baseline: Path, candidate: Path
+) -> tuple[list[str], set[str]]:
+    debt = json.loads(
+        (ROOT / "qa/ontology/confirmed-defects.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    baseline_open = set(_unresolved_confirmed_debt(baseline))
+    candidate_open = set(_unresolved_confirmed_debt(candidate))
+    closed = sorted(baseline_open - candidate_open)
+    roots = {
+        debt_root_id(item) for item in debt if item["debt_id"] in closed
+    }
+    return closed, roots
+
+
 def _surveillance_results(
     *,
     sample: dict[str, Any],
@@ -532,6 +551,8 @@ def main() -> int:
     parser.add_argument("--reviewed-sha", required=True)
     parser.add_argument("--bundle", required=True, type=Path)
     parser.add_argument("--cache", type=Path, default=Path(".ontology-qa-cache"))
+    parser.add_argument("--correction-ledger", type=Path)
+    parser.add_argument("--correction-evidence", type=Path)
     args = parser.parse_args()
     if not re.fullmatch(r"[0-9a-f]{40}", args.reviewed_sha):
         print("trusted ontology QA failed: reviewed SHA is not immutable", file=sys.stderr)
@@ -605,6 +626,51 @@ def main() -> int:
         if unresolved_debt:
             raise ValueError(
                 f"candidate retains {len(unresolved_debt)} confirmed open defects"
+            )
+        closed_debt, closed_roots = _closed_confirmed_debt(
+            args.baseline, args.candidate
+        )
+        correction_lineage = None
+        supplied_correction_artifacts = (
+            args.correction_ledger is not None
+            or args.correction_evidence is not None
+        )
+        if closed_debt and not (
+            args.correction_ledger and args.correction_evidence
+        ):
+            raise ValueError(
+                "candidate closes confirmed debt without correction evidence"
+            )
+        if supplied_correction_artifacts:
+            if not (args.correction_ledger and args.correction_evidence):
+                raise ValueError(
+                    "correction ledger and evidence must be supplied together"
+                )
+            correction_lineage = verify_correction_lineage(
+                source_path=args.baseline,
+                candidate_path=args.candidate,
+                ledger_path=args.correction_ledger,
+                evidence_path=args.correction_evidence,
+                schema_path=ROOT / "schemas/ontology-correction.schema.json",
+                minimum_confidence=float(
+                    model_policy["minimum_confidence"]
+                ),
+            )
+            ledger_roots = {
+                item["root_record_id"]
+                for item in json.loads(
+                    args.correction_ledger.read_text(encoding="utf-8")
+                )
+            }
+            if ledger_roots != closed_roots:
+                raise ValueError(
+                    "correction ledger roots differ from closed confirmed debt"
+                )
+            bundle.snapshot(
+                "correction-ledger.json", args.correction_ledger
+            )
+            bundle.snapshot(
+                "correction-evidence.json", args.correction_evidence
             )
 
         maximum_output = int(operations["maximum_output_tokens_per_request"])
@@ -705,6 +771,7 @@ def main() -> int:
             reconciliation=reconciliation, surveillance=surveillance,
             run_id=run_id, attempt_id=attempt_id,
             policy_hash=policy_hash, tool_hash=tool_hash,
+            correction_lineage=correction_lineage,
         )
         for name, artifact in (
             ("manifest", manifest), ("census", census), ("primary", primary),
