@@ -13,6 +13,15 @@ def text(path):
     return path.read_text(encoding="utf-8")
 
 
+def steps(path, job):
+    workflow = yaml.safe_load(text(path))
+    return {
+        step["name"]: step
+        for step in workflow["jobs"][job]["steps"]
+        if "name" in step
+    }
+
+
 def test_pr_path_has_no_secret_bearing_model_step():
     workflow = text(QA)
     assert "pull_request_target" not in workflow
@@ -65,6 +74,66 @@ def test_confirmed_debt_correction_evidence_is_generated_by_protected_runner():
     assert "run_confirmed_defect_corrections.py" in workflow
     assert "cmp inputs/generated-candidate.owl inputs/candidate.owl" in workflow
     assert "contents/$CORRECTION_ROOT" not in workflow
+
+
+def test_changed_record_correction_is_committed_and_rereviewed_at_fresh_sha():
+    workflow = text(QA)
+    assert "--corrected-output inputs/generated-correction/corrected.owl" in workflow
+    assert "ontology-correction-${{ inputs.reviewed_sha }}" in workflow
+    assert "git -C candidate-checkout add FOLIO.owl" in workflow
+    assert 'push origin "HEAD:$HEAD_REF"' in workflow
+    assert 'head_sha="$REVIEWED_SHA"' in workflow
+    assert "-f conclusion=failure" in workflow
+    assert 'test "$CANDIDATE_REPOSITORY" = "$GITHUB_REPOSITORY"' in workflow
+
+
+def test_fresh_review_restores_and_verifies_correction_lineage():
+    workflow = text(QA)
+    assert "correction_run_id:" in workflow
+    assert "gh run download" in workflow
+    assert ".github/workflows/ontology-hydration-qa.yml" in workflow
+    assert 'jq -r .event inputs/correction-run.json' in workflow
+    assert "'.parents[0].sha'" in workflow
+    assert "--correction-source inputs/correction-source.owl" in workflow
+    assert "--correction-ledger inputs/correction-ledger.json" in workflow
+    assert "--correction-evidence inputs/correction-evidence.json" in workflow
+    trigger = text(TRIGGER)
+    assert "correction_commit" in trigger
+    assert "apply verified QA corrections" in trigger
+    assert "actions/artifacts?name=ontology-correction-$CORRECTION_SOURCE_SHA" in trigger
+    assert 'correction_run_id="${{ steps.endpoints.outputs.correction_run_id }}"' in trigger
+    assert 'correction_source_sha="${{ steps.endpoints.outputs.correction_source_sha }}"' in trigger
+
+
+def test_correction_and_acceptance_steps_have_opposite_guards():
+    trusted = steps(QA, "trusted-model-review")
+    correction_guard = "steps.qa.outputs.correction_ready == 'true'"
+    acceptance_guard = "steps.qa.outputs.correction_ready != 'true'"
+    for name in (
+        "Upload verified correction lineage",
+        "Checkout reviewed branch for verified correction",
+        "Commit verified ontology bytes for fresh review",
+    ):
+        assert trusted[name]["if"] == correction_guard
+    for name in (
+        "Fence stale completion",
+        "Publish durable evidence bundle",
+        "Push durable evidence bundle",
+        "Create acceptance predicate",
+        "Sign acceptance with GitHub OIDC",
+    ):
+        assert trusted[name]["if"] == acceptance_guard
+    assert acceptance_guard in trusted["Publish stable required check"]["if"]
+
+
+def test_trigger_dispatches_correction_commit_with_lineage_inputs():
+    trigger = steps(TRIGGER, "dispatch-trusted-review")
+    dispatch = trigger["Dispatch protected model-bearing workflow"]
+    assert dispatch["if"] == "steps.endpoints.outputs.ontology_changed == 'true'"
+    command = dispatch["run"]
+    assert "CORRECTION_ARGS" in command
+    assert "correction_run_id=" in command
+    assert "correction_source_sha=" in command
 
 
 def test_webprotege_requires_signature_and_offline_replay():

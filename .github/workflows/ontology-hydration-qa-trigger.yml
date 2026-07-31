@@ -28,7 +28,23 @@ jobs:
           gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" > pr.json
           test "$(jq -r .head.sha pr.json)" = "${{ github.event.workflow_run.head_sha }}"
           ONTOLOGY_CHANGED="$(gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files" --jq 'any(.[][]; .filename == "FOLIO.owl")')"
+          CORRECTION_COMMIT=false
+          CORRECTION_RUN_ID=""
+          CORRECTION_SOURCE_SHA=""
+          if [ "$ONTOLOGY_CHANGED" = true ]; then
+            gh api "repos/$GITHUB_REPOSITORY/commits/${{ github.event.workflow_run.head_sha }}" > commit.json
+            COMMIT_MESSAGE="$(jq -r .commit.message commit.json)"
+            if [ "$COMMIT_MESSAGE" = "fix(ontology): apply verified QA corrections" ]; then
+              CORRECTION_COMMIT=true
+              CORRECTION_SOURCE_SHA="$(jq -r '.parents[0].sha' commit.json)"
+              CORRECTION_RUN_ID="$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?name=ontology-correction-$CORRECTION_SOURCE_SHA" --jq '.artifacts | map(select(.expired == false)) | max_by(.created_at) | .workflow_run.id // empty')"
+              test -n "$CORRECTION_RUN_ID"
+            fi
+          fi
           echo "ontology_changed=$ONTOLOGY_CHANGED" >> "$GITHUB_OUTPUT"
+          echo "correction_commit=$CORRECTION_COMMIT" >> "$GITHUB_OUTPUT"
+          echo "correction_run_id=$CORRECTION_RUN_ID" >> "$GITHUB_OUTPUT"
+          echo "correction_source_sha=$CORRECTION_SOURCE_SHA" >> "$GITHUB_OUTPUT"
           echo "pull_request_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
           echo "reviewed_sha=${{ github.event.workflow_run.head_sha }}" >> "$GITHUB_OUTPUT"
           echo "baseline_sha=$(jq -r .base.sha pr.json)" >> "$GITHUB_OUTPUT"
@@ -39,9 +55,17 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          CORRECTION_ARGS=()
+          if [ "${{ steps.endpoints.outputs.correction_commit }}" = true ]; then
+            CORRECTION_ARGS=(
+              -f correction_run_id="${{ steps.endpoints.outputs.correction_run_id }}"
+              -f correction_source_sha="${{ steps.endpoints.outputs.correction_source_sha }}"
+            )
+          fi
           gh workflow run ontology-hydration-qa.yml \
             --ref "${{ github.event.repository.default_branch }}" \
             -f pull_request_number="${{ steps.endpoints.outputs.pull_request_number }}" \
             -f reviewed_sha="${{ steps.endpoints.outputs.reviewed_sha }}" \
             -f baseline_sha="${{ steps.endpoints.outputs.baseline_sha }}" \
-            -f candidate_repository="${{ steps.endpoints.outputs.candidate_repository }}"
+            -f candidate_repository="${{ steps.endpoints.outputs.candidate_repository }}" \
+            "${CORRECTION_ARGS[@]}"

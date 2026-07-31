@@ -10,6 +10,7 @@ import re
 import sys
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import Any
 
 import yaml
@@ -19,7 +20,10 @@ from rdflib.namespace import RDFS, SKOS
 
 from ontology_qa.delta import build_hydration_manifest
 from ontology_qa.context import build_graph_context
-from ontology_qa.correction_pipeline import correction_response_schema
+from ontology_qa.correction_pipeline import (
+    converge_correction, correction_response_schema,
+)
+from ontology_qa.corrections import apply_correction_batch
 from ontology_qa.correction_evidence import verify_correction_lineage
 from ontology_qa.debt import (
     closed_debt, load_debt, unresolved_debt_ids,
@@ -645,6 +649,232 @@ def _changed_review_records(
     return records
 
 
+def _run_changed_record_corrections(
+    *,
+    records: list[dict[str, Any]],
+    primary: dict[str, Any],
+    independent: dict[str, Any],
+    candidate: Path,
+    corrected_output: Path,
+    ledger_output: Path,
+    evidence_output: Path,
+    adapters: dict[str, Any],
+    qualifications: dict[str, dict[str, Any]],
+    executor: ReviewExecutor,
+    schema: dict[str, Any],
+    model_policy: dict[str, Any],
+    policy_hash: str,
+    batch_size: int,
+) -> dict[str, Any]:
+    """Generate one protected, fully verified correction batch."""
+    outputs = (corrected_output, ledger_output, evidence_output)
+    if len({path.resolve() for path in outputs}) != len(outputs):
+        raise ValueError("correction output paths must be distinct")
+    output_parents = {path.parent.resolve() for path in outputs}
+    if len(output_parents) != 1:
+        raise ValueError(
+            "correction outputs must share one directory for atomic publication"
+        )
+    output_directory = corrected_output.parent
+    if output_directory.exists():
+        raise FileExistsError(
+            f"correction output directory already exists: {output_directory}"
+        )
+    output_directory.parent.mkdir(parents=True, exist_ok=True)
+    pending_directory = TemporaryDirectory(
+        prefix=".ontology-correction-", dir=output_directory.parent
+    )
+    pending_output = Path(pending_directory.name) / corrected_output.name
+    source_hash = content_hash(candidate.read_bytes())
+    proposal_schema = correction_response_schema(schema, role="proposer")
+    verification_schema = correction_response_schema(schema, role="verifier")
+    prompts = _all_prompts()
+    minimum = float(model_policy["minimum_confidence"])
+    response_by_record: dict[str, list[dict[str, Any]]] = {}
+    for artifact in (primary, independent):
+        for response in artifact["payload"]["responses"]:
+            response_by_record.setdefault(response["record_id"], []).append(
+                response
+            )
+    correction_records = []
+    for record in records:
+        responses = response_by_record.get(record["record_id"], [])
+        if len(responses) != 2 or any(
+            response["verdict"] != "defect"
+            or float(response["confidence"]) < minimum
+            for response in responses
+        ):
+            raise ValueError(
+                "changed correction root lacks two defect votes"
+            )
+        correction_records.append({
+            **record,
+            "confirmed_defect": {
+                "classes": sorted({
+                    defect for response in responses
+                    for defect in response["defect_types"]
+                }),
+                "findings": [response["rationale"] for response in responses],
+            },
+        })
+
+    proposer_role = "correction-proposer"
+    verifier_roles = (
+        "correction-verifier-1", "correction-verifier-2",
+    )
+    def make_caller(role, response_schema, prompt_name):
+        def call(item, attempt):
+            return _call(
+                adapters[role],
+                [{**item, "correction_attempt": attempt}],
+                response_schema,
+                prompt=prompts[prompt_name],
+                executor=executor,
+                qualification_hash=qualifications[role][
+                    "qualification_hash"
+                ],
+                policy_hash=policy_hash,
+                candidate_hash=source_hash,
+                batch_size=1,
+            )[0]
+        return call
+
+    proposer = make_caller(
+        proposer_role, proposal_schema, "correction-proposal"
+    )
+    verifiers = [
+        make_caller(role, verification_schema, "correction-verification")
+        for role in verifier_roles
+    ]
+    corrections = []
+    convergences = []
+    for record in correction_records:
+        result = converge_correction(
+            record,
+            proposer=proposer,
+            verifier_1=verifiers[0],
+            verifier_2=verifiers[1],
+            proposer_route=qualifications[proposer_role]["route_id"],
+            verifier_routes=[
+                qualifications[role]["route_id"] for role in verifier_roles
+            ],
+            verifier_qualification_hashes=[
+                qualifications[role]["qualification_hash"]
+                for role in verifier_roles
+            ],
+            minimum_confidence=minimum,
+            maximum_attempts=2,
+        )
+        convergences.append({"record_id": record["record_id"], **result})
+        if result["state"] != "verified":
+            raise ValueError(
+                f"changed correction quarantined: {record['record_id']}"
+            )
+        corrections.append(result["correction"])
+
+    transaction = apply_correction_batch(
+        candidate, pending_output, corrections
+    )
+    validation_kwargs = {
+        "policy_path": ROOT / "qa/ontology/review-policy.yaml",
+        "shapes_path": ROOT / "qa/ontology/shapes.ttl",
+    }
+    validation = compare_validation_results(
+        validate_ontology(candidate, **validation_kwargs),
+        validate_ontology(pending_output, **validation_kwargs),
+    )
+    if validation["failures"]:
+        raise ValueError(
+            "changed corrections introduced deterministic failures"
+        )
+    corrected_hash = content_hash(pending_output.read_bytes())
+    corrected_graph = Graph().parse(pending_output, format="xml")
+    by_root = {item["root_record_id"]: item for item in corrections}
+    corrected_records = []
+    for record in correction_records:
+        correction = by_root[record["record_id"]]
+        updated = {
+            **record,
+            "annotation": correction["replacement"],
+            "after": {
+                **record["after"],
+                "lexical": correction["replacement"],
+            },
+        }
+        updated["context"] = build_graph_context(
+            corrected_graph, updated, risk_evidence=[]
+        )
+        corrected_records.append(updated)
+    rereviews = {}
+    for role in ("production-primary", "production-independent"):
+        responses = []
+        for family in ("definition", "example", "translation"):
+            family_records = [
+                record for record in corrected_records
+                if record["family"] == family
+            ]
+            responses.extend(_call(
+                adapters[role], family_records, schema,
+                prompt=prompts[family], executor=executor,
+                qualification_hash=qualifications[role][
+                    "qualification_hash"
+                ],
+                policy_hash=policy_hash,
+                candidate_hash=corrected_hash,
+                batch_size=batch_size,
+            ))
+        if (
+            {item["record_id"] for item in responses}
+            != {item["record_id"] for item in corrected_records}
+            or len(responses) != len(corrected_records)
+            or any(
+                item["verdict"] != "pass"
+                or float(item["confidence"]) < minimum
+                for item in responses
+            )
+        ):
+            raise ValueError(
+                f"changed corrected candidate failed final rereview: {role}"
+            )
+        rereviews[role] = responses
+    evidence_body = {
+        "schema_version": 1,
+        "source_hash": source_hash,
+        "candidate_hash": corrected_hash,
+        "policy_hash": policy_hash,
+        "prompt_hash": content_hash(canonical_json(prompts)),
+        "qualifications": qualifications,
+        "source_reviews": {
+            "production-primary": primary["payload"]["responses"],
+            "production-independent": independent["payload"]["responses"],
+        },
+        "convergences": convergences,
+        "transaction": transaction,
+        "validation": validation,
+        "rereviews": rereviews,
+        "budget": executor.budget.snapshot(),
+        "cache_hits": executor.cache_hits,
+    }
+    evidence = {
+        "evidence_hash": content_hash(canonical_json(evidence_body)),
+        **evidence_body,
+    }
+    pending_ledger = Path(pending_directory.name) / ledger_output.name
+    pending_evidence = Path(pending_directory.name) / evidence_output.name
+    pending_ledger.write_bytes(canonical_json(corrections) + b"\n")
+    pending_evidence.write_bytes(canonical_json(evidence) + b"\n")
+    Path(pending_directory.name).replace(output_directory)
+    pending_directory.cleanup()
+    return {
+        "status": "correction_ready",
+        "correction_count": len(corrections),
+        "source_hash": source_hash,
+        "candidate_hash": corrected_hash,
+        "ledger_hash": content_hash(canonical_json(corrections)),
+        "evidence_hash": evidence["evidence_hash"],
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--baseline", required=True, type=Path)
@@ -654,9 +884,24 @@ def main() -> int:
     parser.add_argument("--cache", type=Path, default=Path(".ontology-qa-cache"))
     parser.add_argument("--correction-ledger", type=Path)
     parser.add_argument("--correction-evidence", type=Path)
+    parser.add_argument("--correction-source", type=Path)
+    parser.add_argument("--corrected-output", type=Path)
+    parser.add_argument("--generated-correction-ledger", type=Path)
+    parser.add_argument("--generated-correction-evidence", type=Path)
     args = parser.parse_args()
     if not re.fullmatch(r"[0-9a-f]{40}", args.reviewed_sha):
         print("trusted ontology QA failed: reviewed SHA is not immutable", file=sys.stderr)
+        return 1
+    generated_outputs = (
+        args.corrected_output,
+        args.generated_correction_ledger,
+        args.generated_correction_evidence,
+    )
+    if any(generated_outputs) and not all(generated_outputs):
+        print(
+            "trusted ontology QA failed: generated correction outputs must be supplied together",
+            file=sys.stderr,
+        )
         return 1
     run_id = os.environ.get("GITHUB_RUN_ID", "local")
     attempt_id = os.environ.get("GITHUB_RUN_ATTEMPT", "1")
@@ -735,6 +980,7 @@ def main() -> int:
         supplied_correction_artifacts = (
             args.correction_ledger is not None
             or args.correction_evidence is not None
+            or args.correction_source is not None
         )
         if closed_debt and not (
             args.correction_ledger and args.correction_evidence
@@ -743,12 +989,16 @@ def main() -> int:
                 "candidate closes confirmed debt without correction evidence"
             )
         if supplied_correction_artifacts:
-            if not (args.correction_ledger and args.correction_evidence):
+            if not (
+                args.correction_ledger
+                and args.correction_evidence
+                and args.correction_source
+            ):
                 raise ValueError(
-                    "correction ledger and evidence must be supplied together"
+                    "correction source, ledger, and evidence must be supplied together"
                 )
             correction_lineage = verify_correction_lineage(
-                source_path=args.baseline,
+                source_path=args.correction_source,
                 candidate_path=args.candidate,
                 ledger_path=args.correction_ledger,
                 evidence_path=args.correction_evidence,
@@ -778,10 +1028,11 @@ def main() -> int:
                     args.correction_ledger.read_text(encoding="utf-8")
                 )
             }
-            if ledger_roots != closed_roots:
+            if closed_debt and ledger_roots != closed_roots:
                 raise ValueError(
                     "correction ledger roots differ from closed confirmed debt"
                 )
+            bundle.snapshot("correction-source.owl", args.correction_source)
             bundle.snapshot(
                 "correction-ledger.json", args.correction_ledger
             )
@@ -855,7 +1106,37 @@ def main() -> int:
             expected_primary_qualification=primary_q["qualification_hash"],
             expected_independent_qualification=independent_q["qualification_hash"],
         )
-
+        defect_ids = {
+            record_id
+            for record_id, state in reconciliation.get("records", {}).items()
+            if state == "defect_confirmed"
+        }
+        if defect_ids:
+            if not all(generated_outputs):
+                raise ValueError(
+                    "confirmed changed-record defects require protected correction outputs"
+                )
+            result = _run_changed_record_corrections(
+                records=[
+                    record for record in records
+                    if record["record_id"] in defect_ids
+                ],
+                primary=primary,
+                independent=independent,
+                candidate=args.candidate,
+                corrected_output=args.corrected_output,
+                ledger_output=args.generated_correction_ledger,
+                evidence_output=args.generated_correction_evidence,
+                adapters=adapters,
+                qualifications=qualifications,
+                executor=executor,
+                schema=schema,
+                model_policy=model_policy,
+                policy_hash=policy_hash,
+                batch_size=int(operations["batch_size"]),
+            )
+            print(json.dumps(result, sort_keys=True))
+            return 2
         legacy = build_legacy_records(
             candidate_graph,
             {

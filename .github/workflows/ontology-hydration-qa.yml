@@ -28,6 +28,16 @@ on:
         required: false
         default: ""
         type: string
+      correction_run_id:
+        description: Prior trusted run containing verified changed-record correction lineage
+        required: false
+        default: ""
+        type: string
+      correction_source_sha:
+        description: Superseded candidate SHA corrected by correction_run_id
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: read
@@ -71,11 +81,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: ontology-qa
     permissions:
-      actions: read
+      actions: write
       artifact-metadata: write
       attestations: write
       checks: write
-      contents: read
+      contents: write
       id-token: write
       packages: write
     env:
@@ -99,6 +109,7 @@ jobs:
           test "$(jq -r .head.sha inputs/pr.json)" = "$REVIEWED_SHA"
           test "$(jq -r .base.sha inputs/pr.json)" = "$BASELINE_SHA"
           test "$(jq -r .head.repo.full_name inputs/pr.json)" = "$CANDIDATE_REPOSITORY"
+          test "$CANDIDATE_REPOSITORY" = "$GITHUB_REPOSITORY"
           test "$REVIEWED_SHA" != "$BASELINE_SHA"
           test "$(gh api "repos/$CANDIDATE_REPOSITORY/commits/$REVIEWED_SHA" --jq .sha)" = "$REVIEWED_SHA"
           test "$(gh api "repos/$GITHUB_REPOSITORY/commits/$BASELINE_SHA" --jq .sha)" = "$BASELINE_SHA"
@@ -118,18 +129,44 @@ jobs:
           path: .ontology-qa-cache
           key: ontology-qa-${{ hashFiles('trusted-runner/qa/ontology/model-policy.yaml', 'trusted-runner/qa/ontology/evals/**', 'trusted-runner/qa/ontology/prompts/**', 'trusted-runner/schemas/ontology-review.schema.json') }}
 
+      - name: Restore prior changed-record correction lineage
+        if: inputs.correction_run_id != ''
+        run: |
+          test -n "${{ inputs.correction_source_sha }}"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/${{ inputs.correction_run_id }}" > inputs/correction-run.json
+          test "$(jq -r .path inputs/correction-run.json)" = ".github/workflows/ontology-hydration-qa.yml"
+          test "$(jq -r .event inputs/correction-run.json)" = "workflow_dispatch"
+          test "$(jq -r .head_branch inputs/correction-run.json)" = "${{ github.event.repository.default_branch }}"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/commits/$REVIEWED_SHA" --jq '.parents[0].sha')" = \
+            "${{ inputs.correction_source_sha }}"
+          gh run download "${{ inputs.correction_run_id }}" \
+            --repo "$GITHUB_REPOSITORY" \
+            --name "ontology-correction-${{ inputs.correction_source_sha }}" \
+            --dir inputs
+          test "$(sha256sum inputs/corrected.owl | cut -d' ' -f1)" = \
+            "$(sha256sum inputs/candidate.owl | cut -d' ' -f1)"
+
       - name: Run trusted model QA
+        id: qa
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: |
           CORRECTION_ARGS=()
+          if [ -n "${{ inputs.correction_run_id }}" ]; then
+            CORRECTION_ARGS=(
+              --correction-source inputs/correction-source.owl
+              --correction-ledger inputs/correction-ledger.json
+              --correction-evidence inputs/correction-evidence.json
+            )
+          fi
           python trusted-runner/scripts/detect_confirmed_debt_closure.py \
             --baseline inputs/baseline.owl \
             --candidate inputs/candidate.owl \
             --debt trusted-runner/qa/ontology/confirmed-defects.json \
             > inputs/debt-closure.json
-          if [ "$(jq -r .closed_count inputs/debt-closure.json)" -gt 0 ]; then
+          if [ "$(jq -r .closed_count inputs/debt-closure.json)" -gt 0 ] && \
+             [ -z "${{ inputs.correction_run_id }}" ]; then
             python trusted-runner/scripts/run_confirmed_defect_corrections.py \
               --source inputs/baseline.owl \
               --output inputs/generated-candidate.owl \
@@ -137,28 +174,83 @@ jobs:
               --evidence inputs/correction-evidence.json \
               --cache .ontology-qa-cache
             cmp inputs/generated-candidate.owl inputs/candidate.owl
-            CORRECTION_ARGS=(
+            CORRECTION_ARGS+=(
+              --correction-source inputs/baseline.owl
               --correction-ledger inputs/correction-ledger.json
               --correction-evidence inputs/correction-evidence.json
             )
           fi
+          set +e
           python trusted-runner/scripts/run_trusted_ontology_qa.py \
             --baseline inputs/baseline.owl \
             --candidate inputs/candidate.owl \
             --reviewed-sha "$REVIEWED_SHA" \
             --bundle evidence \
             --cache .ontology-qa-cache \
+            --corrected-output inputs/generated-correction/corrected.owl \
+            --generated-correction-ledger inputs/generated-correction/correction-ledger.json \
+            --generated-correction-evidence inputs/generated-correction/correction-evidence.json \
             "${CORRECTION_ARGS[@]}"
+          QA_STATUS=$?
+          set -e
+          if [ "$QA_STATUS" -eq 2 ]; then
+            cp inputs/candidate.owl inputs/correction-source.owl
+            mv inputs/generated-correction/corrected.owl inputs/corrected.owl
+            mv inputs/generated-correction/correction-ledger.json inputs/correction-ledger.json
+            mv inputs/generated-correction/correction-evidence.json inputs/correction-evidence.json
+            echo "correction_ready=true" >> "$GITHUB_OUTPUT"
+          else
+            test "$QA_STATUS" -eq 0
+            echo "correction_ready=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload verified correction lineage
+        if: steps.qa.outputs.correction_ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ontology-correction-${{ inputs.reviewed_sha }}
+          path: |
+            inputs/correction-source.owl
+            inputs/corrected.owl
+            inputs/correction-ledger.json
+            inputs/correction-evidence.json
+          if-no-files-found: error
+
+      - name: Checkout reviewed branch for verified correction
+        if: steps.qa.outputs.correction_ready == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ inputs.reviewed_sha }}
+          path: candidate-checkout
+          fetch-depth: 0
+
+      - name: Commit verified ontology bytes for fresh review
+        if: steps.qa.outputs.correction_ready == 'true'
+        run: |
+          HEAD_REF="$(jq -r .head.ref inputs/pr.json)"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PULL_REQUEST_NUMBER" --jq .head.sha)" = "$REVIEWED_SHA"
+          cp inputs/corrected.owl candidate-checkout/FOLIO.owl
+          git -C candidate-checkout add FOLIO.owl
+          git -C candidate-checkout -c user.name=github-actions -c 'user.email=41898282+github-actions[bot]@users.noreply.github.com' \
+            commit -m "fix(ontology): apply verified QA corrections"
+          gh api --method POST "repos/$GITHUB_REPOSITORY/check-runs" \
+            -f name=ontology-hydration-qa -f head_sha="$REVIEWED_SHA" \
+            -f status=completed -f conclusion=failure
+          git -C candidate-checkout push origin "HEAD:$HEAD_REF"
 
       - name: Fence stale completion
+        if: steps.qa.outputs.correction_ready != 'true'
         run: |
           test "$(gh api "repos/$CANDIDATE_REPOSITORY/commits/$REVIEWED_SHA" --jq .sha)" = "$REVIEWED_SHA"
           test "$(sha256sum inputs/candidate.owl | cut -d' ' -f1)" = "$(jq -r .candidate_hash evidence/report.json)"
 
       - name: Publish durable evidence bundle
+        if: steps.qa.outputs.correction_ready != 'true'
         id: evidence
         uses: oras-project/setup-oras@v1
       - name: Push durable evidence bundle
+        if: steps.qa.outputs.correction_ready != 'true'
         id: evidence-push
         run: |
           ONTOLOGY_HASH="$(sha256sum inputs/candidate.owl | cut -d' ' -f1)"
@@ -171,6 +263,7 @@ jobs:
           echo "bundle_digest=$BUNDLE_DIGEST" >> "$GITHUB_OUTPUT"
 
       - name: Create acceptance predicate
+        if: steps.qa.outputs.correction_ready != 'true'
         run: |
           TREE_SHA="$(gh api "repos/$CANDIDATE_REPOSITORY/git/commits/$REVIEWED_SHA" --jq .tree.sha)"
           test "$(git -C trusted-runner rev-parse HEAD)" = "$(gh api "repos/$GITHUB_REPOSITORY/commits/${{ github.event.repository.default_branch }}" --jq .sha)"
@@ -186,6 +279,7 @@ jobs:
             --expires-at "$EXPIRES_AT"
 
       - name: Sign acceptance with GitHub OIDC
+        if: steps.qa.outputs.correction_ready != 'true'
         uses: actions/attest@v4
         with:
           subject-path: inputs/candidate.owl
@@ -193,7 +287,7 @@ jobs:
           predicate-path: acceptance-predicate.json
 
       - name: Publish stable required check
-        if: always()
+        if: always() && steps.qa.outputs.correction_ready != 'true'
         env:
           JOB_STATUS: ${{ job.status }}
         run: |

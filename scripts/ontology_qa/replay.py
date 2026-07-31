@@ -107,6 +107,9 @@ def replay_bundle(bundle_path: str | Path, *, report_schema_path: str | Path) ->
     model_policy_path = root / "model-policy.yaml"
     if model_policy_path.exists():
         review_policy_path = root / "review-policy.yaml"
+        review_policy = yaml.safe_load(
+            review_policy_path.read_text(encoding="utf-8")
+        )
         expected_policy_hash = content_hash(
             model_policy_path.read_bytes() + review_policy_path.read_bytes()
         )
@@ -238,7 +241,11 @@ def replay_bundle(bundle_path: str | Path, *, report_schema_path: str | Path) ->
                 }.items()
             }
         replayed_lineage = verify_correction_lineage(
-            source_path=root / "baseline.owl",
+            source_path=(
+                root / "correction-source.owl"
+                if (root / "correction-source.owl").exists()
+                else root / "baseline.owl"
+            ),
             candidate_path=root / "candidate.owl",
             ledger_path=root / "correction-ledger.json",
             evidence_path=root / "correction-evidence.json",

@@ -58,7 +58,7 @@ def evidence(candidate_hash="c" * 64, state="accepted"):
     return manifest, census, primary, independent, reconciliation, surveillance, primary_qualification, independent_qualification
 
 
-def report_for(parts):
+def report_for(parts, *, correction_lineage=None):
     manifest, census, primary, independent, reconciliation, surveillance, primary_qualification, independent_qualification = parts
     return build_release_report(
         manifest=manifest, census=census, primary=primary,
@@ -67,6 +67,7 @@ def report_for(parts):
         independent_qualification=independent_qualification,
         surveillance=surveillance, run_id="run", attempt_id="report",
         policy_hash="p", tool_hash="t",
+        correction_lineage=correction_lineage,
     )
 
 

@@ -12,6 +12,7 @@ from ontology_qa.records import content_hash
 from ontology_qa.replay import replay_bundle
 from ontology_qa.reporting import ArtifactBundle
 from test_hydration_qa_pipeline import evidence, report_for
+from test_correction_evidence import _fixture as correction_fixture
 
 ROOT = Path(__file__).parents[1]
 SCHEMA = ROOT / "schemas/ontology-qa-report.schema.json"
@@ -98,3 +99,59 @@ def test_cli_replays_complete_bundle(tmp_path):
     )
     assert completed.returncode == 0, completed.stderr
     assert json.loads(completed.stdout)["verified"] is True
+
+
+def test_fresh_sha_bundle_replays_correction_source_lineage(tmp_path):
+    source, candidate, ledger, correction_evidence = correction_fixture(tmp_path)
+    baseline = tmp_path / "baseline.owl"
+    baseline.write_text("<baseline/>", encoding="utf-8")
+    candidate_hash = content_hash(candidate.read_bytes())
+    baseline_hash = content_hash(baseline.read_bytes())
+    parts = evidence(candidate_hash)
+    from ontology_qa.records import artifact_envelope
+    rebound = []
+    for artifact in (parts[0], parts[1], parts[2], parts[3], parts[5]):
+        rebound.append(artifact_envelope(
+            payload=artifact["payload"], run_id=artifact["run_id"],
+            attempt_id=artifact["attempt_id"],
+            parent_hashes=artifact["parent_hashes"],
+            baseline_hash=baseline_hash,
+            candidate_hash=artifact["candidate_hash"],
+            policy_hash=artifact["policy_hash"],
+            tool_hash=artifact["tool_hash"], status=artifact["status"],
+            schema_version=artifact["schema_version"],
+        ))
+    parts = (
+        rebound[0], rebound[1], rebound[2], rebound[3], parts[4],
+        rebound[4], parts[6], parts[7],
+    )
+    from ontology_qa.correction_evidence import verify_correction_lineage
+    lineage = verify_correction_lineage(
+        source_path=source, candidate_path=candidate,
+        ledger_path=ledger, evidence_path=correction_evidence,
+        schema_path=ROOT / "schemas/ontology-correction.schema.json",
+        minimum_confidence=.9,
+    )
+    report = report_for(parts, correction_lineage=lineage)
+    target = tmp_path / "fresh-sha-bundle"
+    store = ArtifactBundle(target)
+    for name, artifact in zip(
+        ("manifest", "census", "primary", "independent", "surveillance"),
+        (parts[0], parts[1], parts[2], parts[3], parts[5]),
+    ):
+        store.publish_json(name, artifact)
+    store.publish_qualification("primary_qualification", parts[6])
+    store.publish_qualification("independent_qualification", parts[7])
+    store.publish_json("report", report)
+    store.snapshot("baseline.owl", baseline)
+    store.snapshot("candidate.owl", candidate)
+    store.snapshot("correction-source.owl", source)
+    store.snapshot("correction-ledger.json", ledger)
+    store.snapshot("correction-evidence.json", correction_evidence)
+    store.publish_index(report)
+
+    assert replay_bundle(target, report_schema_path=SCHEMA)["verified"] is True
+    original = (target / "correction-source.owl").read_bytes()
+    (target / "correction-source.owl").write_bytes(original + b" ")
+    with pytest.raises(ValueError):
+        replay_bundle(target, report_schema_path=SCHEMA)
