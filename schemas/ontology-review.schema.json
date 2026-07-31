@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://folio.openlegalstandard.org/schemas/ontology-review.schema.json",
+  "title": "FOLIO ontology semantic assessment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["record_id", "verdict", "confidence", "defect_types", "evidence_spans", "preserved_propositions", "rationale", "proposed_replacement"],
+  "properties": {
+    "record_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "verdict": {"enum": ["pass", "defect", "abstain"]},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "defect_types": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": ["negation", "modality", "party", "number", "jurisdiction", "concept_substitution", "untranslated", "register", "unsupported_claim", "circular", "prompt_injection", "other"]
+      }
+    },
+    "evidence_spans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source", "quote"],
+        "properties": {
+          "source": {"enum": ["annotation", "source", "context"]},
+          "quote": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "preserved_propositions": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "rationale": {"type": "string", "minLength": 1},
+    "proposed_replacement": {"type": ["string", "null"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"verdict": {"const": "defect"}}},
+      "then": {"properties": {"defect_types": {"minItems": 1}, "evidence_spans": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"verdict": {"const": "pass"}}},
+      "then": {"properties": {"proposed_replacement": {"type": "null"}}}
+    }
+  ]
+}

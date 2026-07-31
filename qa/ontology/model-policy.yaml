@@ -1,0 +1,26 @@
+version: 1
+review_schema: schemas/ontology-review.schema.json
+routes:
+  primary:
+    provider: openai
+    model: gpt-5.6-sol
+    reasoning: high
+  independent:
+    provider: google
+    model: gemini-3.5-flash
+    reasoning: high
+forbidden_providers:
+  - anthropic
+  - claude
+terminal_verdicts:
+  - pass
+  - defect
+  - abstain
+minimum_confidence: 0.90
+minimum_scored_cases_per_slice: 2
+qualification:
+  minimum_accuracy: 0.90
+  minimum_defect_recall: 0.95
+  maximum_false_accept_rate: 0.02
+  require_all_locale_family_slices: true
+  require_repeat_stability: true
