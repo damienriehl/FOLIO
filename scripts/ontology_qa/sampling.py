@@ -8,8 +8,68 @@ from collections import defaultdict
 from statistics import NormalDist
 from typing import Any
 from pathlib import Path
+from rdflib import Graph, Literal, URIRef
+from rdflib.namespace import RDFS, SKOS
 
 from .records import canonical_json, content_hash
+from .validators import TARGET_PREDICATES
+
+FAMILY = {
+    str(SKOS.definition): "definition",
+    str(SKOS.example): "example",
+}
+
+
+def surveillance_record_id(value: dict[str, Any]) -> str:
+    return content_hash(canonical_json({
+        "subject": value["subject"],
+        "predicate": value["predicate"],
+        "lexical": value["lexical"],
+        "locale": (value.get("language") or "en").lower(),
+    }))
+
+
+def build_legacy_records(
+    graph: Graph, changed_ids: set[str]
+) -> list[dict[str, Any]]:
+    """Build the lightweight deterministic surveillance population."""
+    records = []
+    label_predicates = {
+        RDFS.label, SKOS.prefLabel, SKOS.altLabel, SKOS.hiddenLabel,
+    }
+    for subject, predicate, value in graph:
+        if (
+            predicate not in TARGET_PREDICATES
+            or not isinstance(subject, URIRef)
+            or not isinstance(value, Literal)
+        ):
+            continue
+        locale = (value.language or "en").lower()
+        family = FAMILY.get(str(predicate))
+        if family is None and predicate in label_predicates and locale != "en":
+            family = "translation"
+        if family is None:
+            continue
+        record_id = surveillance_record_id({
+            "subject": str(subject), "predicate": str(predicate),
+            "lexical": str(value), "language": value.language,
+        })
+        if record_id in changed_ids:
+            continue
+        records.append({
+            "record_id": record_id, "family": family, "locale": locale,
+            "risk_tier": "standard", "subject": str(subject),
+            "predicate": str(predicate), "annotation": str(value),
+            "after": {
+                "subject": str(subject), "predicate": str(predicate),
+                "object_kind": "literal", "language": value.language,
+                "datatype": (
+                    str(value.datatype) if value.datatype else None
+                ),
+                "lexical": str(value),
+            },
+        })
+    return sorted(records, key=lambda item: item["record_id"])
 
 
 def _stratum(record: dict[str, Any]) -> str:

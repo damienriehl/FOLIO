@@ -8,12 +8,20 @@ from typing import Any
 
 from jsonschema import Draft202012Validator
 import yaml
+from rdflib import Graph
 
-from .evals import corpus_identity
+from .evals import (
+    corpus_identity, evaluate_predictions, load_cases,
+    load_slice_controls,
+)
 from .correction_evidence import verify_correction_lineage
 from .reconcile import reconcile
 from .records import canonical_json, content_hash
 from .reporting import validate_artifact_hash, validate_qualification_hash
+from .sampling import (
+    build_legacy_records, evaluate_surveillance,
+    select_surveillance_sample, surveillance_record_id,
+)
 
 
 def _read_json(path: Path, *, canonical: bool = False) -> dict[str, Any]:
@@ -133,6 +141,71 @@ def replay_bundle(bundle_path: str | Path, *, report_schema_path: str | Path) ->
                 or qualification["policy_hash"] != report["policy_hash"]
             ):
                 raise ValueError("qualification inputs differ from snapshots")
+        required_slices = {
+            (family, locale)
+            for family, locales in model_policy[
+                "required_slices"
+            ].items()
+            for locale in locales
+        }
+        evaluation_cases = [
+            case
+            for path in (
+                root / "eval-cases.jsonl",
+                root / "eval-held-out.jsonl",
+            )
+            for case in load_cases(path)
+        ] + load_slice_controls(
+            root / "eval-slice-controls.json", required_slices
+        )
+        id_map = {
+            content_hash(case["case_id"]): case["case_id"]
+            for case in evaluation_cases
+        }
+        for qualification in (primary_q, independent_q):
+            rounds = qualification["metrics"].get(
+                "evaluation_rounds"
+            )
+            if not isinstance(rounds, list) or len(rounds) != 2:
+                raise ValueError(
+                    "qualification lacks replayable evaluation rounds"
+                )
+            predictions_by_round = []
+            for responses in rounds:
+                if (
+                    {item.get("record_id") for item in responses}
+                    != set(id_map)
+                    or len(responses) != len(id_map)
+                ):
+                    raise ValueError(
+                        "qualification evaluation response set differs"
+                    )
+                for response in responses:
+                    Draft202012Validator(schema).validate(response)
+                predictions_by_round.append({
+                    id_map[item["record_id"]]: item["verdict"]
+                    for item in responses
+                })
+            recomputed = evaluate_predictions(
+                evaluation_cases, predictions_by_round[0],
+                minimum_cases_per_slice=int(
+                    model_policy["minimum_scored_cases_per_slice"]
+                ),
+                required_slices=required_slices,
+            )
+            recomputed["repeat_stability"] = (
+                predictions_by_round[0] == predictions_by_round[1]
+            )
+            for field in (
+                "scored_count", "challenge_count",
+                "missing_case_ids", "accuracy", "defect_recall",
+                "false_accept_rate", "unsupported_slices",
+                "slice_metrics", "repeat_stability",
+            ):
+                if qualification["metrics"].get(field) != recomputed[field]:
+                    raise ValueError(
+                        f"qualification metric differs on replay: {field}"
+                    )
         tool_manifest = _read_json(root / "tool-manifest.json", canonical=True)
         claimed_tool_hash = tool_manifest.pop("tool_hash", None)
         if (
@@ -145,6 +218,25 @@ def replay_bundle(bundle_path: str | Path, *, report_schema_path: str | Path) ->
 
     correction_lineage = report["payload"].get("correction_lineage")
     if correction_lineage is not None:
+        expected_routes = None
+        expected_prompt_hash = None
+        expected_policy_hash = None
+        if model_policy_path.exists():
+            expected_policy_hash = report["policy_hash"]
+            expected_prompt_hash = prompt_hash
+            expected_routes = {
+                role: (
+                    f"{model_policy['routes'][route_name]['provider']}:"
+                    f"{model_policy['routes'][route_name]['model']}"
+                )
+                for role, route_name in {
+                    "production-primary": "primary",
+                    "production-independent": "independent",
+                    "correction-proposer": "correction_proposer",
+                    "correction-verifier-1": "correction_verifier_1",
+                    "correction-verifier-2": "correction_verifier_2",
+                }.items()
+            }
         replayed_lineage = verify_correction_lineage(
             source_path=root / "baseline.owl",
             candidate_path=root / "candidate.owl",
@@ -155,9 +247,102 @@ def replay_bundle(bundle_path: str | Path, *, report_schema_path: str | Path) ->
                 / "ontology-correction.schema.json"
             ),
             minimum_confidence=minimum_confidence,
+            expected_policy_hash=expected_policy_hash,
+            expected_prompt_hash=expected_prompt_hash,
+            expected_routes=expected_routes,
         )
         if replayed_lineage != correction_lineage:
             raise ValueError("correction lineage differs from release report")
+
+    if model_policy_path.exists():
+        surveillance_payload = artifacts["surveillance"]["payload"]
+        stored_sample = surveillance_payload.get("sample")
+        stored_results = surveillance_payload.get("results")
+        if not isinstance(stored_sample, dict) or not isinstance(
+            stored_results, dict
+        ):
+            raise ValueError("surveillance evidence lacks sample or votes")
+        graph = Graph().parse(root / "candidate.owl", format="xml")
+        changed_surveillance_ids = {
+            surveillance_record_id(item["after"])
+            for item in artifacts["manifest"]["payload"]["records"]
+            if item.get("after")
+        }
+        legacy = build_legacy_records(graph, changed_surveillance_ids)
+        replayed_results = {}
+        response_validator = Draft202012Validator(schema)
+        for record_id, stored in stored_results.items():
+            assessments = stored.get("assessments", [])
+            if (
+                {item.get("role") for item in assessments}
+                != {"production-primary", "production-independent"}
+                or len(assessments) != 2
+            ):
+                raise ValueError(
+                    "surveillance record lacks two independent votes"
+                )
+            responses = [
+                item["response"] for item in assessments
+            ]
+            for response in responses:
+                response_validator.validate(response)
+                if response["record_id"] != record_id:
+                    raise ValueError(
+                        "surveillance vote record ID mismatch"
+                    )
+            verdict = (
+                "pass"
+                if all(
+                    item["verdict"] == "pass"
+                    and float(item["confidence"]) >= minimum_confidence
+                    for item in responses
+                )
+                else "defect"
+            )
+            defect_types = sorted({
+                defect for response in responses
+                for defect in response.get("defect_types", [])
+            })
+            replayed_results[record_id] = {
+                "verdict": verdict,
+                "defect_types": defect_types,
+            }
+            if (
+                stored.get("verdict") != verdict
+                or stored.get("defect_types") != defect_types
+            ):
+                raise ValueError(
+                    "surveillance summary differs from provider votes"
+                )
+        sample = select_surveillance_sample(legacy, review_policy)
+        while True:
+            evaluated = evaluate_surveillance(
+                sample, legacy, replayed_results, review_policy
+            )
+            expansions = {
+                name: details["expansion_ids"]
+                for name, details in evaluated["strata"].items()
+                if details["expansion_ids"]
+            }
+            if not expansions:
+                break
+            for name, ids in expansions.items():
+                stratum = sample["strata"][name]
+                stratum["selected_ids"] = sorted(
+                    set(stratum["selected_ids"]) | set(ids)
+                )
+                stratum["sample_count"] = len(
+                    stratum["selected_ids"]
+                )
+                stratum["census"] = True
+        if sample != stored_sample:
+            raise ValueError("surveillance sample or expansion differs")
+        expected_surveillance = {
+            key: value for key, value in surveillance_payload.items()
+            if key not in {"sample", "results"}
+        }
+        if evaluated != expected_surveillance:
+            raise ValueError("surveillance decision differs on replay")
 
     reconstructed = reconcile(
         sorted(manifest_ids), artifacts["primary"], artifacts["independent"],

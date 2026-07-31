@@ -7,8 +7,9 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "scripts"))
 from ontology_qa.debt import debt_root_id, load_debt, publish_migration_receipt, validate_debt_targets
+from ontology_qa.correction_pipeline import correction_response_schema
 from run_confirmed_defect_corrections import (
-    _correction_response_schema, _require_exact_verdicts, build_debt_records,
+    _require_exact_verdicts, build_debt_records,
 )
 
 ROOT = Path(__file__).parents[1]
@@ -62,8 +63,8 @@ def test_correction_roles_have_provider_visible_closed_constraints():
         },
         "allOf": [{"if": {}, "then": {}}],
     }
-    proposer = _correction_response_schema(schema, role="proposer")
-    verifier = _correction_response_schema(schema, role="verifier")
+    proposer = correction_response_schema(schema, role="proposer")
+    verifier = correction_response_schema(schema, role="verifier")
     assert proposer["properties"]["verdict"] == {"enum": ["defect"]}
     assert proposer["properties"]["proposed_replacement"]["type"] == "string"
     assert verifier["properties"]["proposed_replacement"] == {"type": "null"}

@@ -7,6 +7,26 @@ from typing import Any, Callable
 from .corrections import make_correction
 from .records import AnnotationValue
 
+
+def correction_response_schema(
+    schema: dict[str, Any], *, role: str
+) -> dict[str, Any]:
+    """Project the review schema onto one correction role's contract."""
+    import json
+
+    projected = json.loads(json.dumps(schema))
+    projected.pop("allOf", None)
+    if role == "proposer":
+        projected["properties"]["verdict"] = {"enum": ["defect"]}
+        projected["properties"]["proposed_replacement"] = {
+            "type": "string", "minLength": 1,
+        }
+    elif role == "verifier":
+        projected["properties"]["proposed_replacement"] = {"type": "null"}
+    else:
+        raise ValueError(f"unknown correction schema role: {role}")
+    return projected
+
 ProposalRoute = Callable[[dict[str, Any], int], dict[str, Any]]
 VerifierRoute = Callable[[dict[str, Any], int], dict[str, Any]]
 

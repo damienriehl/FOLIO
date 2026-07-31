@@ -47,15 +47,6 @@ def _fixture(tmp_path: Path):
         '</rdf:Description></rdf:RDF>',
         encoding="utf-8",
     )
-    correction = make_correction(
-        root_record_id="a" * 64, subject="https://example.test/C",
-        predicate="http://www.w3.org/2004/02/skos/core#definition",
-        language="en", datatype=None, before="Bad", replacement="Good",
-        proposer_route="openai:proposer",
-        verifier_routes=["google:verifier", "openai:verifier"],
-        verifier_qualification_hashes=["1" * 64, "2" * 64],
-    )
-    transaction = apply_correction_batch(source, candidate, [correction])
     qualifications = {
         "production-primary": _qualification(
             "production-primary", "openai:primary"
@@ -73,6 +64,22 @@ def _fixture(tmp_path: Path):
             "correction-verifier-2", "openai:verifier"
         ),
     }
+    correction = make_correction(
+        root_record_id="a" * 64, subject="https://example.test/C",
+        predicate="http://www.w3.org/2004/02/skos/core#definition",
+        language="en", datatype=None, before="Bad", replacement="Good",
+        proposer_route="openai:proposer",
+        verifier_routes=["google:verifier", "openai:verifier"],
+        verifier_qualification_hashes=[
+            qualifications["correction-verifier-1"][
+                "qualification_hash"
+            ],
+            qualifications["correction-verifier-2"][
+                "qualification_hash"
+            ],
+        ],
+    )
+    transaction = apply_correction_batch(source, candidate, [correction])
     response = {
         "record_id": "a" * 64, "verdict": "pass", "confidence": .99,
     }

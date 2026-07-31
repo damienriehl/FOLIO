@@ -19,6 +19,7 @@ from rdflib.namespace import RDFS, SKOS
 
 from ontology_qa.delta import build_hydration_manifest
 from ontology_qa.context import build_graph_context
+from ontology_qa.correction_pipeline import correction_response_schema
 from ontology_qa.correction_evidence import verify_correction_lineage
 from ontology_qa.debt import (
     closed_debt, load_debt, unresolved_debt_ids,
@@ -40,7 +41,10 @@ from ontology_qa.qualification import create_qualification, validate_role_separa
 from ontology_qa.reconcile import reconcile
 from ontology_qa.records import artifact_envelope, canonical_json, content_hash
 from ontology_qa.reporting import ArtifactBundle, build_release_report
-from ontology_qa.sampling import evaluate_surveillance, select_surveillance_sample
+from ontology_qa.sampling import (
+    build_legacy_records, evaluate_surveillance, select_surveillance_sample,
+    surveillance_record_id,
+)
 from ontology_qa.validators import (
     TARGET_PREDICATES, compare_validation_results, validate_ontology,
 )
@@ -211,9 +215,63 @@ def _qualify(
         for path in paths[:2]
         for case in load_cases(path)
     ] + load_slice_controls(paths[2], required_slices)
+    qualification_schema = schema
+    qualification_prompt_hash = _prompt_bundle_hash()
+    qualification_corpus_hash = corpus_identity(paths)
+    correction_role = role in {
+        "correction-proposer",
+        "correction-verifier-1",
+        "correction-verifier-2",
+    }
+    if correction_role:
+        controls = [
+            case for case in load_slice_controls(paths[2], required_slices)
+            if case["expected_verdict"] == "defect"
+        ]
+        correction_cases = []
+        for case in controls:
+            expected_replacement = case["input"]["source"]
+            base = {
+                **case,
+                "expected_replacement": expected_replacement,
+            }
+            if role == "correction-proposer":
+                correction_cases.append(base)
+            else:
+                correction_cases.extend([
+                    {
+                        **base,
+                        "case_id": case["case_id"] + "-repaired",
+                        "verification_candidate": expected_replacement,
+                        "expected_verdict": "pass",
+                    },
+                    {
+                        **base,
+                        "case_id": case["case_id"] + "-unrepaired",
+                        "verification_candidate": case["input"]["candidate"],
+                        "expected_verdict": "defect",
+                    },
+                ])
+        cases = correction_cases
+        schema_role = (
+            "proposer" if role == "correction-proposer" else "verifier"
+        )
+        qualification_schema = correction_response_schema(
+            schema, role=schema_role
+        )
+        prompt_name = (
+            "correction-proposal"
+            if role == "correction-proposer"
+            else "correction-verification"
+        )
+        qualification_prompt = _all_prompts()[prompt_name]
+        qualification_prompt_hash = content_hash(qualification_prompt)
+        qualification_corpus_hash = content_hash(canonical_json(cases))
     id_map = {content_hash(case["case_id"]): case["case_id"] for case in cases}
-    records = [
-        {
+    records = []
+    for hashed, case_id in id_map.items():
+        case = next(item for item in cases if item["case_id"] == case_id)
+        record = {
             "record_id": hashed,
             "family": case["family"],
             "locale": case["locale"],
@@ -221,37 +279,84 @@ def _qualify(
             "annotation": case["input"].get("candidate"),
             "benchmark_input": case["input"],
         }
-        for hashed, case_id in id_map.items()
-        for case in cases if case["case_id"] == case_id
-    ]
+        if correction_role:
+            original = case["input"]["candidate"]
+            proposed = case.get("verification_candidate")
+            record.update({
+                "after": {
+                    "subject": f"https://example.test/{hashed}",
+                    "predicate": str(SKOS.definition),
+                    "object_kind": "literal",
+                    "language": case["locale"],
+                    "datatype": None,
+                    "lexical": proposed if proposed is not None else original,
+                },
+                "before": {
+                    "subject": f"https://example.test/{hashed}",
+                    "predicate": str(SKOS.definition),
+                    "object_kind": "literal",
+                    "language": case["locale"],
+                    "datatype": None,
+                    "lexical": original,
+                },
+                "confirmed_defect": {
+                    "class": case["expected_defect_types"][0],
+                    "finding": case["source_ref"],
+                },
+                "expected_replacement": case["expected_replacement"],
+            })
+        records.append(record)
     response_rounds: list[list[dict[str, Any]]] = []
     prompts = _prompts()
     qualification_error = None
     try:
         for repeat in range(2):
             responses: list[dict[str, Any]] = []
-            for family in ("definition", "example", "translation"):
-                family_records = [
-                    record for record in records if record["family"] == family
-                ]
-                responses.extend(
-                    _call(
-                        adapter, family_records, schema,
-                        prompt=prompts[family], executor=executor,
-                        qualification_hash=f"qualification-eval:{repeat + 1}",
-                        policy_hash=policy_hash,
-                        candidate_hash=corpus_identity(paths),
-                        batch_size=int(policy["operations"]["batch_size"]),
-                    )
+            if correction_role:
+                responses = _call(
+                    adapter, records, qualification_schema,
+                    prompt=qualification_prompt, executor=executor,
+                    qualification_hash=f"qualification-eval:{repeat + 1}",
+                    policy_hash=policy_hash,
+                    candidate_hash=qualification_corpus_hash,
+                    batch_size=int(policy["operations"]["batch_size"]),
                 )
+            else:
+                for family in ("definition", "example", "translation"):
+                    family_records = [
+                        record for record in records
+                        if record["family"] == family
+                    ]
+                    responses.extend(
+                        _call(
+                            adapter, family_records, qualification_schema,
+                            prompt=prompts[family], executor=executor,
+                            qualification_hash=(
+                                f"qualification-eval:{repeat + 1}"
+                            ),
+                            policy_hash=policy_hash,
+                            candidate_hash=qualification_corpus_hash,
+                            batch_size=int(
+                                policy["operations"]["batch_size"]
+                            ),
+                        )
+                    )
             response_rounds.append(responses)
     except (BudgetExceeded, ProviderError, ValueError) as exc:
         qualification_error = str(exc)
         response_rounds = [[], []]
     responses = response_rounds[0]
-    predictions = {
-        id_map[item["record_id"]]: item["verdict"] for item in responses
-    }
+    by_case = {case["case_id"]: case for case in cases}
+    predictions = {}
+    for item in responses:
+        case_id = id_map[item["record_id"]]
+        prediction = item["verdict"]
+        if role == "correction-proposer" and (
+            item.get("proposed_replacement")
+            != by_case[case_id]["expected_replacement"]
+        ):
+            prediction = "invalid-replacement"
+        predictions[case_id] = prediction
     metrics = evaluate_predictions(
         cases, predictions,
         minimum_cases_per_slice=int(policy["minimum_scored_cases_per_slice"]),
@@ -269,6 +374,7 @@ def _qualify(
         }
     )
     metrics["qualification_error"] = qualification_error
+    metrics["evaluation_rounds"] = response_rounds
     now = datetime.now(UTC)
     route = next(
         value for value in policy["routes"].values()
@@ -278,8 +384,10 @@ def _qualify(
         role=role, route_id=f"{adapter.provider}:{adapter.model}",
         provider=adapter.provider, requested_model=adapter.model,
         actual_model=adapter.model, reasoning=route["reasoning"],
-        corpus_hash=corpus_identity(paths), prompt_hash=_prompt_bundle_hash(),
-        schema_hash=content_hash(canonical_json(schema)), policy_hash=policy_hash,
+        corpus_hash=qualification_corpus_hash,
+        prompt_hash=qualification_prompt_hash,
+        schema_hash=content_hash(canonical_json(qualification_schema)),
+        policy_hash=policy_hash,
         metrics=metrics, thresholds=policy["qualification"],
         qualified_at=now.isoformat().replace("+00:00", "Z"),
         valid_until=(now + timedelta(days=30)).isoformat().replace("+00:00", "Z"),
@@ -372,41 +480,6 @@ def _census_artifact(baseline: Path, candidate: Path, manifest, run_id, attempt_
     )
 
 
-def _legacy_records(
-    graph: Graph,
-    changed_ids: set[str],
-) -> list[dict[str, Any]]:
-    records = []
-    for subject, predicate, value in graph:
-        if predicate not in TARGET_PREDICATES or not isinstance(subject, URIRef) or not isinstance(value, Literal):
-            continue
-        locale = (value.language or "en").lower()
-        family = FAMILY.get(str(predicate))
-        if family is None and predicate in {RDFS.label, SKOS.prefLabel, SKOS.altLabel, SKOS.hiddenLabel} and locale != "en":
-            family = "translation"
-        if family is None:
-            continue
-        record_id = content_hash(canonical_json({
-            "subject": str(subject), "predicate": str(predicate),
-            "lexical": str(value), "locale": locale,
-        }))
-        if record_id in changed_ids:
-            continue
-        raw_record = {
-            "record_id": record_id, "family": family, "locale": locale,
-            "risk_tier": "standard", "subject": str(subject),
-            "predicate": str(predicate), "annotation": str(value),
-            "after": {
-                "subject": str(subject), "predicate": str(predicate),
-                "object_kind": "literal", "language": value.language,
-                "datatype": str(value.datatype) if value.datatype else None,
-                "lexical": str(value),
-            },
-        }
-        records.append(raw_record)
-    return sorted(records, key=lambda item: item["record_id"])
-
-
 def _unresolved_confirmed_debt(candidate: Path) -> list[str]:
     debt = load_debt(ROOT / "qa/ontology/confirmed-defects.json")
     return sorted(unresolved_debt_ids(candidate, debt))
@@ -485,6 +558,18 @@ def _surveillance_results(
                     for item in artifact["payload"]["responses"]
                     if item["record_id"] == record_id
                 ]
+                assessments = [
+                    {
+                        "role": role,
+                        "response": item,
+                    }
+                    for role, artifact in (
+                        ("production-primary", left),
+                        ("production-independent", right),
+                    )
+                    for item in artifact["payload"]["responses"]
+                    if item["record_id"] == record_id
+                ]
                 defect_types = sorted({
                     defect for response in responses
                     for defect in response.get("defect_types", [])
@@ -492,6 +577,7 @@ def _surveillance_results(
                 results[record_id] = {
                     "verdict": "pass" if state == "accepted" else "defect",
                     "defect_types": defect_types,
+                    "assessments": assessments,
                 }
         evaluated = evaluate_surveillance(sample, legacy, results, review_policy)
         expansions = {
@@ -500,6 +586,8 @@ def _surveillance_results(
             if details["expansion_ids"]
         }
         if not expansions:
+            evaluated["sample"] = sample
+            evaluated["results"] = results
             return evaluated
         expanded_count = len(selected) + sum(len(ids) for ids in expansions.values())
         maximum = int(review_policy["surveillance"]["maximum_review_records"])
@@ -668,6 +756,21 @@ def main() -> int:
                 minimum_confidence=float(
                     model_policy["minimum_confidence"]
                 ),
+                expected_policy_hash=policy_hash,
+                expected_prompt_hash=_prompt_bundle_hash(),
+                expected_routes={
+                    role: (
+                        f"{model_policy['routes'][route_name]['provider']}:"
+                        f"{model_policy['routes'][route_name]['model']}"
+                    )
+                    for role, route_name in {
+                        "production-primary": "primary",
+                        "production-independent": "independent",
+                        "correction-proposer": "correction_proposer",
+                        "correction-verifier-1": "correction_verifier_1",
+                        "correction-verifier-2": "correction_verifier_2",
+                    }.items()
+                },
             )
             ledger_roots = {
                 item["root_record_id"]
@@ -753,9 +856,13 @@ def main() -> int:
             expected_independent_qualification=independent_q["qualification_hash"],
         )
 
-        legacy = _legacy_records(
+        legacy = build_legacy_records(
             candidate_graph,
-            {item["record_id"] for item in records},
+            {
+                surveillance_record_id(item["after"])
+                for item in manifest["payload"]["records"]
+                if item.get("after")
+            },
         )
         sample = select_surveillance_sample(legacy, review_policy)
         surveillance_result = _surveillance_results(

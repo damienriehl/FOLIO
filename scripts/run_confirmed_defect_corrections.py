@@ -17,7 +17,9 @@ from rdflib import Graph, Literal, URIRef
 from rdflib.namespace import RDFS, SKOS
 
 from ontology_qa.context import build_graph_context
-from ontology_qa.correction_pipeline import converge_correction
+from ontology_qa.correction_pipeline import (
+    converge_correction, correction_response_schema,
+)
 from ontology_qa.corrections import apply_correction_batch
 from ontology_qa.debt import debt_root_id, load_debt, validate_debt_targets
 from ontology_qa.evals import load_model_policy
@@ -151,23 +153,6 @@ def _check_write_once(path: Path, value: Any) -> None:
     data = canonical_json(value) + b"\n"
     if path.exists() and path.read_bytes() != data:
         raise FileExistsError(f"append-only output exists: {path}")
-
-
-def _correction_response_schema(
-    schema: dict[str, Any], *, role: str
-) -> dict[str, Any]:
-    projected = json.loads(json.dumps(schema))
-    projected.pop("allOf", None)
-    if role == "proposer":
-        projected["properties"]["verdict"] = {"enum": ["defect"]}
-        projected["properties"]["proposed_replacement"] = {
-            "type": "string", "minLength": 1,
-        }
-    elif role == "verifier":
-        projected["properties"]["proposed_replacement"] = {"type": "null"}
-    else:
-        raise ValueError(f"unknown correction schema role: {role}")
-    return projected
 
 
 def main() -> int:
@@ -312,10 +297,10 @@ def main() -> int:
         verification_prompt = (
             ROOT / "qa/ontology/prompts/correction-verification.md"
         ).read_text(encoding="utf-8")
-        proposal_schema = _correction_response_schema(
+        proposal_schema = correction_response_schema(
             schema, role="proposer"
         )
-        verification_schema = _correction_response_schema(
+        verification_schema = correction_response_schema(
             schema, role="verifier"
         )
         convergences = []

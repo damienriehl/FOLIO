@@ -22,6 +22,17 @@
       "expected_defect_types": ["number"],
       "source_kind": "synthetic-mutation",
       "source_ref": "mutation:42-to-24"
+    },
+    {
+      "id": "number-second",
+      "source": "Section 17",
+      "candidate": "Section 71",
+      "translation_source": "17",
+      "translation_candidate": "71",
+      "expected_verdict": "defect",
+      "expected_defect_types": ["number"],
+      "source_kind": "synthetic-mutation",
+      "source_ref": "mutation:17-to-71"
     }
   ]
 }

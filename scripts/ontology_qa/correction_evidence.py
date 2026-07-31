@@ -30,6 +30,9 @@ def verify_correction_lineage(
     evidence_path: str | Path,
     schema_path: str | Path,
     minimum_confidence: float,
+    expected_policy_hash: str | None = None,
+    expected_prompt_hash: str | None = None,
+    expected_routes: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     """Reapply and verify a complete correction lineage without providers."""
     source_path = Path(source_path)
@@ -92,6 +95,29 @@ def verify_correction_lineage(
     if not required_roles.issubset(qualifications):
         raise ValueError("correction qualifications are incomplete")
     if (
+        expected_policy_hash is not None
+        and evidence.get("policy_hash") != expected_policy_hash
+    ):
+        raise ValueError("correction evidence policy binding mismatch")
+    if (
+        expected_prompt_hash is not None
+        and evidence.get("prompt_hash") != expected_prompt_hash
+    ):
+        raise ValueError("correction evidence prompt binding mismatch")
+    if expected_routes is not None:
+        for role in required_roles:
+            qualification = qualifications[role]
+            if (
+                qualification.get("role") != role
+                or qualification.get("route_id")
+                != expected_routes.get(role)
+                or qualification.get("policy_hash") != expected_policy_hash
+                or qualification.get("status") != "qualified"
+            ):
+                raise ValueError(
+                    f"correction qualification binding mismatch: {role}"
+                )
+    if (
         qualifications["production-primary"]["provider"]
         == qualifications["production-independent"]["provider"]
     ):
@@ -101,6 +127,23 @@ def verify_correction_lineage(
         == qualifications["correction-verifier-2"]["provider"]
     ):
         raise ValueError("correction verification is not cross-provider")
+    proposer = qualifications["correction-proposer"]
+    verifier_1 = qualifications["correction-verifier-1"]
+    verifier_2 = qualifications["correction-verifier-2"]
+    for correction in ledger:
+        if (
+            correction["proposer_route"] != proposer["route_id"]
+            or correction["verifier_routes"]
+            != [verifier_1["route_id"], verifier_2["route_id"]]
+            or correction["verifier_qualification_hashes"]
+            != [
+                verifier_1["qualification_hash"],
+                verifier_2["qualification_hash"],
+            ]
+        ):
+            raise ValueError(
+                "correction vote bindings differ from qualifications"
+            )
 
     rereviews = evidence.get("rereviews", {})
     if set(rereviews) != {

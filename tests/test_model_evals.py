@@ -104,7 +104,7 @@ def test_frozen_controls_cover_every_policy_slice():
     controls = load_slice_controls(
         ROOT / "qa/ontology/evals/slice-controls.json", required
     )
-    assert len(controls) == len(required) * 2
+    assert len(controls) == len(required) * 3
     assert {
         (case["family"], case["locale"]) for case in controls
     } == required
