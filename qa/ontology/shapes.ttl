@@ -1,0 +1,30 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<#DefinitionShape>
+    a sh:NodeShape ;
+    sh:targetSubjectsOf skos:definition ;
+    sh:property [
+        sh:path skos:definition ;
+        sh:nodeKind sh:Literal ;
+        sh:minLength 1
+    ] .
+
+<#ExampleShape>
+    a sh:NodeShape ;
+    sh:targetSubjectsOf skos:example ;
+    sh:property [
+        sh:path skos:example ;
+        sh:nodeKind sh:Literal ;
+        sh:minLength 1
+    ] .
+
+<#LabelShape>
+    a sh:NodeShape ;
+    sh:targetSubjectsOf skos:prefLabel ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:nodeKind sh:Literal ;
+        sh:minLength 1
+    ] .

@@ -1,0 +1,30 @@
+version: 1
+sentinel_values:
+  - "null"
+  - "none"
+  - "n/a"
+resource_valued_predicates: []
+supported_languages:
+  - ar-sa
+  - de-de
+  - en
+  - en-au
+  - en-ca
+  - en-gb
+  - en-us
+  - es
+  - es-es
+  - es-mx
+  - fr
+  - fr-fr
+  - he
+  - he-il
+  - hi
+  - hi-in
+  - ja-jp
+  - ko-kr
+  - pt-br
+  - zh-cn
+cardinality:
+  "http://www.w3.org/2004/02/skos/core#prefLabel":
+    max: 1
