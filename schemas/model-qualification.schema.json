@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://folio.openlegalstandard.org/schemas/model-qualification.schema.json",
+  "title": "FOLIO model route qualification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["qualification_hash", "role", "route_id", "provider", "requested_model", "actual_model", "reasoning", "corpus_hash", "prompt_hash", "schema_hash", "policy_hash", "metrics", "thresholds", "qualified_at", "valid_until", "status"],
+  "properties": {
+    "qualification_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "role": {"enum": ["production-primary", "production-independent", "benchmark-adjudicator", "correction-proposer", "correction-verifier-1", "correction-verifier-2"]},
+    "route_id": {"type": "string", "minLength": 1},
+    "provider": {"type": "string", "minLength": 1},
+    "requested_model": {"type": "string", "minLength": 1},
+    "actual_model": {"type": "string", "minLength": 1},
+    "reasoning": {"type": "string", "minLength": 1},
+    "corpus_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "prompt_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "schema_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "policy_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "metrics": {"type": "object"},
+    "thresholds": {"type": "object"},
+    "qualified_at": {"type": "string", "format": "date-time"},
+    "valid_until": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["qualified", "rejected"]}
+  }
+}
