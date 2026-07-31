@@ -95,9 +95,10 @@ def artifact_envelope(
     policy_hash: str,
     tool_hash: str,
     status: str,
+    schema_version: str = SCHEMA_VERSION,
 ) -> dict[str, Any]:
     envelope = {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": schema_version,
         "run_id": run_id,
         "attempt_id": attempt_id,
         "parent_hashes": sorted(parent_hashes),
