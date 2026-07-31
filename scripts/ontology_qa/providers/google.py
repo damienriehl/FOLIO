@@ -34,7 +34,11 @@ class GoogleAdapter:
             "generation_config": {
                 "response_mime_type": "application/json",
                 "response_json_schema": {"type": "array", "items": request.schema},
-                "thinking_config": {"thinking_level": self.reasoning},
+                "thinking_config": (
+                    {"thinking_budget": -1}
+                    if self.model.startswith("gemini-2.5-")
+                    else {"thinking_level": self.reasoning}
+                ),
                 "max_output_tokens": self.max_output_tokens,
             },
         }
@@ -73,9 +77,17 @@ def _gemini_transport(payload: dict) -> dict:
         "generationConfig": {
             "responseMimeType": config["response_mime_type"],
             "responseJsonSchema": config["response_json_schema"],
-            "thinkingConfig": {
-                "thinkingLevel": config["thinking_config"]["thinking_level"].upper()
-            },
+            "thinkingConfig": (
+                {
+                    "thinkingBudget":
+                    config["thinking_config"]["thinking_budget"]
+                }
+                if "thinking_budget" in config["thinking_config"]
+                else {
+                    "thinkingLevel":
+                    config["thinking_config"]["thinking_level"].upper()
+                }
+            ),
             "maxOutputTokens": config["max_output_tokens"],
         },
     }

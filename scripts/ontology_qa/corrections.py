@@ -9,8 +9,7 @@ from pathlib import Path
 from typing import Any
 from xml.sax.saxutils import escape
 
-from rdflib import Graph, Literal, URIRef
-from rdflib.compare import isomorphic
+from rdflib import BNode, Graph, Literal, URIRef
 
 from .records import AnnotationValue, canonical_json, content_hash
 
@@ -74,7 +73,8 @@ def _replace_once(xml_text: str, xml_bytes: bytes, correction: dict[str, Any]) -
     if len(blocks) != 1:
         raise ValueError("correction subject must match exactly one RDF/XML block")
     tag = re.escape(_prefix_for_predicate(xml_bytes, correction["predicate"]))
-    old = re.escape(escape(correction["before"], {'"': "&quot;"}))
+    entities = {'"': "&quot;", "'": "&apos;"}
+    old = re.escape(escape(correction["before"], entities))
     value_pattern = re.compile(
         rf'(<{tag}\b(?P<attrs>[^>]*)>){old}(</{tag}>)', re.DOTALL
     )
@@ -93,7 +93,7 @@ def _replace_once(xml_text: str, xml_bytes: bytes, correction: dict[str, Any]) -
     if len(filtered) != 1:
         raise ValueError("correction locator must match exactly one annotation")
     match = filtered[0]
-    replacement = escape(correction["replacement"], {'"': "&quot;"})
+    replacement = escape(correction["replacement"], entities)
     new_block = block[:match.start()] + match.group(1) + replacement + match.group(3) + block[match.end():]
     return xml_text[:blocks[0].start()] + new_block + xml_text[blocks[0].end():]
 
@@ -130,20 +130,33 @@ def apply_correction_batch(
         if new.value_hash in seen_values:
             raise ValueError("correction lineage repeats a prior candidate")
         seen_values.add(new.value_hash)
-        working = _replace_once(working, original_bytes, correction)
+        try:
+            working = _replace_once(working, original_bytes, correction)
+        except ValueError as exc:
+            raise ValueError(
+                f"correction {correction['root_record_id']} failed: {exc}"
+            ) from exc
         removed.add((URIRef(old.subject), URIRef(old.predicate), Literal(old.lexical, lang=old.language, datatype=URIRef(old.datatype) if old.datatype else None)))
         added.add((URIRef(new.subject), URIRef(new.predicate), Literal(new.lexical, lang=new.language, datatype=URIRef(new.datatype) if new.datatype else None)))
     candidate_bytes = working.encode("utf-8")
     after_graph = Graph().parse(data=candidate_bytes, format="xml")
-    expected_before = Graph()
-    expected_after = Graph()
-    for triple in before_graph:
-        if triple not in removed:
-            expected_before.add(triple)
-    for triple in after_graph:
-        if triple not in added:
-            expected_after.add(triple)
-    if not isomorphic(expected_before, expected_after):
+    if len(before_graph) != len(after_graph):
+        raise ValueError("corrected graph changed the triple count")
+    if any(triple in after_graph for triple in removed):
+        raise ValueError("corrected graph retains a replaced annotation")
+    if any(triple not in after_graph for triple in added):
+        raise ValueError("corrected graph omits an authorized replacement")
+    stable_before = {
+        triple for triple in before_graph
+        if triple not in removed
+        and not any(isinstance(node, BNode) for node in triple)
+    }
+    stable_after = {
+        triple for triple in after_graph
+        if triple not in added
+        and not any(isinstance(node, BNode) for node in triple)
+    }
+    if stable_before != stable_after:
         raise ValueError("corrected graph contains changes outside the authorized ledger")
     destination = Path(output_path)
     temporary = destination.with_suffix(destination.suffix + ".tmp")

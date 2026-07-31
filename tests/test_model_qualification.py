@@ -72,6 +72,22 @@ def test_proposer_and_verifiers_are_three_distinct_routes():
         ])
 
 
+def test_production_votes_must_use_different_providers():
+    with pytest.raises(ValueError, match="production.*providers"):
+        validate_role_separation([
+            qualification("production-primary", "google:model-a"),
+            qualification("production-independent", "google:model-b"),
+        ])
+
+
+def test_correction_verifiers_must_use_different_providers():
+    with pytest.raises(ValueError, match="verifiers.*providers"):
+        validate_role_separation([
+            qualification("correction-verifier-1", "google:model-a"),
+            qualification("correction-verifier-2", "google:model-b"),
+        ])
+
+
 def test_expired_or_mismatched_qualification_blocks():
     artifact = qualification()
     with pytest.raises(ValueError, match="expired"):

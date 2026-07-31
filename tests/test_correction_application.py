@@ -97,3 +97,16 @@ def test_correction_cycle_is_rejected_atomically(tmp_path):
     with pytest.raises(ValueError, match="repeats"):
         apply_correction_batch(source, output, [first, second])
     assert not output.exists()
+
+
+def test_xml_entity_encoded_apostrophe_is_located(tmp_path):
+    source = tmp_path / "source.owl"
+    output = tmp_path / "output.owl"
+    source.write_text(
+        ontology("Owner&apos;s old value"), encoding="utf-8"
+    )
+    item = correction(
+        before="Owner's old value", replacement="Owner's corrected value"
+    )
+    apply_correction_batch(source, output, [item])
+    assert "Owner&apos;s corrected value" in output.read_text(encoding="utf-8")

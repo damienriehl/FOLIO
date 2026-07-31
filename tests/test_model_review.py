@@ -12,6 +12,7 @@ from ontology_qa.context import build_graph_context
 from ontology_qa.providers.google import GoogleAdapter
 from ontology_qa.providers.openai import OpenAIAdapter
 from ontology_qa.providers.base import ProviderError, ReviewRequest
+from ontology_qa.records import canonical_json
 from run_trusted_ontology_qa import _provider_schema
 
 ROOT = Path(__file__).parents[1]
@@ -47,6 +48,21 @@ def test_provider_adapters_receive_identical_blind_inputs():
     assert left["status"] == right["status"] == "complete"
     assert seen[0]["input"] == seen[1]["contents"]
     assert "responses" not in seen[0]["input"][0]
+
+
+def test_gemini_25_uses_dynamic_thinking_budget():
+    seen = []
+    adapter = GoogleAdapter(
+        "gemini-2.5-pro",
+        lambda payload: (
+            seen.append(payload)
+            or {"model": payload["model"], "responses": [response()]}
+        ),
+    )
+    invoke(adapter)
+    assert seen[0]["generation_config"]["thinking_config"] == {
+        "thinking_budget": -1
+    }
 
 
 def test_omitted_or_invented_ids_fail_completeness():
@@ -121,6 +137,8 @@ def test_graph_context_is_bounded_hashed_and_ontology_grounded():
     first = build_graph_context(graph, record, risk_evidence=[])
     second = build_graph_context(graph, record, risk_evidence=[])
     assert first == second
+    record["context"] = first
+    assert json.loads(canonical_json(record))["context"]["concept_label"] == "Appeal"
     assert first["concept_label"] == "Appeal"
     assert first["ancestors"] == ["Procedure"]
     assert first["siblings"] == ["Review"]

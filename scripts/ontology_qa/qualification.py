@@ -87,7 +87,10 @@ def create_qualification(
 
 
 def validate_role_separation(qualifications: list[dict[str, Any]]) -> None:
-    by_role = {item["role"]: item["route_id"] for item in qualifications}
+    artifacts_by_role = {item["role"]: item for item in qualifications}
+    by_role = {
+        role: item["route_id"] for role, item in artifacts_by_role.items()
+    }
     production = {
         by_role.get("production-primary"),
         by_role.get("production-independent"),
@@ -95,6 +98,14 @@ def validate_role_separation(qualifications: list[dict[str, Any]]) -> None:
     benchmark = by_role.get("benchmark-adjudicator")
     if benchmark in production:
         raise ValueError("benchmark adjudication route overlaps a production vote")
+    if all(
+        role in artifacts_by_role
+        for role in ("production-primary", "production-independent")
+    ) and (
+        artifacts_by_role["production-primary"]["provider"]
+        == artifacts_by_role["production-independent"]["provider"]
+    ):
+        raise ValueError("production votes must use independent providers")
     proposer = by_role.get("correction-proposer")
     verifiers = {
         by_role.get("correction-verifier-1"),
@@ -106,6 +117,14 @@ def validate_role_separation(qualifications: list[dict[str, Any]]) -> None:
         role in by_role for role in ("correction-verifier-1", "correction-verifier-2")
     ):
         raise ValueError("correction verifier routes are not independent")
+    if all(
+        role in artifacts_by_role
+        for role in ("correction-verifier-1", "correction-verifier-2")
+    ) and (
+        artifacts_by_role["correction-verifier-1"]["provider"]
+        == artifacts_by_role["correction-verifier-2"]["provider"]
+    ):
+        raise ValueError("correction verifiers must use independent providers")
 
 
 def require_current_qualification(

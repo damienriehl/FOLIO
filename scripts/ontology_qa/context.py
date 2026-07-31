@@ -21,7 +21,9 @@ def build_context(
     maximum_chars: int = 8000,
 ) -> dict[str, Any]:
     context = {
-        "record": record,
+        "record": {
+            key: value for key, value in record.items() if key != "context"
+        },
         "concept_label": concept_label,
         "ancestors": sorted(set(ancestors))[:maximum_items],
         "siblings": sorted(set(siblings))[:maximum_items],
