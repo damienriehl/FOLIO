@@ -17,10 +17,11 @@ class GoogleAdapter:
 
     def __init__(
         self, model: str, transport: Callable[[dict], dict] | None = None,
-        *, reasoning: str = "high",
+        *, reasoning: str = "high", max_output_tokens: int = 4096,
     ):
         self.model = model
         self.reasoning = reasoning
+        self.max_output_tokens = max_output_tokens
         self._transport = transport or _gemini_transport
 
     def assess(self, request: ReviewRequest) -> ProviderReceipt:
@@ -34,6 +35,7 @@ class GoogleAdapter:
                 "response_mime_type": "application/json",
                 "response_json_schema": {"type": "array", "items": request.schema},
                 "thinking_config": {"thinking_level": self.reasoning},
+                "max_output_tokens": self.max_output_tokens,
             },
         }
         raw = self._transport(payload)
@@ -43,7 +45,13 @@ class GoogleAdapter:
         responses = raw.get("responses")
         if not isinstance(responses, list):
             raise ProviderError("Google response omitted structured responses")
-        return ProviderReceipt(self.provider, self.model, actual, request.request_id, tuple(responses))
+        usage = raw.get("usage") or {}
+        return ProviderReceipt(
+            self.provider, self.model, actual, request.request_id,
+            tuple(responses),
+            input_tokens=int(usage.get("input_tokens", 0)),
+            output_tokens=int(usage.get("output_tokens", 0)),
+        )
 
 
 def _gemini_transport(payload: dict) -> dict:
@@ -68,6 +76,7 @@ def _gemini_transport(payload: dict) -> dict:
             "thinkingConfig": {
                 "thinkingLevel": config["thinking_config"]["thinking_level"].upper()
             },
+            "maxOutputTokens": config["max_output_tokens"],
         },
     }
     url = (
@@ -94,4 +103,15 @@ def _gemini_transport(payload: dict) -> dict:
         responses = json.loads(text)
     except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
         raise ProviderError("Google returned invalid structured JSON") from exc
-    return {"model": raw.get("modelVersion", model), "responses": responses}
+    usage = raw.get("usageMetadata") or {}
+    return {
+        "model": raw.get("modelVersion", model), "responses": responses,
+        "usage": {
+            "input_tokens": usage.get("promptTokenCount", 0),
+            "output_tokens": max(
+                0,
+                usage.get("totalTokenCount", 0)
+                - usage.get("promptTokenCount", 0),
+            ),
+        },
+    }

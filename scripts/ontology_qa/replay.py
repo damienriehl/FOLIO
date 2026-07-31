@@ -107,14 +107,16 @@ def replay_bundle(bundle_path: str | Path, *, report_schema_path: str | Path) ->
         minimum_confidence = float(model_policy["minimum_confidence"])
         schema = _read_json(root / "review-schema.json")
         schema_hash = content_hash(canonical_json(schema))
-        prompt = "\n\n".join(
-            (root / name).read_text(encoding="utf-8")
-            for name in (
-                "prompt-definition.md", "prompt-example.md",
-                "prompt-translation.md",
+        prompt_hash = content_hash(canonical_json({
+            family: (root / name).read_text(encoding="utf-8")
+            for family, name in (
+                ("definition", "prompt-definition.md"),
+                ("example", "prompt-example.md"),
+                ("translation", "prompt-translation.md"),
+                ("correction-proposal", "prompt-correction-proposal.md"),
+                ("correction-verification", "prompt-correction-verification.md"),
             )
-        )
-        prompt_hash = content_hash(prompt)
+        }))
         corpus_hash = corpus_identity(
             [root / "eval-cases.jsonl", root / "eval-held-out.jsonl"]
         )

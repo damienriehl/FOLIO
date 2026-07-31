@@ -8,6 +8,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "scripts"))
 from ontology_qa.model_review import run_blind_review
+from ontology_qa.context import build_graph_context
 from ontology_qa.providers.google import GoogleAdapter
 from ontology_qa.providers.openai import OpenAIAdapter
 from ontology_qa.providers.base import ProviderError, ReviewRequest
@@ -93,3 +94,33 @@ def test_default_live_transport_fails_closed_without_credentials(
     )
     with pytest.raises(ProviderError, match=variable):
         adapter.assess(request)
+
+
+def test_graph_context_is_bounded_hashed_and_ontology_grounded():
+    from rdflib import Graph, Literal, URIRef
+    from rdflib.namespace import RDFS, SKOS
+
+    graph = Graph()
+    concept = URIRef("https://example.test/C")
+    parent = URIRef("https://example.test/P")
+    sibling = URIRef("https://example.test/S")
+    graph.add((concept, SKOS.prefLabel, Literal("Appeal", lang="en")))
+    graph.add((concept, RDFS.subClassOf, parent))
+    graph.add((parent, SKOS.prefLabel, Literal("Procedure", lang="en")))
+    graph.add((sibling, RDFS.subClassOf, parent))
+    graph.add((sibling, SKOS.prefLabel, Literal("Review", lang="en")))
+    record = {
+        "record_id": RID,
+        "after": {
+            "subject": str(concept), "predicate": str(SKOS.definition),
+            "lexical": "A review by a higher court.", "language": "en",
+            "datatype": None, "object_kind": "literal",
+        },
+    }
+    first = build_graph_context(graph, record, risk_evidence=[])
+    second = build_graph_context(graph, record, risk_evidence=[])
+    assert first == second
+    assert first["concept_label"] == "Appeal"
+    assert first["ancestors"] == ["Procedure"]
+    assert first["siblings"] == ["Review"]
+    assert len(first["context_hash"]) == 64

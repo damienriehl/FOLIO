@@ -16,10 +16,11 @@ class OpenAIAdapter:
 
     def __init__(
         self, model: str, transport: Callable[[dict], dict] | None = None,
-        *, reasoning: str = "high",
+        *, reasoning: str = "high", max_output_tokens: int = 4096,
     ):
         self.model = model
         self.reasoning = reasoning
+        self.max_output_tokens = max_output_tokens
         self._transport = transport or _responses_transport
 
     def assess(self, request: ReviewRequest) -> ProviderReceipt:
@@ -28,6 +29,7 @@ class OpenAIAdapter:
         payload = {
             "model": self.model,
             "reasoning": {"effort": self.reasoning},
+            "max_output_tokens": self.max_output_tokens,
             "instructions": request.prompt,
             "input": list(request.records),
             "text": {
@@ -49,7 +51,13 @@ class OpenAIAdapter:
         responses = raw.get("responses")
         if not isinstance(responses, list):
             raise ProviderError("OpenAI response omitted structured responses")
-        return ProviderReceipt(self.provider, self.model, actual, request.request_id, tuple(responses))
+        usage = raw.get("usage") or {}
+        return ProviderReceipt(
+            self.provider, self.model, actual, request.request_id,
+            tuple(responses),
+            input_tokens=int(usage.get("input_tokens", 0)),
+            output_tokens=int(usage.get("output_tokens", 0)),
+        )
 
 
 def _responses_transport(payload: dict) -> dict:
@@ -85,4 +93,7 @@ def _responses_transport(payload: dict) -> dict:
         responses = json.loads(text) if isinstance(text, str) else None
     except json.JSONDecodeError as exc:
         raise ProviderError("OpenAI returned invalid structured JSON") from exc
-    return {"model": raw.get("model"), "responses": responses}
+    return {
+        "model": raw.get("model"), "responses": responses,
+        "usage": raw.get("usage") or {},
+    }

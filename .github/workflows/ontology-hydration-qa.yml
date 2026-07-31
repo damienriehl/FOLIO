@@ -102,6 +102,12 @@ jobs:
       - name: Install protected runner dependencies
         run: pip install -r trusted-runner/scripts/requirements.txt pytest jsonschema
 
+      - name: Restore immutable model response cache
+        uses: actions/cache@v4
+        with:
+          path: .ontology-qa-cache
+          key: ontology-qa-${{ inputs.reviewed_sha }}-${{ hashFiles('trusted-runner/qa/ontology/model-policy.yaml', 'trusted-runner/qa/ontology/prompts/**', 'trusted-runner/schemas/ontology-review.schema.json') }}
+
       - name: Run trusted model QA
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -111,7 +117,8 @@ jobs:
             --baseline inputs/baseline.owl \
             --candidate inputs/candidate.owl \
             --reviewed-sha "$REVIEWED_SHA" \
-            --bundle evidence
+            --bundle evidence \
+            --cache .ontology-qa-cache
 
       - name: Fence stale completion
         run: |

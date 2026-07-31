@@ -9,6 +9,22 @@ routes:
     provider: google
     model: gemini-3.5-flash
     reasoning: high
+  benchmark_adjudicator:
+    provider: openai
+    model: gpt-5.6-terra
+    reasoning: high
+  correction_proposer:
+    provider: openai
+    model: gpt-5.6-sol
+    reasoning: high
+  correction_verifier_1:
+    provider: google
+    model: gemini-3.5-flash
+    reasoning: high
+  correction_verifier_2:
+    provider: openai
+    model: gpt-5.6-terra
+    reasoning: high
 forbidden_providers:
   - anthropic
   - claude
@@ -24,3 +40,20 @@ qualification:
   maximum_false_accept_rate: 0.02
   require_all_locale_family_slices: true
   require_repeat_stability: true
+operations:
+  batch_size: 25
+  maximum_output_tokens_per_request: 4096
+  maximum_requests: 1000
+  maximum_input_tokens: 5000000
+  maximum_output_tokens: 1000000
+  maximum_cost_usd: 250.00
+  pricing:
+    "openai:gpt-5.6-sol":
+      input_per_million: 5.00
+      output_per_million: 30.00
+    "google:gemini-3.5-flash":
+      input_per_million: 1.50
+      output_per_million: 9.00
+    "openai:gpt-5.6-terra":
+      input_per_million: 2.50
+      output_per_million: 15.00

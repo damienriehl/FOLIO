@@ -24,6 +24,9 @@ class ProviderReceipt:
     request_id: str
     responses: tuple[dict[str, Any], ...]
     retry_count: int = 0
+    input_tokens: int = 0
+    output_tokens: int = 0
+    cache_hit: bool = False
 
 
 class ProviderError(RuntimeError):
