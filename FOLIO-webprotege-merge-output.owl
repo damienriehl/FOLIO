@@ -40289,7 +40289,7 @@ Beneficiation is the process whereby the extracted material is reduced to partic
         <skos:altLabel xml:lang="hi-in">नो-फॉल्ट दावा</skos:altLabel>
         <skos:altLabel xml:lang="zh-cn">无过失索赔</skos:altLabel>
         <skos:altLabel xml:lang="ja-jp">無過失請求</skos:altLabel>
-        <skos:definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A no-fault claim (in india, a &quot;strict liability&quot; claim) is a type of insurance claim where the policyholder is not required to prove fault or negligence in order to receive compensation for damages or injuries.</skos:definition>
+        <skos:definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A no-fault claim is a type of insurance claim where the policyholder is not required to prove fault or negligence in order to receive compensation for damages or injuries.</skos:definition>
         <skos:inScheme>India</skos:inScheme>
     </owl:Class>
     

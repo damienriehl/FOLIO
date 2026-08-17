@@ -62,6 +62,11 @@ class SemanticDiff:
     new_other_triples: list = field(default_factory=list)  # (s, p, o) triples
     removed_labels: dict = field(default_factory=dict)  # IRI -> list of (pred_local, Literal) to delete
     removals: list = field(default_factory=list)  # (s, p, o) triples removed in GH (logged, not applied)
+    # Populated by apply_changes, not by the diff: which definition_updates were
+    # actually written. The summary must report what happened, not what was
+    # detected — a definition that could not be located is a silent divergence
+    # otherwise.
+    definitions_applied: set = field(default_factory=set)  # IRI strings
 
 
 def load_webprotege_base(path: str) -> str:
@@ -405,6 +410,7 @@ def apply_changes(wp_content: str, diff: SemanticDiff, gh_content: str) -> str:
             log.info("Normalized label for %s: %s → %s + notation", iri, folio_label, plain_label)
 
     # 4. Update definitions
+    definitions_applied = diff.definitions_applied
     for iri, new_defs in diff.definition_updates.items():
         if len(new_defs) != 1:
             log.warning("Skipping definition update for %s: expected 1 def, got %d", iri, len(new_defs))
@@ -427,19 +433,46 @@ def apply_changes(wp_content: str, diff: SemanticDiff, gh_content: str) -> str:
         block_start = m.start()
         block_end = m.end()
 
-        # Replace existing definition
+        # Replace existing definition.
+        #
+        # The opening tag may carry attributes — WebProtégé writes
+        # rdf:datatype="...#string" and xml:lang="..." on some definitions — so
+        # matching a bare <skos:definition> misses them. It previously did, and
+        # failed silently, leaving the definition diverged while still being
+        # counted as applied.
+        #
+        # The negative lookahead excludes self-closing resource-valued tags,
+        # e.g. <skos:definition rdf:resource="https://..."/>. Those have no
+        # closing tag, so a tolerant pattern would otherwise run past them to
+        # the next class's </skos:definition> and swallow everything between.
+        #
+        # Group 1 (the attributes) is preserved rather than rewritten, so a
+        # datatype or language tag survives the content update.
         def_pattern = re.compile(
-            r"<skos:definition>.*?</skos:definition>",
+            r"<skos:definition(?![^>]*/>)(\s[^>]*)?>.*?</skos:definition>",
             re.DOTALL,
         )
         new_def_escaped = _xml_escape(new_def)
-        new_def_tag = f"<skos:definition>{new_def_escaped}</skos:definition>"
 
-        if def_pattern.search(block_text):
-            new_block = def_pattern.sub(new_def_tag, block_text, count=1)
+        m_def = def_pattern.search(block_text)
+        if m_def:
+            attributes = m_def.group(1) or ""
+            new_def_tag = (
+                f"<skos:definition{attributes}>{new_def_escaped}</skos:definition>"
+            )
+            new_block = (
+                block_text[: m_def.start()] + new_def_tag + block_text[m_def.end() :]
+            )
             result = result[:block_start] + new_block + result[block_end:]
             changes_applied += 1
+            definitions_applied.add(iri)
             log.info("Updated definition for %s", iri)
+        else:
+            log.warning(
+                "Could not update definition for %s: no literal <skos:definition> "
+                "in its block (resource-valued definitions are left alone)",
+                iri,
+            )
 
     # 5. Insert new restrictions
     for iri, restrictions in diff.new_restrictions.items():
@@ -604,9 +637,16 @@ def print_summary(diff: SemanticDiff, output_path: str):
         print()
 
     if diff.definition_updates:
-        print(f"Definition updates ({len(diff.definition_updates)}):")
+        applied = diff.definitions_applied
+        skipped = sorted(set(diff.definition_updates) - applied)
+        print(f"Definition updates ({len(applied)} applied of {len(diff.definition_updates)} detected):")
         for iri in sorted(diff.definition_updates):
-            print(f"  ~ {iri.split('/')[-1]}")
+            mark = "~" if iri in applied else "!"
+            note = "" if iri in applied else "  NOT APPLIED — no literal skos:definition found"
+            print(f"  {mark} {iri.split('/')[-1]}{note}")
+        if skipped:
+            print(f"  {len(skipped)} definition update(s) could not be applied; "
+                  f"those concepts remain diverged from FOLIO.owl.")
         print()
 
     if diff.new_restrictions:
@@ -632,11 +672,13 @@ def print_summary(diff: SemanticDiff, output_path: str):
             print(f"  ... and {len(diff.removals) - 10} more")
         print()
 
+    # Definitions count what was applied, not what was detected. The others
+    # count detections because their apply paths already warn on failure.
     total_changes = (
         len(diff.new_classes)
         + sum(len(v) for v in diff.new_alt_labels.values())
         + len(diff.label_normalizations)
-        + len(diff.definition_updates)
+        + len(diff.definitions_applied)
         + sum(len(v) for v in diff.new_restrictions.values())
         + sum(len(v) for v in diff.removed_labels.values())
     )
