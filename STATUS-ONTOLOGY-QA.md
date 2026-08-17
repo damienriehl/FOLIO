@@ -41,8 +41,10 @@ Release A is implemented on branch `automated-ontology-qa`.
 ## 2026-08-17 — Co-Investment Fund and IRI minting
 
 - Added the `Co-Investment Fund` class (`R1cNH7TLMiSlSbIbdFsynUk`) under `Investment Funds`; commit `94e0e83`.
+- Opened focused [alea-institute/FOLIO#16](https://github.com/alea-institute/FOLIO/pull/16) from a clean branch off `upstream/main`; it contains only the class (`FOLIO.owl`, +29/−0). The PR remains open and mergeable with no comments or reviews; Mike Bommarito's review was requested on 2026-08-17.
 - Added `scripts/mint_iri.py`, which carries no generation logic and imports `folio.iri` from folio-python so there is one implementation; commit `f8dd90c`.
 - Filed [alea-institute/folio-python#19](https://github.com/alea-institute/folio-python/pull/19), which moves the generator to `R` + base62, fixes a uniqueness check that could never fire, and removes a path that emitted local names shorter than the library's own assertion allows.
+- `alea-institute/folio-python#19` remains open and mergeable with no comments or reviews; Mike Bommarito's review is requested and all six architecture checks pass.
 - `folio-python>=0.4.0` lives in `scripts/requirements-authoring.txt`, not `scripts/requirements.txt`, because that release is not on PyPI yet (latest published is 0.3.6) and an unresolvable pin there would take the fail-closed census down.
 - Regenerated `FOLIO-webprotege-merge-output.owl`; commit `db354e1`.
 - Fixed a pre-existing silent no-op in `scripts/generate_webprotege_merge.py`: definition updates on attributed `<skos:definition>` tags were detected, never applied, and still counted as applied. The fix propagated one pending definition (`R5RoVVyRmkyMepjXK7X1sp`, No-Fault Claim); the India-specific term it dropped from the prose is already modelled structurally as `v1:country`, so nothing was lost.
