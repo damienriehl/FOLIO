@@ -20,3 +20,18 @@ handoff:
 
 Do not rely on `.claude/RESUME.md`, `.compound-engineering/`, or another hidden
 directory for Cockpit reporting; Cockpit does not scan those locations.
+
+## Documented solutions
+
+`docs/solutions/` holds durable learnings from problems already solved here —
+defects and near-misses alongside conventions and practices — filed in category
+directories with YAML frontmatter (`module`, `component`, `problem_type`,
+`tags`) so they can be searched by field as well as by content.
+
+Relevant when implementing or debugging in an area someone has already been
+burned by. Current entries cover this repository's IRI minting rules, which are
+irreversible once published, and a class of silent-failure defect in the
+WebProtégé merge pipeline.
+
+Related durable context lives in `docs/handoffs/` (session-to-session state) and
+`docs/FOLIO-CHANGE-POLICY.md` (what a given change obliges before shipping).

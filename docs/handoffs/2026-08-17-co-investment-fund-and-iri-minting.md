@@ -54,9 +54,9 @@ merge run. Output is stable; it is summary noise.
 - **`scripts/mint_iri.py` refuses to run without `folio-python`.** That is
   deliberate: a fallback generator is drift. Until #19 ships, install the branch
   directly — the command is in `scripts/requirements-authoring.txt`.
-- **`docs/solutions/` is not surfaced in `AGENTS.md`.** A one-line addition
-  would fix it; Damien has not been asked yet. Until then, future sessions will
-  not find the learnings unless told.
+- **`docs/solutions/` is surfaced in `AGENTS.md`** as of 2026-08-17, so a fresh
+  session should find the learnings without being told. Keep that section
+  current if the category layout changes.
 - **`CONCEPTS.md` does not exist.** Vocabulary capture ran update-only and
   deferred creation to a full `ce-compound` run.
 - **The merge pipeline's summary used to lie.** It now reports
