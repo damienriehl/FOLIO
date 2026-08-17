@@ -1,3 +1,6 @@
+# Runtime dependencies of the fail-closed ontology QA workflows.
+# Authoring-time tools (IRI minting) live in requirements-authoring.txt so that
+# they cannot take the census down.
 rdflib>=7.0.0,<8.0.0
 pyshacl>=0.30.1,<1.0.0
 PyYAML>=6.0.2,<7.0.0

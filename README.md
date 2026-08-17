@@ -77,6 +77,31 @@ pytest -q tests
 python scripts/validate_ontology_annotations.py FOLIO.owl
 ```
 
+### Minting IRIs for new concepts
+
+FOLIO IRIs are permanent: once published, one is never deleted and never reused
+(`docs/FOLIO-CHANGE-POLICY.md` §2). Generate them; never type one by hand.
+
+```bash
+python -m pip install -r scripts/requirements-authoring.txt
+python scripts/mint_iri.py                  # mint one, with its sorted insertion point
+python scripts/mint_iri.py --check <IRI>    # validate shape, and that it is unused
+python scripts/mint_iri.py --audit          # IRI family census, and the drift gate
+```
+
+The generation algorithm itself lives upstream in
+[folio-python](https://github.com/alea-institute/folio-python) (`folio/iri.py`):
+`R` followed by base62 of 127 random bits, the scheme used by the great majority
+of published FOLIO concepts. `scripts/mint_iri.py` carries no generator of its
+own and refuses to run without folio-python, so there is one implementation
+rather than two that can drift apart. What it adds is the part upstream cannot
+know: collision checking against this working copy, the sorted insertion point,
+and the family census.
+
+`tests/test_iri_minting.py` ratchets against drift — it fails if a class IRI
+appears that matches none of the known families. It skips when folio-python is
+absent, so it does not yet gate CI; see `scripts/requirements-authoring.txt`.
+
 Replay a downloaded durable evidence bundle without provider access:
 
 ```bash

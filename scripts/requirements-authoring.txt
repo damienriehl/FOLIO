@@ -1,0 +1,21 @@
+# Authoring-time dependencies — minting IRIs and adding concepts by hand.
+#
+# Kept separate from scripts/requirements.txt on purpose. That file is installed
+# by the fail-closed ontology QA workflows; anything unresolvable in it takes the
+# census down. These packages are needed only when a human is editing FOLIO.owl.
+#
+#     pip install -r scripts/requirements-authoring.txt
+#
+# folio-python owns the IRI generation algorithm (folio/iri.py). scripts/mint_iri.py
+# imports it and deliberately carries no fallback generator, so that there is one
+# implementation rather than two that can drift apart.
+#
+# The >=0.4.0 floor is the release that introduces folio.iri and the R + base62
+# scheme; earlier versions mint a bare base64url token that matches only 2 of the
+# 18,326 published concepts. That release is not on PyPI yet — it is
+# alea-institute/folio-python#19, open as of 2026-08-17. Until it ships, this file
+# will not resolve; install the branch directly to mint in the meantime:
+#
+#     pip install 'folio-python @ git+https://github.com/alea-institute/folio-python@iri-minting-r-base62'
+#
+folio-python>=0.4.0
