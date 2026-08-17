@@ -57,16 +57,18 @@ class SemanticDiff:
     new_classes: list = field(default_factory=list)  # list of IRI strings
     new_alt_labels: dict = field(default_factory=dict)  # IRI -> list of Literal
     label_normalizations: dict = field(default_factory=dict)  # IRI -> (plain_label, folio_label)
-    definition_updates: dict = field(default_factory=dict)  # IRI -> new definition Literal
+    definition_updates: dict = field(default_factory=dict)  # IRI -> replacement definition Literal (1:1 only)
+    definition_additions: dict = field(default_factory=dict)  # IRI -> definitions to append alongside existing ones
     new_restrictions: dict = field(default_factory=dict)  # IRI -> list of (prop, value) tuples
     new_other_triples: list = field(default_factory=list)  # (s, p, o) triples
     removed_labels: dict = field(default_factory=dict)  # IRI -> list of (pred_local, Literal) to delete
     removals: list = field(default_factory=list)  # (s, p, o) triples removed in GH (logged, not applied)
-    # Populated by apply_changes, not by the diff: which definition_updates were
+    # Populated by apply_changes, not by the diff: which definition changes were
     # actually written. The summary must report what happened, not what was
     # detected — a definition that could not be located is a silent divergence
     # otherwise.
-    definitions_applied: set = field(default_factory=set)  # IRI strings
+    definitions_applied: set = field(default_factory=set)  # IRI strings, replacements
+    definitions_added: set = field(default_factory=set)  # IRI strings, additions
 
 
 def load_webprotege_base(path: str) -> str:
@@ -213,9 +215,14 @@ def compute_semantic_diff(gh_path: str, wp_content: str) -> SemanticDiff:
         new_defs = gh_defs - wp_defs
         removed_defs = wp_defs - gh_defs
         if new_defs and not removed_defs:
-            # New definitions added (not replacing existing ones)
-            for d in new_defs:
-                diff.definition_updates.setdefault(cls_str, []).append(d)
+            # Definitions ADDED, with every existing one still present. These
+            # must be appended. They are kept in a separate field from 1:1
+            # replacements because the two need opposite apply behaviour, and
+            # sharing one field is precisely how an addition came to be applied
+            # as a replacement — silently destroying the definition already
+            # there. 87 classes in FOLIO.owl carry more than one definition, so
+            # this is a real shape, not a hypothetical one.
+            diff.definition_additions[cls_str] = sorted(new_defs, key=str)
         elif new_defs and removed_defs:
             # Definition changed — only if it's a 1:1 replacement
             if len(gh_defs) == 1 and len(wp_defs) == 1:
@@ -474,6 +481,47 @@ def apply_changes(wp_content: str, diff: SemanticDiff, gh_content: str) -> str:
                 iri,
             )
 
+    # 4b. Append added definitions
+    #
+    # Distinct from step 4: these accompany the definitions already present
+    # rather than superseding one. Appending, not substituting, is the whole
+    # point — applying an addition as a replacement destroys the definition it
+    # was meant to join.
+    definitions_added = diff.definitions_added
+    for iri, added_defs in diff.definition_additions.items():
+        iri_escaped = re.escape(iri)
+        block_pattern = re.compile(
+            r"(<owl:Class rdf:about=\"" + iri_escaped + r"\">)"
+            r"(.*?)"
+            r"(</owl:Class>)",
+            re.DOTALL,
+        )
+        m = block_pattern.search(result)
+        if not m:
+            log.warning("Could not find class block for %s to add definitions", iri)
+            continue
+
+        block_text = m.group(0)
+        insert_point = m.start(3)
+        lines = [
+            f"        {_literal_tag('skos:definition', value)}"
+            for value in added_defs
+            # Never write a duplicate: the same literal may already be present
+            # in a form the graph diff did not treat as equal.
+            if _literal_tag("skos:definition", value) not in block_text
+        ]
+        if not lines:
+            log.warning(
+                "Definitions for %s are already present verbatim; nothing added", iri
+            )
+            continue
+
+        insert_text = "\n".join(lines) + "\n"
+        result = result[:insert_point] + insert_text + "    " + result[insert_point:]
+        changes_applied += len(lines)
+        definitions_added.add(iri)
+        log.info("Added %d definition(s) to %s", len(lines), iri)
+
     # 5. Insert new restrictions
     for iri, restrictions in diff.new_restrictions.items():
         for prop, restriction_type, value in restrictions:
@@ -539,6 +587,24 @@ def apply_changes(wp_content: str, diff: SemanticDiff, gh_content: str) -> str:
 
     log.info("Total changes applied: %d", changes_applied)
     return result
+
+
+def _literal_tag(tag: str, value) -> str:
+    """Serialise a literal as an XML element, preserving how it is typed.
+
+    A language tag or datatype is part of the literal's identity: emitting
+    ``<skos:definition>x</skos:definition>`` for a value that is
+    ``"x"@en`` writes a different triple than the one being propagated. Kept in
+    one place so every insertion path agrees.
+    """
+    text = _xml_escape(str(value))
+    language = value.language if isinstance(value, Literal) else None
+    datatype = value.datatype if isinstance(value, Literal) else None
+    if language:
+        return f'<{tag} xml:lang="{language}">{text}</{tag}>'
+    if datatype:
+        return f'<{tag} rdf:datatype="{datatype}">{text}</{tag}>'
+    return f"<{tag}>{text}</{tag}>"
 
 
 def _remove_label_line(block_text: str, pred_local: str, label) -> tuple[str, bool]:
@@ -649,6 +715,17 @@ def print_summary(diff: SemanticDiff, output_path: str):
                   f"those concepts remain diverged from FOLIO.owl.")
         print()
 
+    if diff.definition_additions:
+        added = diff.definitions_added
+        total_added = sum(len(v) for v in diff.definition_additions.values())
+        print(f"Definition additions ({len(added)} applied of "
+              f"{len(diff.definition_additions)} classes, {total_added} definition(s)):")
+        for iri in sorted(diff.definition_additions):
+            mark = "+" if iri in added else "!"
+            note = "" if iri in added else "  NOT APPLIED"
+            print(f"  {mark} {iri.split('/')[-1]}{note}")
+        print()
+
     if diff.new_restrictions:
         total_r = sum(len(v) for v in diff.new_restrictions.values())
         print(f"New restrictions ({total_r} across {len(diff.new_restrictions)} classes):")
@@ -679,6 +756,11 @@ def print_summary(diff: SemanticDiff, output_path: str):
         + sum(len(v) for v in diff.new_alt_labels.values())
         + len(diff.label_normalizations)
         + len(diff.definitions_applied)
+        + sum(
+            len(v)
+            for iri, v in diff.definition_additions.items()
+            if iri in diff.definitions_added
+        )
         + sum(len(v) for v in diff.new_restrictions.values())
         + sum(len(v) for v in diff.removed_labels.values())
     )

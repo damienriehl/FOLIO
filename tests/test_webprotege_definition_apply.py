@@ -130,6 +130,69 @@ def test_self_closing_resource_definition_does_not_swallow_later_classes(
         assert SUBJECT not in diff.definitions_applied
 
 
+def test_added_definition_is_appended_not_substituted(tmp_path: Path) -> None:
+    """The data-loss regression.
+
+    When FOLIO.owl gains a second definition, the existing one must survive.
+    Routing additions through the replacement path overwrote it: the class came
+    out with one definition, the wrong one, and nothing said so.
+    """
+    original = "<skos:definition>Original</skos:definition>"
+    added = "<skos:definition>Added second</skos:definition>"
+    gh = document(klass(SUBJECT, f"{original}\n  {added}"))
+    wp = document(klass(SUBJECT, original))
+    result, diff = run(tmp_path, gh, wp)
+
+    assert "Original" in result, "the pre-existing definition was destroyed"
+    assert "Added second" in result
+    assert result.count("<skos:definition") == 2
+    assert SUBJECT in diff.definition_additions
+    assert SUBJECT in diff.definitions_added
+    # An addition is not a replacement and must not be recorded as one.
+    assert SUBJECT not in diff.definition_updates
+
+
+def test_addition_preserves_language_and_datatype(tmp_path: Path) -> None:
+    """A language tag or datatype is part of the literal's identity."""
+    original = "<skos:definition>Original</skos:definition>"
+    tagged = '<skos:definition xml:lang="fr-fr">Definition francaise</skos:definition>'
+    gh = document(klass(SUBJECT, f"{original}\n  {tagged}"))
+    wp = document(klass(SUBJECT, original))
+    result, _ = run(tmp_path, gh, wp)
+    assert tagged in result
+    assert "Original" in result
+
+
+def test_addition_is_not_duplicated_when_already_present(tmp_path: Path) -> None:
+    original = "<skos:definition>Original</skos:definition>"
+    gh = document(klass(SUBJECT, original))
+    wp = document(klass(SUBJECT, original))
+    result, diff = run(tmp_path, gh, wp)
+    assert not diff.definition_additions
+    assert result.count("<skos:definition") == 1
+
+
+def test_replacement_still_substitutes(tmp_path: Path) -> None:
+    """The 1:1 path must keep replacing, not start appending."""
+    gh = document(klass(SUBJECT, "<skos:definition>Corrected</skos:definition>"))
+    wp = document(klass(SUBJECT, "<skos:definition>Stale</skos:definition>"))
+    result, diff = run(tmp_path, gh, wp)
+    assert result.count("<skos:definition") == 1
+    assert "Corrected" in result and "Stale" not in result
+    assert SUBJECT in diff.definition_updates
+    assert SUBJECT not in diff.definition_additions
+
+
+def test_added_definition_on_a_class_with_none(tmp_path: Path) -> None:
+    """A class with no definition at all still receives one."""
+    gh = document(klass(SUBJECT, "<skos:definition>First</skos:definition>"))
+    wp = document(klass(SUBJECT, "<rdfs:label>Test</rdfs:label>"))
+    result, diff = run(tmp_path, gh, wp)
+    assert "First" in result
+    assert "<rdfs:label>Test</rdfs:label>" in result
+    assert SUBJECT in diff.definitions_added
+
+
 def test_definitions_applied_starts_empty_and_tracks_only_writes(
     tmp_path: Path,
 ) -> None:
