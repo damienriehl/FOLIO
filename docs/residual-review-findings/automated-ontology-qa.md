@@ -3,7 +3,7 @@
 Release A passed its offline verification contract on 2026-07-31. The
 acceptance-focused review left these non-blocking follow-ups:
 
-1. Extract the changed-record correction stage from
+1. **Done 2026-10-03 (`5b935e8`).** Extract the changed-record correction stage from
    `scripts/run_trusted_ontology_qa.py` into a focused `ontology_qa` module.
    Reuse the response-set and canonical-publication helpers shared with the
    confirmed-defect runner. Preserve the current single-directory atomic

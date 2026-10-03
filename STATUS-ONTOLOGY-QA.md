@@ -2,7 +2,7 @@
 
 STATE: Release A complete — Release B awaits genuine cross-provider availability
 
-Last updated: 2026-08-17
+Last updated: 2026-10-03
 
 ## Release A outcome
 
@@ -33,7 +33,7 @@ Release A is implemented on branch `automated-ontology-qa`.
 - Release B depends on genuine cross-provider availability.
 - Do not use Claude before Saturday morning, America/Chicago.
 - Do not repeatedly retry OpenAI while the account has no credits.
-- The two non-blocking residuals are a maintainability extraction from the large trusted-runner module and a real GitHub Actions canary.
+- The trusted-runner extraction residual is done (2026-10-03); the real GitHub Actions canary remains open.
 - Detailed residual findings live in `docs/residual-review-findings/automated-ontology-qa.md`.
 - `automated-ontology-qa` is pushed to `origin` (the `damienriehl/FOLIO` fork); no pull request has been opened against `alea-institute/FOLIO`.
 - User-owned untracked files remain preserved.
@@ -48,3 +48,10 @@ Release A is implemented on branch `automated-ontology-qa`.
 - `folio-python>=0.4.0,<0.5.0` now lives in `scripts/requirements.txt`: alea-institute/folio-python#19 merged and shipped as 0.4.0 on PyPI (verified 2026-10-03), so `tests/test_iri_minting.py` gates CI instead of skipping.
 - Regenerated `FOLIO-webprotege-merge-output.owl`; commit `db354e1`.
 - Fixed a pre-existing silent no-op in `scripts/generate_webprotege_merge.py`: definition updates on attributed `<skos:definition>` tags were detected, never applied, and still counted as applied. The fix propagated one pending definition (`R5RoVVyRmkyMepjXK7X1sp`, No-Fault Claim); the India-specific term it dropped from the prose is already modelled structurally as `v1:country`, so nothing was lost.
+
+## 2026-10-03 — Residual cleanups
+
+- `5b935e8` extracts the changed-record correction stage into `scripts/ontology_qa/changed_record_corrections.py` and shares the response-set and write-once helpers with the confirmed-defect runner via `scripts/ontology_qa/correction_artifacts.py`. Pure move; `run_trusted_ontology_qa.py` is 1,011 lines (was 1,200).
+- `e72dd7c` normalises `xsd:string` literals against plain ones in `compute_semantic_diff`. Against the committed files, the merge run now reports 0 changes (was a phantom No-Fault Claim update) and 90 other removals (was 93; the 3 dropped were `xsd:string` noise on Billable Hour, Flat Fee, and No-Fault Claim). Output is byte-identical.
+- Full suite: 181 passed, 0 skipped.
+- The canary is blocked on credentials and spend; see `NEXT-ONTOLOGY-QA.md`.
