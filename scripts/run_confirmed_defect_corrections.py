@@ -17,6 +17,10 @@ from rdflib import Graph, Literal, URIRef
 from rdflib.namespace import RDFS, SKOS
 
 from ontology_qa.context import build_graph_context
+from ontology_qa.correction_artifacts import (
+    _check_write_once, _require_exact_response_set, _require_exact_verdicts,
+    _write_once,
+)
 from ontology_qa.correction_pipeline import (
     converge_correction, correction_response_schema,
 )
@@ -104,55 +108,6 @@ def build_debt_records(
         record["context"] = build_graph_context(graph, record, risk_evidence=[])
         records.append(record)
     return sorted(records, key=lambda item: item["record_id"])
-
-
-def _require_exact_verdicts(
-    records: list[dict[str, Any]],
-    responses: list[dict[str, Any]],
-    *,
-    verdict: str,
-    minimum_confidence: float,
-) -> None:
-    expected = {record["record_id"] for record in records}
-    actual = {response["record_id"] for response in responses}
-    if actual != expected or len(actual) != len(responses):
-        raise ValueError("assessment response set is incomplete")
-    failures = sorted(
-        response["record_id"] for response in responses
-        if response["verdict"] != verdict
-        or float(response["confidence"]) < minimum_confidence
-    )
-    if failures:
-        raise ValueError(
-            f"required {verdict} verdict did not converge: {failures}"
-        )
-
-
-def _require_exact_response_set(
-    records: list[dict[str, Any]],
-    responses: list[dict[str, Any]],
-) -> None:
-    expected = {record["record_id"] for record in records}
-    actual = {response["record_id"] for response in responses}
-    if actual != expected or len(actual) != len(responses):
-        raise ValueError("assessment response set is incomplete")
-
-
-def _write_once(path: Path, value: Any) -> None:
-    data = canonical_json(value) + b"\n"
-    if path.exists():
-        if path.read_bytes() != data:
-            raise FileExistsError(f"append-only output exists: {path}")
-        return
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_bytes(data)
-    temporary.replace(path)
-
-
-def _check_write_once(path: Path, value: Any) -> None:
-    data = canonical_json(value) + b"\n"
-    if path.exists() and path.read_bytes() != data:
-        raise FileExistsError(f"append-only output exists: {path}")
 
 
 def main() -> int:
