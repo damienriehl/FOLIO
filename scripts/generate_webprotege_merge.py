@@ -21,7 +21,7 @@ from dataclasses import dataclass, field
 
 import rdflib
 from rdflib import RDF, RDFS, OWL, URIRef, Literal
-from rdflib.namespace import SKOS
+from rdflib.namespace import SKOS, XSD
 
 log = logging.getLogger(__name__)
 
@@ -135,6 +135,13 @@ def _get_restrictions_for_class(g: rdflib.Graph, cls: URIRef) -> set:
     return restrictions
 
 
+def _norm_literal(value):
+    """Compare plain and xsd:string literals equally without dropping languages."""
+    if isinstance(value, Literal) and value.datatype == XSD.string and not value.language:
+        return Literal(str(value))
+    return value
+
+
 def compute_semantic_diff(gh_path: str, wp_content: str) -> SemanticDiff:
     """Parse both files into rdflib Graphs and compute semantic differences."""
     log.info("Parsing GitHub OWL file...")
@@ -158,16 +165,20 @@ def compute_semantic_diff(gh_path: str, wp_content: str) -> SemanticDiff:
             log.info("  New class: %s", c)
 
     # For existing classes, find new altLabels, definition updates, label normalizations
+    # Normalize comparison sets only; retain original RDF terms in apply payloads.
     common_classes = gh_classes & wp_classes
     for cls in common_classes:
         cls_str = str(cls)
 
         # Check altLabels
-        gh_alt = set(gh_graph.objects(cls, SKOS.altLabel))
-        wp_alt = set(wp_graph.objects(cls, SKOS.altLabel))
+        gh_alt = {_norm_literal(v) for v in gh_graph.objects(cls, SKOS.altLabel)}
+        wp_alt = {_norm_literal(v) for v in wp_graph.objects(cls, SKOS.altLabel)}
         new_alt = gh_alt - wp_alt
         if new_alt:
-            diff.new_alt_labels[cls_str] = sorted(new_alt, key=str)
+            diff.new_alt_labels[cls_str] = sorted(
+                (v for v in gh_graph.objects(cls, SKOS.altLabel)
+                 if _norm_literal(v) in new_alt), key=str,
+            )
 
         # Check label removals (altLabel/hiddenLabel present in WP but gone in GH).
         # Only treat a label as removed when its *surface string* is entirely
@@ -181,11 +192,12 @@ def compute_semantic_diff(gh_path: str, wp_content: str) -> SemanticDiff:
             for v in gh_graph.objects(cls, lp)
         }
         for pred_local, pred in REMOVABLE_LABEL_PREDICATES.items():
-            gh_vals = set(gh_graph.objects(cls, pred))
-            wp_vals = set(wp_graph.objects(cls, pred))
+            gh_vals = {_norm_literal(v) for v in gh_graph.objects(cls, pred)}
+            wp_vals = {_norm_literal(v) for v in wp_graph.objects(cls, pred)}
             removed = [
-                v for v in (wp_vals - gh_vals)
-                if isinstance(v, Literal)
+                v for v in wp_graph.objects(cls, pred)
+                if _norm_literal(v) in (wp_vals - gh_vals)
+                and isinstance(v, Literal)
                 and not str(v).startswith("folio:")
                 and str(v) not in gh_label_strings
             ]
@@ -193,10 +205,10 @@ def compute_semantic_diff(gh_path: str, wp_content: str) -> SemanticDiff:
                 diff.removed_labels.setdefault(cls_str, []).append((pred_local, v))
 
         # Check label normalization (folio: prefix moved from rdfs:label to skos:notation)
-        gh_labels = set(gh_graph.objects(cls, RDFS.label))
-        wp_labels = set(wp_graph.objects(cls, RDFS.label))
-        gh_notations = set(gh_graph.objects(cls, SKOS.notation))
-        wp_notations = set(wp_graph.objects(cls, SKOS.notation))
+        gh_labels = {_norm_literal(v) for v in gh_graph.objects(cls, RDFS.label)}
+        wp_labels = {_norm_literal(v) for v in wp_graph.objects(cls, RDFS.label)}
+        gh_notations = {_norm_literal(v) for v in gh_graph.objects(cls, SKOS.notation)}
+        wp_notations = {_norm_literal(v) for v in wp_graph.objects(cls, SKOS.notation)}
 
         for wp_label in wp_labels:
             label_str = str(wp_label)
@@ -210,8 +222,8 @@ def compute_semantic_diff(gh_path: str, wp_content: str) -> SemanticDiff:
                     diff.label_normalizations[cls_str] = (plain, label_str)
 
         # Check definition updates
-        gh_defs = set(gh_graph.objects(cls, SKOS.definition))
-        wp_defs = set(wp_graph.objects(cls, SKOS.definition))
+        gh_defs = {_norm_literal(v) for v in gh_graph.objects(cls, SKOS.definition)}
+        wp_defs = {_norm_literal(v) for v in wp_graph.objects(cls, SKOS.definition)}
         new_defs = gh_defs - wp_defs
         removed_defs = wp_defs - gh_defs
         if new_defs and not removed_defs:
@@ -222,26 +234,34 @@ def compute_semantic_diff(gh_path: str, wp_content: str) -> SemanticDiff:
             # as a replacement — silently destroying the definition already
             # there. 87 classes in FOLIO.owl carry more than one definition, so
             # this is a real shape, not a hypothetical one.
-            diff.definition_additions[cls_str] = sorted(new_defs, key=str)
+            diff.definition_additions[cls_str] = sorted(
+                (v for v in gh_graph.objects(cls, SKOS.definition)
+                 if _norm_literal(v) in new_defs), key=str,
+            )
         elif new_defs and removed_defs:
             # Definition changed — only if it's a 1:1 replacement
             if len(gh_defs) == 1 and len(wp_defs) == 1:
-                diff.definition_updates[cls_str] = list(gh_defs)
+                diff.definition_updates[cls_str] = list(gh_graph.objects(cls, SKOS.definition))
 
         # Check new restrictions
         gh_restrictions = _get_restrictions_for_class(gh_graph, cls)
         wp_restrictions = _get_restrictions_for_class(wp_graph, cls)
-        new_restrictions = gh_restrictions - wp_restrictions
+        wp_restrictions = {(p, kind, _norm_literal(v)) for p, kind, v in wp_restrictions}
+        new_restrictions = {
+            (p, kind, v) for p, kind, v in gh_restrictions
+            if (p, kind, _norm_literal(v)) not in wp_restrictions
+        }
         if new_restrictions:
             diff.new_restrictions[cls_str] = sorted(new_restrictions, key=str)
 
     # Check for non-class triples that differ (annotations section, etc.)
     # We handle these via label normalization detection above
     # Log removals for awareness
+    gh_triples = {(s, p, _norm_literal(o)) for s, p, o in gh_graph}
     for s, p, o in wp_graph:
         if _is_blank_node_triple(s, p, o):
             continue
-        if (s, p, o) not in gh_graph:
+        if (s, p, _norm_literal(o)) not in gh_triples:
             if isinstance(s, URIRef) and str(s).startswith(FOLIO_NS):
                 # Only track removals of folio entities, skip noise
                 if p == RDFS.label and str(o).startswith("folio:"):
