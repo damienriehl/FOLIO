@@ -146,10 +146,9 @@ REJECT: not the shape folio.iri emits. Mint it, do not type it.
 - `docs/FOLIO-CHANGE-POLICY.md` §2 — IRI permanence; why this is one-way
 - `scripts/mint_iri.py` — the repo-side CLI, collision check, and drift gate
 - `tests/test_iri_minting.py` — family classification and the drift ratchet
-- `scripts/requirements-authoring.txt` — why `folio-python` is not in the
-  fail-closed QA requirements
+- `scripts/requirements.txt` — carries `folio-python>=0.4.0` since that
+  release reached PyPI (2026-10-03 check), so the drift ratchet gates CI
 - alea-institute/folio-python#19 — moves `generate_iri()` to this convention and
   adds an `iri` module in that repository as the authority (path is in
-  `folio-python`, not this repo). Open as of this writing; until it ships and
-  releases as 0.4.0, `mint_iri.py` cannot run against a released
-  `folio-python`.
+  `folio-python`, not this repo). Merged and released as 0.4.0 on PyPI (verified
+  2026-10-03).

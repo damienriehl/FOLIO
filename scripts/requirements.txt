@@ -1,7 +1,9 @@
 # Runtime dependencies of the fail-closed ontology QA workflows.
-# Authoring-time tools (IRI minting) live in requirements-authoring.txt so that
-# they cannot take the census down.
+# folio-python owns the IRI generation algorithm (folio/iri.py); it is here so
+# tests/test_iri_minting.py gates CI instead of skipping. 0.4.0 is the release
+# that introduces folio.iri and the R + base62 scheme.
 rdflib>=7.0.0,<8.0.0
 pyshacl>=0.30.1,<1.0.0
 PyYAML>=6.0.2,<7.0.0
 langcodes>=3.4.1,<4.0.0
+folio-python>=0.4.0,<0.5.0

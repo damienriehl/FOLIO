@@ -99,8 +99,8 @@ know: collision checking against this working copy, the sorted insertion point,
 and the family census.
 
 `tests/test_iri_minting.py` ratchets against drift — it fails if a class IRI
-appears that matches none of the known families. It skips when folio-python is
-absent, so it does not yet gate CI; see `scripts/requirements-authoring.txt`.
+appears that matches none of the known families. folio-python is in
+`scripts/requirements.txt`, so the QA workflows install it and the test gates CI.
 
 Replay a downloaded durable evidence bundle without provider access:
 
