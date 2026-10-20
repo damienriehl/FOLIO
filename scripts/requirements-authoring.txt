@@ -1,0 +1,13 @@
+# Authoring-time dependencies — minting IRIs and adding concepts by hand.
+#
+#     pip install -r scripts/requirements-authoring.txt
+#
+# folio-python owns the IRI generation algorithm (folio/iri.py). scripts/mint_iri.py
+# imports it and deliberately carries no fallback generator, so that there is one
+# implementation rather than two that can drift apart.
+#
+# folio-python moved into scripts/requirements.txt once 0.4.0 (the R + base62
+# release, alea-institute/folio-python#19) reached PyPI, so the QA workflows
+# install it and tests/test_iri_minting.py gates CI. This file now just pulls
+# the runtime set; add authoring-only tools here.
+-r requirements.txt

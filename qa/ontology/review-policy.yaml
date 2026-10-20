@@ -1,0 +1,43 @@
+version: 1
+sentinel_values:
+  - "null"
+  - "none"
+  - "n/a"
+resource_valued_predicates: []
+supported_languages:
+  - ar-sa
+  - de-de
+  - en
+  - en-au
+  - en-ca
+  - en-gb
+  - en-us
+  - es
+  - es-es
+  - es-mx
+  - fr
+  - fr-fr
+  - he
+  - he-il
+  - hi
+  - hi-in
+  - ja-jp
+  - ko-kr
+  - pt-br
+  - zh-cn
+cardinality:
+  "http://www.w3.org/2004/02/skos/core#prefLabel":
+    max: 1
+surveillance:
+  seed: folio-legacy-surveillance-v1
+  confidence: 0.95
+  maximum_defect_rate: 0.02
+  margin: 0.02
+  rare_stratum_census_at: 50
+  severe_defect_classes:
+    - concept_substitution
+    - negation
+    - modality
+    - party
+    - jurisdiction
+  maximum_review_records: 10000
