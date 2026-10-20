@@ -15,17 +15,15 @@ _Written 2026-10-20 on branch `automated-ontology-qa`._
 
 ## Open
 
-1. **Release A canary (keyless partial).** Chief answered `canary-setup` with the
-   keyless partial canary (Decision Sheet `folio-2026-10-03-2114-release-a-canary-and-folio16`,
-   re-asked in `folio-2026-10-20-1422-pr15-nudge-canary`). The trigger and the
-   trusted dispatch only fire from the fork's **default branch**, which is `main`
-   and lacks the QA workflows. The setup step (switch the fork's default branch to
-   `automated-ontology-qa`, push a canary branch, open a do-not-merge PR in the
-   fork) was **denied by the auto-mode permission classifier on 2026-10-05**. Do
-   not retry it by another route; it needs Damien's permission rule or direct
-   approval. A prepared canary change (one altLabel on Co-Investment Fund,
-   census-verified to exit 0 with no regressions) sits uncommitted in a local
-   worktree for branch `canary/release-a-keyless`.
+1. **Release A canary (keyless partial) — DONE 2026-10-20.** The fork's `main` now
+   carries the QA workflows (fork PR #2), with no default-branch switch. The
+   canary proved the deterministic job, the trigger, and the dispatch. The
+   dispatched trusted job waited on the gated `ontology-qa` environment and was
+   cancelled unapproved. Three trigger bugs were fixed in fork PRs #4 to #6.
+   Receipt: `docs/plans/2026-10-20-1500-ops-release-a-keyless-canary-plan.md`.
+   Learning: `docs/solutions/integration-issues/keyless-canary-for-workflow-run-dispatch-chain.md`.
+   The prepared altLabel change in the old `canary/release-a-keyless` worktree is
+   superseded (the same edit ran as fork PR #3).
 2. **Full canary** needs an OpenAI Platform key and a Gemini key in the fork's
    `ontology-qa` environment (spend + credential gate; Codex credits do not
    apply). Proposed model change: `gpt-6-luna` for primary and correction
@@ -41,5 +39,9 @@ _Written 2026-10-20 on branch `automated-ontology-qa`._
 - The census exits 0 when nothing regresses against the baseline; the 199 legacy
   failures sit in the baseline. A clean canary PR can therefore turn the
   deterministic check green, which the trigger requires.
-- `webprotege-merge.yml` runs on pushes to `main` that touch `FOLIO.owl`; merging
-  this branch into the fork's `main` would start it.
+- `webprotege-merge.yml` now runs on the fork's `main` and **fails closed** on every
+  `FOLIO.owl` push until a full canary produces a signed `ontology-qa` attestation.
+  That failure is expected, not a regression.
+- The `ontology-qa` environment requires `damienriehl` as reviewer and holds no
+  secrets. The full canary means adding both keys as environment secrets, then
+  approving the waiting deployment.
