@@ -78539,6 +78539,12 @@ Excluded from this subsector are establishment primarily engaged in manufacturin
         <skos:altLabel>Agreement</skos:altLabel>
         <skos:altLabel>Contract</skos:altLabel>
         <skos:definition>Agreements are written documents that establish a legally binding understanding between two or more parties, outlining the terms and conditions of a transaction or relationship.</skos:definition>
+        <skos:hiddenLabel>Accord</skos:hiddenLabel>
+        <skos:hiddenLabel>Accords</skos:hiddenLabel>
+        <skos:hiddenLabel>Pact</skos:hiddenLabel>
+        <skos:hiddenLabel>Pacts</skos:hiddenLabel>
+        <skos:hiddenLabel>Compact</skos:hiddenLabel>
+        <skos:hiddenLabel>Compacts</skos:hiddenLabel>
         <skos:prefLabel>Contracts</skos:prefLabel>
     </owl:Class>
     

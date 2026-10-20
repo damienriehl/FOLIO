@@ -55,3 +55,10 @@ Release A is implemented on branch `automated-ontology-qa`.
 - `e72dd7c` normalises `xsd:string` literals against plain ones in `compute_semantic_diff`. Against the committed files, the merge run now reports 0 changes (was a phantom No-Fault Claim update) and 90 other removals (was 93; the 3 dropped were `xsd:string` noise on Billable Hour, Flat Fee, and No-Fault Claim). Output is byte-identical.
 - Full suite: 181 passed, 0 skipped.
 - The canary is blocked on credentials and spend; see `NEXT-ONTOLOGY-QA.md`.
+
+## 2026-10-20 — Sweep re-verification and main merge
+
+- Re-ran the suite on `7b4637f` before touching anything: 181 passed.
+- `damienriehl/FOLIO#1` merged to `main`: six Agreements `skos:hiddenLabel`s (Accord(s), Pact(s), Compact(s)) and a merge-pipeline fix — new `hiddenLabel`s on existing classes were never propagated to the WebProtégé output. This resolves `q7-agreements-terms` from the 2026-08-06 handoff for 6 terms; `Concordat(s)` and `Undertaking(s)` were held back (see the sweep handoff).
+- Merged `main` into this branch. One conflict in `compute_semantic_diff`: kept this branch's `_norm_literal` comparison and `main`'s narrower removal suppression; hidden-label detection now normalises like alt-label detection.
+- Full suite after the merge: 188 passed. Merge pipeline on the committed files: 0 pending changes, byte-identical output.
