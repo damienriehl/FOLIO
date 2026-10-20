@@ -2,7 +2,7 @@
 
 STATE: Release A complete — Release B awaits genuine cross-provider availability
 
-Last updated: 2026-10-03
+Last updated: 2026-10-20
 
 ## Release A outcome
 
@@ -62,3 +62,18 @@ Release A is implemented on branch `automated-ontology-qa`.
 - `damienriehl/FOLIO#1` merged to `main`: six Agreements `skos:hiddenLabel`s (Accord(s), Pact(s), Compact(s)) and a merge-pipeline fix — new `hiddenLabel`s on existing classes were never propagated to the WebProtégé output. This resolves `q7-agreements-terms` from the 2026-08-06 handoff for 6 terms; `Concordat(s)` and `Undertaking(s)` were held back (see the sweep handoff).
 - Merged `main` into this branch. One conflict in `compute_semantic_diff`: kept this branch's `_norm_literal` comparison and `main`'s narrower removal suppression; hidden-label detection now normalises like alt-label detection.
 - Full suite after the merge: 188 passed. Merge pipeline on the committed files: 0 pending changes, byte-identical output.
+
+## 2026-10-20 — Keyless partial canary
+
+- Cockpit decision `canary-setup` chose the keyless partial canary. Plan and full
+  receipt: `docs/plans/2026-10-20-1500-ops-release-a-keyless-canary-plan.md`.
+- Fork `main` now carries the QA workflows (fork PR #2). The `ontology-qa`
+  environment needs `damienriehl`'s approval, deploys from `main` only, and holds no
+  secrets.
+- The canary found and fixed three trigger bugs: a nonexistent REST endpoint (#4),
+  `--slurp` combined with `--jq` (#5), and a missing `--repo` (#6). After the fixes, the
+  deterministic job passed and the trigger dispatched the trusted run, which stopped
+  at the environment gate. That run was cancelled unapproved, after 0 steps.
+- Full suite: 191 passed.
+- `WebProtégé Merge` on fork `main` fails closed until a full canary produces an
+  attestation.
