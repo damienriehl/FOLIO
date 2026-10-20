@@ -58,6 +58,13 @@ def test_successful_pr_check_automatically_dispatches_trusted_review():
     assert ".filename == \"FOLIO.owl\"" in workflow
 
 
+def test_trigger_reads_pull_request_from_run_object():
+    workflow = text(TRIGGER)
+    assert 'actions/runs/$RUN_ID"' in workflow
+    assert ".pull_requests[0].number" in workflow
+    assert "/actions/runs/$RUN_ID/pull_requests" not in workflow
+
+
 def test_acceptance_is_oidc_signed_and_durably_published():
     workflow = text(QA)
     assert "uses: actions/attest@v4" in workflow
