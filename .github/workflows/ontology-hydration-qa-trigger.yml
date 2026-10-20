@@ -27,7 +27,9 @@ jobs:
           test -n "$PR_NUMBER"
           gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" > pr.json
           test "$(jq -r .head.sha pr.json)" = "${{ github.event.workflow_run.head_sha }}"
-          ONTOLOGY_CHANGED="$(gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files" --jq 'any(.[][]; .filename == "FOLIO.owl")')"
+          FOLIO_FILES="$(gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files" --jq '.[] | select(.filename == "FOLIO.owl") | .filename')"
+          ONTOLOGY_CHANGED=false
+          if [ -n "$FOLIO_FILES" ]; then ONTOLOGY_CHANGED=true; fi
           CORRECTION_COMMIT=false
           CORRECTION_RUN_ID=""
           CORRECTION_SOURCE_SHA=""

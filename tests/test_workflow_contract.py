@@ -65,6 +65,12 @@ def test_trigger_reads_pull_request_from_run_object():
     assert "/actions/runs/$RUN_ID/pull_requests" not in workflow
 
 
+def test_trigger_never_combines_slurp_with_jq():
+    workflow = text(TRIGGER)
+    assert not any("--slurp" in line and "--jq" in line for line in workflow.splitlines())
+    assert "--paginate" in workflow
+
+
 def test_acceptance_is_oidc_signed_and_durably_published():
     workflow = text(QA)
     assert "uses: actions/attest@v4" in workflow
