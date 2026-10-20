@@ -171,24 +171,28 @@ def compute_semantic_diff(gh_path: str, wp_content: str) -> SemanticDiff:
             diff.new_hidden_labels[cls_str] = sorted(new_hidden, key=str)
 
         # Check label removals (altLabel/hiddenLabel present in WP but gone in GH).
-        # Only treat a label as removed when its *surface string* is entirely
-        # absent from GH for this concept — never when it merely moved to another
-        # slot (e.g. altLabel→prefLabel) or was re-tagged with a language. Since
-        # this script does not re-add prefLabels, deleting a reclassified label
-        # would otherwise drop the surface form. folio:-prefixed values are
-        # WebProtégé's relationship-label representation, not editorial content.
-        gh_label_strings = {
-            str(v) for lp in (RDFS.label, SKOS.prefLabel, SKOS.altLabel, SKOS.hiddenLabel)
+        # Only treat a label as removed when its *surface string* is absent from
+        # GH's rdfs:label/prefLabel and from the same predicate — never when it
+        # moved to a name slot (e.g. altLabel→prefLabel) or was re-tagged with a
+        # language. Since this script does not re-add prefLabels, deleting a
+        # reclassified label would otherwise drop the surface form. A move between
+        # altLabel and hiddenLabel *is* removed: the other slot is re-added above,
+        # and keeping both would break SKOS label disjointness (S13).
+        # folio:-prefixed values are WebProtégé's relationship-label
+        # representation, not editorial content.
+        gh_name_strings = {
+            str(v) for lp in (RDFS.label, SKOS.prefLabel)
             for v in gh_graph.objects(cls, lp)
         }
         for pred_local, pred in REMOVABLE_LABEL_PREDICATES.items():
             gh_vals = set(gh_graph.objects(cls, pred))
             wp_vals = set(wp_graph.objects(cls, pred))
+            kept_strings = gh_name_strings | {str(v) for v in gh_vals}
             removed = [
                 v for v in (wp_vals - gh_vals)
                 if isinstance(v, Literal)
                 and not str(v).startswith("folio:")
-                and str(v) not in gh_label_strings
+                and str(v) not in kept_strings
             ]
             for v in sorted(removed, key=str):
                 diff.removed_labels.setdefault(cls_str, []).append((pred_local, v))
@@ -346,29 +350,30 @@ def apply_changes(wp_content: str, diff: SemanticDiff, gh_content: str) -> str:
             log.warning("Could not find class block for %s to add %ss", iri, pred_local)
             continue
 
-        existing_block = m.group(2)
-        close_tag = m.group(3)
         insert_point = m.start(3)
 
         # Build label lines
-        alt_lines = []
+        label_lines = []
         for label in labels:
             lang = label.language
             label_str = _xml_escape(str(label))
             if lang:
-                alt_lines.append(
+                label_lines.append(
                     f'        <skos:{pred_local} xml:lang="{lang}">{label_str}</skos:{pred_local}>'
                 )
             else:
-                alt_lines.append(f"        <skos:{pred_local}>{label_str}</skos:{pred_local}>")
+                label_lines.append(f"        <skos:{pred_local}>{label_str}</skos:{pred_local}>")
 
-        if alt_lines:
-            insert_text = "\n".join(alt_lines) + "\n"
-            # Insert at the start of the </owl:Class> line, preserving indentation
+        if label_lines:
+            insert_text = "\n".join(label_lines) + "\n"
+            # Insert at the start of the </owl:Class> line when the tag stands
+            # alone on it (preserves indentation); otherwise right before the tag.
             line_start = result.rfind("\n", 0, insert_point) + 1
+            if result[line_start:insert_point].strip():
+                line_start = insert_point
             result = result[:line_start] + insert_text + result[line_start:]
-            changes_applied += len(alt_lines)
-            log.info("Added %d %s(s) to %s", len(alt_lines), pred_local, iri)
+            changes_applied += len(label_lines)
+            log.info("Added %d %s(s) to %s", len(label_lines), pred_local, iri)
 
     # 3. Apply label normalizations (folio: prefix → skos:notation)
     for iri, (plain_label, folio_label) in diff.label_normalizations.items():

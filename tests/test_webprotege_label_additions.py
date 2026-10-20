@@ -62,6 +62,33 @@ def test_inserted_labels_keep_property_indentation(tmp_path):
     assert "\n        <skos:hiddenLabel>Pact</skos:hiddenLabel>\n    </owl:Class>" in output
 
 
+def test_alt_to_hidden_move_leaves_one_slot(tmp_path):
+    github = ontology("<skos:hiddenLabel>Pact</skos:hiddenLabel>")
+    webprotege = ontology("<skos:altLabel>Pact</skos:altLabel>")
+    _, output = merge(tmp_path, github, webprotege)
+    assert objects(output, SKOS.hiddenLabel) == {Literal("Pact")}
+    assert not objects(output, SKOS.altLabel)
+
+
+def test_label_moved_to_pref_label_is_kept(tmp_path):
+    github = ontology().replace("Contracts", "Pact")
+    webprotege = ontology("<skos:altLabel>Pact</skos:altLabel>").replace(
+        "<skos:prefLabel>Contracts</skos:prefLabel>", ""
+    )
+    _, output = merge(tmp_path, github, webprotege)
+    assert objects(output, SKOS.altLabel) == {Literal("Pact")}
+
+
+def test_close_tag_sharing_a_line_stays_inside_class(tmp_path):
+    github = ontology("<skos:hiddenLabel>Pact</skos:hiddenLabel>")
+    webprotege = ontology().replace(
+        "<skos:prefLabel>Contracts</skos:prefLabel>\n    </owl:Class>",
+        "<skos:prefLabel>Contracts</skos:prefLabel></owl:Class>",
+    )
+    _, output = merge(tmp_path, github, webprotege)
+    assert objects(output, SKOS.hiddenLabel) == {Literal("Pact")}
+
+
 def test_merge_is_idempotent(tmp_path):
     github = ontology("<skos:hiddenLabel>Pact</skos:hiddenLabel>")
     _, first = merge(tmp_path, github, ontology())

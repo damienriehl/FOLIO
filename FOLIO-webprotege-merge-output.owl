@@ -78377,16 +78377,6 @@ Excluded from this subsector are establishment primarily engaged in manufacturin
         <skos:prefLabel>Contracts</skos:prefLabel>
             <skos:altLabel>Agreement</skos:altLabel>
         <skos:altLabel>Contract</skos:altLabel>
-        <skos:hiddenLabel>Accord</skos:hiddenLabel>
-        <skos:hiddenLabel>Accords</skos:hiddenLabel>
-        <skos:hiddenLabel>Compact</skos:hiddenLabel>
-        <skos:hiddenLabel>Compacts</skos:hiddenLabel>
-        <skos:hiddenLabel>Concordat</skos:hiddenLabel>
-        <skos:hiddenLabel>Concordats</skos:hiddenLabel>
-        <skos:hiddenLabel>Pact</skos:hiddenLabel>
-        <skos:hiddenLabel>Pacts</skos:hiddenLabel>
-        <skos:hiddenLabel>Undertaking</skos:hiddenLabel>
-        <skos:hiddenLabel>Undertakings</skos:hiddenLabel>
     </owl:Class>
     
 
