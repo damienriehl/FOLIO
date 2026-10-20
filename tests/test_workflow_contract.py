@@ -71,6 +71,12 @@ def test_trigger_never_combines_slurp_with_jq():
     assert "--paginate" in workflow
 
 
+def test_trigger_dispatch_names_repository():
+    workflow = text(TRIGGER)
+    dispatch = workflow.split("gh workflow run", 1)[1].split("-f pull_request_number", 1)[0]
+    assert '--repo "$GITHUB_REPOSITORY"' in dispatch
+
+
 def test_acceptance_is_oidc_signed_and_durably_published():
     workflow = text(QA)
     assert "uses: actions/attest@v4" in workflow
