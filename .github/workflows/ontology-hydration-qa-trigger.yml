@@ -23,7 +23,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.event.workflow_run.id }}
         run: |
-          PR_NUMBER="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/pull_requests" --jq '.[0].number')"
+          PR_NUMBER="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID" --jq '.pull_requests[0].number // empty')"
           test -n "$PR_NUMBER"
           gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" > pr.json
           test "$(jq -r .head.sha pr.json)" = "${{ github.event.workflow_run.head_sha }}"
