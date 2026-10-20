@@ -78516,10 +78516,6 @@ Excluded from this subsector are establishment primarily engaged in manufacturin
         <skos:hiddenLabel>Pacts</skos:hiddenLabel>
         <skos:hiddenLabel>Compact</skos:hiddenLabel>
         <skos:hiddenLabel>Compacts</skos:hiddenLabel>
-        <skos:hiddenLabel>Undertaking</skos:hiddenLabel>
-        <skos:hiddenLabel>Undertakings</skos:hiddenLabel>
-        <skos:hiddenLabel>Concordat</skos:hiddenLabel>
-        <skos:hiddenLabel>Concordats</skos:hiddenLabel>
         <skos:prefLabel>Contracts</skos:prefLabel>
     </owl:Class>
     
