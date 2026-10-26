@@ -115,3 +115,26 @@ def test_candidate_change_invalidates_request_identity():
     assert request_identity(**values, candidate_hash="first") != request_identity(
         **values, candidate_hash="second"
     )
+
+
+@pytest.mark.parametrize("field,value", [
+    ("provider", "google"), ("requested_model", "wrong"),
+    ("actual_model", "wrong"), ("request_id", "wrong"),
+])
+def test_fresh_receipt_identity_is_checked_before_cache(tmp_path, field, value):
+    adapter = Adapter()
+
+    def assess(req):
+        values = dict(
+            provider=adapter.provider, requested_model=adapter.model,
+            actual_model=adapter.model, request_id=req.request_id, responses=(),
+        )
+        values[field] = value
+        return ProviderReceipt(**values)
+
+    adapter.assess = assess
+    executor = ReviewExecutor(cache=ImmutableReviewCache(tmp_path), budget=budget())
+    req = request("d" * 64)
+    with pytest.raises(ValueError, match="fresh receipt"):
+        executor.assess(adapter, req)
+    assert not (tmp_path / f"{req.request_id}.json").exists()

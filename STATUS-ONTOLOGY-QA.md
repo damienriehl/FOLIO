@@ -1,8 +1,16 @@
 # Automated Ontology QA — Status
 
-STATE: Release A keyless canary complete; full canary open. foli-2 plan prepared; live Release B qualification remains blocked.
+STATE: Release A keyless canary complete; foli-2 offline qualification repairs verified; live Release B qualification remains blocked.
 
 Last updated: 2026-10-26
+
+## 2026-10-26 — foli-2 offline qualification build
+
+- Implemented blind correction qualification inputs, exact two-round scoring, true defect-recall accounting, strict fresh/cached served-identity checks, and semantic replay for production and correction qualifications.
+- Added regression coverage for answer-key exclusion, exact proposer replacement stability, incomplete response sets, non-detection outcomes, raw Google identity omissions/mismatches, and fresh receipt route/request mismatches.
+- Fresh pre-change baseline: `191 passed in 50.12s`. Focused post-change suite: `60 passed in 2.66s`; final full suite: `205 passed in 49.74s`; Python compilation and diff checks passed. No provider calls, credentials, spend, ontology changes, schema migrations, dependencies, or deployment changes occurred.
+- Release B is **not qualified**. The six-role live OpenAI/Google gate and broader source-grounded legal-language evidence remain outstanding. Numeric controls only establish their narrow mechanical coverage.
+- Cockpit scanner attribution cannot be executed in this environment; the top-level state remains explicitly attributed to repository `folio` for the controller to verify.
 
 ## 2026-10-26 — foli-2 qualification plan
 

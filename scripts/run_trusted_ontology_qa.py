@@ -8,6 +8,7 @@ import json
 import os
 import re
 import sys
+from dataclasses import asdict
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -32,8 +33,8 @@ from ontology_qa.debt import (
     closed_debt, load_debt, unresolved_debt_ids,
 )
 from ontology_qa.evals import (
-    corpus_identity, evaluate_predictions, load_cases, load_model_policy,
-    load_slice_controls,
+    corpus_identity, correction_cases, load_cases, load_model_policy,
+    load_slice_controls, qualification_records, score_qualification_rounds,
 )
 from ontology_qa.execution import (
     BudgetExceeded, ImmutableReviewCache, ReviewBudget, ReviewExecutor,
@@ -143,6 +144,7 @@ def _call(
     policy_hash: str,
     candidate_hash: str,
     batch_size: int,
+    evidence: list[dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
     responses: list[dict[str, Any]] = []
     validator = Draft202012Validator(schema)
@@ -199,6 +201,15 @@ def _call(
                 wait_before_retry(exc, attempt)
         if receipt is None:
             raise ValueError("provider returned no receipt")
+        if evidence is not None:
+            evidence.append({
+                "request_id": request_id,
+                "records": batch,
+                "receipt": {
+                    **asdict(receipt),
+                    "responses": list(receipt.responses),
+                },
+            })
         responses.extend(receipt.responses)
     return responses
 
@@ -235,31 +246,7 @@ def _qualify(
             case for case in load_slice_controls(paths[2], required_slices)
             if case["expected_verdict"] == "defect"
         ]
-        correction_cases = []
-        for case in controls:
-            expected_replacement = case["input"]["source"]
-            base = {
-                **case,
-                "expected_replacement": expected_replacement,
-            }
-            if role == "correction-proposer":
-                correction_cases.append(base)
-            else:
-                correction_cases.extend([
-                    {
-                        **base,
-                        "case_id": case["case_id"] + "-repaired",
-                        "verification_candidate": expected_replacement,
-                        "expected_verdict": "pass",
-                    },
-                    {
-                        **base,
-                        "case_id": case["case_id"] + "-unrepaired",
-                        "verification_candidate": case["input"]["candidate"],
-                        "expected_verdict": "defect",
-                    },
-                ])
-        cases = correction_cases
+        cases = correction_cases(controls, role=role)
         schema_role = (
             "proposer" if role == "correction-proposer" else "verifier"
         )
@@ -274,51 +261,17 @@ def _qualify(
         qualification_prompt = _all_prompts()[prompt_name]
         qualification_prompt_hash = content_hash(qualification_prompt)
         qualification_corpus_hash = content_hash(canonical_json(cases))
-    id_map = {content_hash(case["case_id"]): case["case_id"] for case in cases}
-    records = []
-    for hashed, case_id in id_map.items():
-        case = next(item for item in cases if item["case_id"] == case_id)
-        record = {
-            "record_id": hashed,
-            "family": case["family"],
-            "locale": case["locale"],
-            "source": case["input"].get("source"),
-            "annotation": case["input"].get("candidate"),
-            "benchmark_input": case["input"],
-        }
-        if correction_role:
-            original = case["input"]["candidate"]
-            proposed = case.get("verification_candidate")
-            record.update({
-                "after": {
-                    "subject": f"https://example.test/{hashed}",
-                    "predicate": str(SKOS.definition),
-                    "object_kind": "literal",
-                    "language": case["locale"],
-                    "datatype": None,
-                    "lexical": proposed if proposed is not None else original,
-                },
-                "before": {
-                    "subject": f"https://example.test/{hashed}",
-                    "predicate": str(SKOS.definition),
-                    "object_kind": "literal",
-                    "language": case["locale"],
-                    "datatype": None,
-                    "lexical": original,
-                },
-                "confirmed_defect": {
-                    "class": case["expected_defect_types"][0],
-                    "finding": case["source_ref"],
-                },
-                "expected_replacement": case["expected_replacement"],
-            })
-        records.append(record)
+    records, id_map = qualification_records(
+        cases, correction_role=correction_role
+    )
     response_rounds: list[list[dict[str, Any]]] = []
+    evidence_rounds: list[list[dict[str, Any]]] = []
     prompts = _prompts()
     qualification_error = None
     try:
         for repeat in range(2):
             responses: list[dict[str, Any]] = []
+            evidence: list[dict[str, Any]] = []
             if correction_role:
                 responses = _call(
                     adapter, records, qualification_schema,
@@ -327,6 +280,7 @@ def _qualify(
                     policy_hash=policy_hash,
                     candidate_hash=qualification_corpus_hash,
                     batch_size=int(policy["operations"]["batch_size"]),
+                    evidence=evidence,
                 )
             else:
                 for family in ("definition", "example", "translation"):
@@ -346,42 +300,22 @@ def _qualify(
                             batch_size=int(
                                 policy["operations"]["batch_size"]
                             ),
+                            evidence=evidence,
                         )
                     )
             response_rounds.append(responses)
+            evidence_rounds.append(evidence)
     except (BudgetExceeded, ProviderError, ValueError) as exc:
         qualification_error = str(exc)
         response_rounds = [[], []]
-    responses = response_rounds[0]
-    by_case = {case["case_id"]: case for case in cases}
-    predictions = {}
-    for item in responses:
-        case_id = id_map[item["record_id"]]
-        prediction = item["verdict"]
-        if role == "correction-proposer" and (
-            item.get("proposed_replacement")
-            != by_case[case_id]["expected_replacement"]
-        ):
-            prediction = "invalid-replacement"
-        predictions[case_id] = prediction
-    metrics = evaluate_predictions(
-        cases, predictions,
+    metrics = score_qualification_rounds(
+        cases, response_rounds, role=role,
         minimum_cases_per_slice=int(policy["minimum_scored_cases_per_slice"]),
         required_slices=required_slices,
     )
-    metrics["repeat_stability"] = (
-        len(response_rounds) == 2
-        and {
-            item["record_id"]: item["verdict"]
-            for item in response_rounds[0]
-        }
-        == {
-            item["record_id"]: item["verdict"]
-            for item in response_rounds[1]
-        }
-    )
     metrics["qualification_error"] = qualification_error
     metrics["evaluation_rounds"] = response_rounds
+    metrics["evaluation_batches"] = evidence_rounds
     now = datetime.now(UTC)
     route = next(
         value for value in policy["routes"].values()

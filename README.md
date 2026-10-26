@@ -143,6 +143,11 @@ run. Trusted execution requires `OPENAI_API_KEY` and `GOOGLE_API_KEY` secrets in
 the protected `ontology-qa` environment. Missing credentials, unsupported
 locales, model disagreement, failed qualification, sampling expansion, or any
 provider/budget failure blocks the check; there is no Claude route or fallback.
+Qualification requests are blind: answer keys stay in the evaluator. Both response
+rounds must meet the accuracy, defect-recall, false-acceptance, exact-coverage,
+and stability gates, and replay recomputes those results from frozen inputs. A
+locally passing suite validates this machinery but does not qualify Release B;
+that requires a separately authorized live run of all six pinned routes.
 Production votes and correction-verifier votes must each span distinct
 providers. Diagnose a blocked run from its census findings, qualification
 artifacts, provider receipts, reconciliation states, surveillance strata, and
