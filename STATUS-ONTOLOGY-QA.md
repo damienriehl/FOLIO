@@ -1,6 +1,6 @@
 # Automated Ontology QA — Status
 
-STATE: foli-1 local guards and canary procedure prepared; full-size manifest preflight and live canary unverified
+STATE: foli-1 local build reviewed and committed; full-size manifest preflight and live canary unverified
 
 Last updated: 2026-10-26
 
@@ -110,3 +110,11 @@ Release A is implemented on branch `automated-ontology-qa`.
 - The committed WebProtégé base has the exact baseline literal and metadata. The existing merge pipeline applied one definition update and passed XML/RDF validation; the resulting bytes equal that base with only the intended definition substituted. This is preparation evidence, not provider acceptance or the real consumer receipt.
 - Full-size canonical manifest generation remains unverified. It did not return within 15 minutes on the 172,062-triple ontology and was stopped with inputs preserved; its runtime preflight remains open before a live dispatch. No delta algorithm, policy, or coverage limit was changed to obtain a result.
 - Local-only lane: no push, PR, deployment, provider call, registry write, credential access, or security-setting change. Provider access/budget and existing reviewer gates still hold U4. Chief campaign excerpts and real Cockpit attribution require controller verification; local file formatting is not scanner evidence.
+
+## 2026-10-26 — foli-1 review and local delivery
+
+- Simplification reviewed reuse, quality, efficiency, tests, and comments; no code changes were warranted. Proof tests were preserved. No standalone lint/typecheck configuration exists; verification used pytest, YAML parsing, Bash syntax checks, and diff checks.
+- Full code review (`20261026-foli1-final`) completed correctness, adversarial, testing, security, maintainability, reliability, standards, and documented-learning checks. No code findings. The one P2 documentation finding was independently reproduced: restoring exact B bytes removes `FOLIO.owl` from the PR delta, so the trigger skips fresh dispatch. The runbook now stops that attempt as incomplete and retains its evidence.
+- Review correction is documentation-only; targeted trigger/correction checks passed. The final implementation suite remains 235 passing tests, including 44 new execution tests; every pre-existing test and both published ontology files remain unchanged.
+- Browser verification: no affected frontend files or routes; no screenshot applies. No new service, migration, data rewrite, package release, or deployment configuration was introduced.
+- U1–U3 local deliverables are ready for controller publication. U4 remains unverified, including full-size manifest runtime, real provider/Actions evidence, and accepted WebProtégé fidelity. These are not replaced by the local tests or preparation checks.

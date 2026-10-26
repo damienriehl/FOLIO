@@ -1,6 +1,6 @@
 # Automated Ontology QA — Next Actions
 
-STATE: foli-1 local changes prepared; controller publication and full live canary remain open
+STATE: foli-1 local build reviewed; controller publication and full live canary remain open
 
 - [ ] [P1] Controller: cross-check the unavailable chief Goal Capsule and cited R11/R15/R16/R17/R19/R20, then publish the reviewed local `drawdown/foli-1` commits through the campaign gate.
 - [ ] [P1] Complete the full-size canonical-manifest preflight for the runbook fixture before any provider dispatch; the local scoped delta and full annotation-set comparison do not establish full-size runtime readiness.

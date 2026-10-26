@@ -148,9 +148,14 @@ reason to relax release policy.
    `correction-evidence.json`, with SHA-256 for each. The source's stable check
    must be unsuccessful; the source correction path must not sign acceptance.
 3. Record C and its first parent, which must be S. Preserve the exact correction
-   commit message `fix(ontology): apply verified QA corrections`. If GitHub
-   requires approval for the resulting PR workflow, satisfy that existing gate.
-   A token push alone is not evidence that the fresh deterministic run happened.
+   commit message `fix(ontology): apply verified QA corrections`. Inspect the
+   PR files delta: if `FOLIO.owl` is absent, including when C restores B's bytes
+   exactly, retain the correction evidence and stop this attempt as incomplete.
+   The trigger skips artifact discovery and fresh protected dispatch in that
+   case. Do not add an artificial change or an alternate dispatcher to force
+   progression. Otherwise, satisfy any existing GitHub approval required for
+   the resulting PR workflow. A token push alone is not evidence that the fresh
+   deterministic run happened.
 4. Retain the fresh deterministic run, automatic trigger, and protected run.
    Show that the trigger selected the unexpired source artifact and dispatched
    **C/B/PR/repository/source-run/S**. Confirm source run workflow path, dispatch
@@ -160,9 +165,9 @@ reason to relax release policy.
    review, correction-lineage verification, legacy surveillance, and replay
    policy without further corrections. Retain its report, qualification and
    provider receipts, complete bundle, stable-check ID, and conclusion on C.
-   A correction may return the annotation to B, making the final B-to-C delta
-   empty; the genuine S-to-C correction lineage must still be retained and
-   verified. Do not invent a new change to force a nonempty final delta.
+   An empty semantic delta is distinct from exact byte restoration: the latter
+   can remove `FOLIO.owl` from the PR delta and stops the attempt at step 3.
+   Any completed fresh review must retain and verify genuine S-to-C lineage.
 
 ## Acceptance and WebProtégé fidelity
 
@@ -219,7 +224,8 @@ and the evidence obtained so far. Do not fill missing fields with local stubs.
 | Consumer | Actual run SHA C, input/base/output hashes, code-identity comparison to W, output artifact ID, successful semantic fidelity result |
 | Continuity | Accurate top-level STATUS/NEXT, controller's real Cockpit scan attributing state and actions to `folio` |
 
-Stop on a stale endpoint, missing/mismatched artifact, missing approval, provider
+Stop if `FOLIO.owl` disappears from the PR files delta, or on a stale endpoint,
+missing/mismatched artifact, missing approval, provider
 failure/disagreement, quarantine, budget exhaustion, another correction, missing
 registry/OIDC capability, or replay/fidelity failure. Record the exact stage and
 remedy before considering recovery; inspect run IDs to avoid duplicate spend.
