@@ -286,3 +286,78 @@ def test_correction_fails_old_sha_before_push_and_keeps_acceptance_disabled(shel
     for step in QA_STEPS:
         if step.get("uses") == "actions/attest@v4" or "oras push" in step.get("run", "") or step.get("name") == "Publish stable required check":
             assert "steps.qa.outputs.correction_ready != 'true'" in step["if"]
+
+
+@pytest.mark.parametrize("missing", CORRECTION_FILES)
+def test_restoration_requires_every_lineage_file_before_model_execution(shell, missing):
+    restore_lineage(shell, missing=missing)
+    assert shell.run("Restore prior changed-record correction lineage").returncode != 0
+    assert not shell.queue
+    assert not any(command[0] == "python" for command in shell.commands())
+
+
+ENDPOINT_QUERY = "{head: .head.sha, base: .base.sha, repository: .head.repo.full_name}"
+
+
+@pytest.mark.parametrize("boundary", ["Fence stale completion", "Fence acceptance signing", "Publish stable required check"])
+@pytest.mark.parametrize("state", ["matching", "head", "base", "repository", "unavailable", "malformed", "missing", "empty"])
+def test_acceptance_boundaries_reject_observed_endpoint_changes(shell, boundary, state):
+    if state in ("head", "base"):
+        shell.pr[state]["sha"] = S
+    elif state == "repository":
+        shell.pr["head"]["repo"]["full_name"] = "untrusted/FOLIO"
+    elif state == "missing":
+        shell.pr = {}
+    # Each boundary must fetch fresh metadata, even when immutable commit/hash
+    # checks still pass. API errors and invalid JSON must fail closed too.
+    if state in ("malformed", "empty"):
+        shell.expect(["gh", "api", PR, "--jq", ENDPOINT_QUERY], stdout="not JSON\n" if state == "malformed" else "")
+    else:
+        shell.api(PR, shell.pr, ENDPOINT_QUERY, status=1 if state == "unavailable" else 0)
+    if boundary == "Fence stale completion" and state == "matching":
+        shell.api(f"repos/{REPO}/commits/{C}", {"sha": C}, ".sha")
+    if boundary == "Publish stable required check":
+        shell.expect(check_args("success" if state == "matching" else "failure"))
+    result = shell.run(boundary)
+    assert (result.returncode == 0) == (state == "matching"), result.stderr
+    assert not shell.queue
+    # Replay requires an exact indexed file set. Endpoint observations belong
+    # beside the immutable bundle, never inside it.
+    assert {path.name for path in (shell.root / "evidence").iterdir()} == {"report.json"}
+    if boundary == "Publish stable required check":
+        assert shell.commands()[-1] == check_args("success" if state == "matching" else "failure")
+
+
+def test_failed_earlier_fence_still_publishes_negative_check(shell):
+    shell.env["JOB_STATUS"] = "failure"
+    shell.expect(check_args("failure"))
+    assert shell.run("Publish stable required check").returncode != 0
+    assert not shell.queue
+
+
+def test_successful_check_publication_failure_is_not_acceptance(shell):
+    shell.api(PR, shell.pr, ENDPOINT_QUERY)
+    shell.expect(check_args("success"), status=1)
+    assert shell.run("Publish stable required check").returncode != 0
+    assert not shell.queue
+
+
+def test_immutable_content_hash_still_fences_publication(shell):
+    (shell.root / "inputs/candidate.owl").write_text("tampered bytes\n")
+    shell.api(PR, shell.pr, ENDPOINT_QUERY)
+    shell.api(f"repos/{REPO}/commits/{C}", {"sha": C}, ".sha")
+    assert shell.run("Fence stale completion").returncode != 0
+    assert not shell.queue
+
+
+def test_fences_surround_publication_signing_and_success_with_failure_diagnostics():
+    names = [step.get("name") for step in QA_STEPS]
+    assert names.index("Fence stale completion") < names.index("Push durable evidence bundle")
+    signing = names.index("Sign acceptance with GitHub OIDC")
+    assert names[signing - 1] == "Fence acceptance signing"
+    assert names.index("Push durable evidence bundle") < signing < names.index("Publish stable required check")
+    fence = QA_STEPS[signing - 1]
+    assert fence["if"] == "steps.qa.outputs.correction_ready != 'true'"
+    diagnostics = next(step for step in QA_STEPS if step.get("name") == "Upload bounded failure diagnostics")
+    assert diagnostics["if"] == "failure()"
+    assert "evidence/" in diagnostics["with"]["path"]
