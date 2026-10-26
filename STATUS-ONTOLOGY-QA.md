@@ -1,8 +1,8 @@
 # Automated Ontology QA — Status
 
-STATE: Release A complete — Release B awaits genuine cross-provider availability
+STATE: Release A implemented; keyless canary recorded; full correction and attested handoff canary unverified
 
-Last updated: 2026-10-20
+Last updated: 2026-10-26
 
 ## Release A outcome
 
@@ -77,3 +77,13 @@ Release A is implemented on branch `automated-ontology-qa`.
 - Full suite: 191 passed.
 - `WebProtégé Merge` on fork `main` fails closed until a full canary produces an
   attestation.
+
+## 2026-10-26 — foli-1 planning checkpoint
+
+- Reverified the local starting tree at `417a5e2` on `drawdown/foli-1`: clean checkout, no configured remote. The mandate's missing-workflows description is superseded by the October 20 keyless-canary receipt; current remote state was not inspected.
+- Scoped plan: `docs/plans/2026-10-26-1224-fix-foli-1-actions-canary-plan.md`. It covers executable correction-handoff tests, final PR endpoint checks, and the real U7/U10 canary procedure. It preserves the existing approval-assisted workflow chain and excludes provider-policy changes and the separate offline-readiness expansion.
+- Source inspection found that the final acceptance fence checks commit existence and ontology/report hashes without rechecking the live PR head, base, and repository. The plan requires rejection of observed stale endpoints before acceptance publication.
+- Planning only: no implementation, tests, provider calls, GitHub mutations, credential access, or security-setting changes occurred. The 191-test result above remains historical evidence.
+- Plan review covered coherence, feasibility, scope, security, and adversarial checks. One prerequisite-summary contradiction was corrected: the controller authority check precedes local build; provider access, budget, and approvals hold the live phase. No review findings remain open.
+- Full canary execution still requires authorized provider access and spend, existing required Actions approvals, and actual successful correction, acceptance, replay, and WebProtégé fidelity evidence. Local verification cannot close that live milestone.
+- The chief campaign plan and Cockpit scanner are unavailable in this sandbox. The controller must verify the campaign Goal Capsule and cited requirements before build, then confirm scanner attribution to repository ID `folio`. Top-level state/action formatting is not a substitute for that scan.
