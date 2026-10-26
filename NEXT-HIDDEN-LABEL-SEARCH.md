@@ -1,6 +1,6 @@
 # Agreements Hidden-Label Search — Next Actions
 
-STATE: foli-3 awaits consumer source binding and controller verification
+STATE: foli-3 build stopped at U1 pending consumer source binding and controller verification
 
 Repository: `folio`
 Plan: `docs/plans/2026-10-20-001-agreements-hidden-labels-plan.md`
