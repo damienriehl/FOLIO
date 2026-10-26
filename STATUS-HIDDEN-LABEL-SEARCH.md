@@ -1,11 +1,25 @@
 # Agreements Hidden-Label Search — Status
 
-STATE: foli-3 plan recorded; consumer implementation awaits current OntoKit source and controller routing
+STATE: foli-3 build blocked at U1; this checkout has no OntoKit consumer or viewer source
 
 Repository: `folio`
 Item: `foli-3` (planned)
 Branch: `drawdown/foli-3`
 Last updated: 2026-10-26
+
+## Build-stage verification
+
+The build stage re-verified the plan's starting state at FOLIO commit
+`d8f2f5d2d8ca8acb732b3e9620d4dcdc7786600d`. The tracked inventory still
+contains no OntoKit index/API source, viewer source, frontend manifest, or
+Playwright harness, so U1 cannot bind current consumer implementation and test
+paths. In accordance with U1's stop condition, U2 and U3 were not started and
+no speculative FOLIO-side search implementation was added.
+
+The full repository suite passed with `191 passed in 51.69s` using
+`python -m pytest tests -q`. Both ontology artifacts remain byte-identical to
+the hashes recorded during planning. No index refresh or viewer assertion can
+be run from this checkout, and the item is not complete.
 
 ## Completed planning work
 
