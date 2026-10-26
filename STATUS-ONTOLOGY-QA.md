@@ -1,6 +1,6 @@
 # Automated Ontology QA — Status
 
-STATE: Release A implemented; keyless canary recorded; full correction and attested handoff canary unverified
+STATE: foli-1 correction-handoff shell tests pass; acceptance fences in progress; live canary unverified
 
 Last updated: 2026-10-26
 
@@ -87,3 +87,10 @@ Release A is implemented on branch `automated-ontology-qa`.
 - Plan review covered coherence, feasibility, scope, security, and adversarial checks. One prerequisite-summary contradiction was corrected: the controller authority check precedes local build; provider access, budget, and approvals hold the live phase. No review findings remain open.
 - Full canary execution still requires authorized provider access and spend, existing required Actions approvals, and actual successful correction, acceptance, replay, and WebProtégé fidelity evidence. Local verification cannot close that live milestone.
 - The chief campaign plan and Cockpit scanner are unavailable in this sandbox. The controller must verify the campaign Goal Capsule and cited requirements before build, then confirm scanner attribution to repository ID `folio`. Top-level state/action formatting is not a substitute for that scan.
+
+## 2026-10-26 — foli-1 build checkpoint (U1)
+
+- Started from clean plan commit `dc23f1c` on `drawdown/foli-1`. The controller's build instruction authorizes the local U1–U3 work under the supplied campaign rules; the chief excerpts remain unavailable for independent verification.
+- Installed declared test dependencies in a disposable environment after the system interpreter lacked them. Reverified the unchanged baseline: 191 passed in 14.96s.
+- Added executable Bash coverage with a closed command boundary for artifact discovery, paginated file detection, exact dispatch inputs, provenance/byte rejection, restoration arguments, and correction failure-before-push ordering. New and existing workflow tests: 27 passed in 1.12s.
+- No live workflow, provider, registry, credential, or security-setting operation occurred. U2 endpoint checks and U3 canary preparation remain in progress; U4 remains outside this sandbox's authority.
