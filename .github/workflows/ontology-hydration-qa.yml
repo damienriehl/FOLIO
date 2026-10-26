@@ -143,6 +143,9 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --name "ontology-correction-${{ inputs.correction_source_sha }}" \
             --dir inputs
+          for FILE in correction-source.owl corrected.owl correction-ledger.json correction-evidence.json; do
+            test -s "inputs/$FILE"
+          done
           test "$(sha256sum inputs/corrected.owl | cut -d' ' -f1)" = \
             "$(sha256sum inputs/candidate.owl | cut -d' ' -f1)"
 
@@ -242,6 +245,12 @@ jobs:
       - name: Fence stale completion
         if: steps.qa.outputs.correction_ready != 'true'
         run: |
+          mkdir -p diagnostics
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$PULL_REQUEST_NUMBER" \
+            --jq '{head: .head.sha, base: .base.sha, repository: .head.repo.full_name}' > diagnostics/endpoints-before-publication.json
+          jq -e --arg head "$REVIEWED_SHA" --arg base "$BASELINE_SHA" --arg repository "$CANDIDATE_REPOSITORY" \
+            '.head == $head and .base == $base and .repository == $repository' \
+            diagnostics/endpoints-before-publication.json
           test "$(gh api "repos/$CANDIDATE_REPOSITORY/commits/$REVIEWED_SHA" --jq .sha)" = "$REVIEWED_SHA"
           test "$(sha256sum inputs/candidate.owl | cut -d' ' -f1)" = "$(jq -r .candidate_hash evidence/report.json)"
 
@@ -278,6 +287,16 @@ jobs:
             --bundle-digest "${{ steps.evidence-push.outputs.bundle_digest }}" \
             --expires-at "$EXPIRES_AT"
 
+      - name: Fence acceptance signing
+        if: steps.qa.outputs.correction_ready != 'true'
+        run: |
+          mkdir -p diagnostics
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$PULL_REQUEST_NUMBER" \
+            --jq '{head: .head.sha, base: .base.sha, repository: .head.repo.full_name}' > diagnostics/endpoints-before-signing.json
+          jq -e --arg head "$REVIEWED_SHA" --arg base "$BASELINE_SHA" --arg repository "$CANDIDATE_REPOSITORY" \
+            '.head == $head and .base == $base and .repository == $repository' \
+            diagnostics/endpoints-before-signing.json
+
       - name: Sign acceptance with GitHub OIDC
         if: steps.qa.outputs.correction_ready != 'true'
         uses: actions/attest@v4
@@ -291,13 +310,25 @@ jobs:
         env:
           JOB_STATUS: ${{ job.status }}
         run: |
+          mkdir -p diagnostics
           CONCLUSION=failure
-          test "$JOB_STATUS" = success && CONCLUSION=success
+          if [ "$JOB_STATUS" = success ]; then
+            if gh api "repos/$GITHUB_REPOSITORY/pulls/$PULL_REQUEST_NUMBER" \
+                 --jq '{head: .head.sha, base: .base.sha, repository: .head.repo.full_name}' > diagnostics/endpoints-before-check.json && \
+               jq -e --arg head "$REVIEWED_SHA" --arg base "$BASELINE_SHA" --arg repository "$CANDIDATE_REPOSITORY" \
+                 '.head == $head and .base == $base and .repository == $repository' \
+                 diagnostics/endpoints-before-check.json; then
+              CONCLUSION=success
+            else
+              echo 'PR endpoints changed or could not be verified; rejecting acceptance.' >&2
+            fi
+          fi
           gh api --method POST "repos/$GITHUB_REPOSITORY/check-runs" \
             -f name=ontology-hydration-qa \
             -f head_sha="$REVIEWED_SHA" \
             -f status=completed \
             -f conclusion="$CONCLUSION"
+          test "$CONCLUSION" = success
 
       - name: Upload bounded failure diagnostics
         if: failure()
@@ -306,6 +337,7 @@ jobs:
           name: ontology-qa-failure-${{ inputs.reviewed_sha }}-${{ github.run_attempt }}
           path: |
             evidence/
+            diagnostics/
             acceptance-predicate.json
           if-no-files-found: warn
           retention-days: 30

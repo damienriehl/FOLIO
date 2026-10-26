@@ -1,6 +1,6 @@
 # Automated Ontology QA — Status
 
-STATE: foli-1 correction-handoff shell tests pass; acceptance fences in progress; live canary unverified
+STATE: foli-1 endpoint fences verified locally; bounded canary procedure in progress; live canary unverified
 
 Last updated: 2026-10-26
 
@@ -94,3 +94,11 @@ Release A is implemented on branch `automated-ontology-qa`.
 - Installed declared test dependencies in a disposable environment after the system interpreter lacked them. Reverified the unchanged baseline: 191 passed in 14.96s.
 - Added executable Bash coverage with a closed command boundary for artifact discovery, paginated file detection, exact dispatch inputs, provenance/byte rejection, restoration arguments, and correction failure-before-push ordering. New and existing workflow tests: 27 passed in 1.12s.
 - No live workflow, provider, registry, credential, or security-setting operation occurred. U2 endpoint checks and U3 canary preparation remain in progress; U4 remains outside this sandbox's authority.
+
+## 2026-10-26 — foli-1 endpoint checks (U2)
+
+- Added fresh PR head/base/repository checks before evidence publication, immediately before signing, and before successful stable-check publication. Unavailable, empty, malformed, missing, or changed metadata rejects acceptance. The always-run final step attempts a negative check after earlier failures and fails when publishing the check fails.
+- Restoration now requires all four nonempty lineage files before model execution. Existing candidate hash, provenance, source-SHA binding, correction guards, and token permissions are preserved.
+- Proof first: 28 new regressions failed against the original workflow (including three missing-file paths and absent endpoint fences); fixes passed the focused 84-test suite. Three additional empty-response cases also pass. Final full suite: 235 passed in 17.30s.
+- Integration review caught that adding endpoint observations to the indexed bundle would invalidate replay. A regression demonstrated that failure; diagnostics now live outside the immutable evidence directory and remain in the bounded failure upload.
+- All four workflow YAML files and their Bash blocks parse; `git diff --check` passes. Independent API observations cannot make acceptance atomic with PR mutation; already signed immutable evidence is not revoked if movement is observed afterward.
