@@ -1,8 +1,19 @@
 # Automated Ontology QA — Status
 
-STATE: Release A complete — Release B awaits genuine cross-provider availability
+STATE: Release A keyless canary complete; full canary open. foli-2 plan prepared; live Release B qualification remains blocked.
 
-Last updated: 2026-10-20
+Last updated: 2026-10-26
+
+## 2026-10-26 — foli-2 qualification plan
+
+- Repository: `folio`; branch: `drawdown/foli-2`. Planning baseline: `417a5e2ece96b011d4209986aa8a5a454c521cca`, clean working tree and no configured remotes.
+- Plan: `docs/plans/2026-10-26-1320-fix-release-b-provider-qualification-plan.md`. Scope is Release B qualification correctness and its evidence consumers; the full Release A Actions canary remains `foli-1`, and a general offline readiness reporter remains `foli-4`.
+- Static inspection found correction-answer leakage, proposer repeat scoring that ignores replacement text, recall that credits abstentions, a Google fallback that supplies missing served identity, and correction qualification metrics that are not recomputed during replay. The plan assigns focused fixes and offline regression tests; none is implemented in this stage.
+- Plan review covered coherence, feasibility, scope, provider trust, and adversarial checks. One finding was resolved by specifying retained blind-request/receipt bindings and a legacy-evidence regression; no review findings remain. The confidence and document checks passed. Automatic cross-model review is disabled by checkout configuration; the campaign's Astra and Fable reviews remain controller-owned prerequisites.
+- Re-verification was source inspection only. No tests, provider calls, credentials, spend, workflow dispatches, or remote publication occurred. Historical results below retain their original dates and are not a fresh passing baseline.
+- Genuine provider availability and qualification remain unverified. Current model pins are configuration; the historical model/cost proposal was not adopted. Neutral numeric controls do not establish broad legal-language competence.
+- The chief campaign source and Cockpit scanner are absent from this sandbox. The lane's supplied campaign rules were preserved; the controller must reconcile the Goal Capsule and cited R-IDs and verify scanner attribution to `folio`. Matching top-level filenames is not evidence that the scanner ran.
+- Live provider access, bounded spend, and existing trusted-environment approval remain external prerequisites. The local build can proceed independently after controller handoff; Release B must stay open until genuine evidence satisfies the plan.
 
 ## Release A outcome
 
