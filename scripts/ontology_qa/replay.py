@@ -11,12 +11,13 @@ import yaml
 from rdflib import Graph
 
 from .evals import (
-    corpus_identity, evaluate_predictions, load_cases,
-    load_slice_controls,
+    corpus_identity, load_cases, load_slice_controls,
+    score_qualification_rounds,
 )
 from .correction_evidence import verify_correction_lineage
 from .reconcile import reconcile
 from .records import canonical_json, content_hash
+from .qualification import create_qualification
 from .reporting import validate_artifact_hash, validate_qualification_hash
 from .sampling import (
     build_legacy_records, evaluate_surveillance,
@@ -173,7 +174,6 @@ def replay_bundle(bundle_path: str | Path, *, report_schema_path: str | Path) ->
                 raise ValueError(
                     "qualification lacks replayable evaluation rounds"
                 )
-            predictions_by_round = []
             for responses in rounds:
                 if (
                     {item.get("record_id") for item in responses}
@@ -185,20 +185,15 @@ def replay_bundle(bundle_path: str | Path, *, report_schema_path: str | Path) ->
                     )
                 for response in responses:
                     Draft202012Validator(schema).validate(response)
-                predictions_by_round.append({
-                    id_map[item["record_id"]]: item["verdict"]
-                    for item in responses
-                })
-            recomputed = evaluate_predictions(
-                evaluation_cases, predictions_by_round[0],
+            recomputed = score_qualification_rounds(
+                evaluation_cases, rounds, role=qualification["role"],
                 minimum_cases_per_slice=int(
                     model_policy["minimum_scored_cases_per_slice"]
                 ),
                 required_slices=required_slices,
             )
-            recomputed["repeat_stability"] = (
-                predictions_by_round[0] == predictions_by_round[1]
-            )
+            if qualification["metrics"].get("round_metrics") != recomputed["round_metrics"]:
+                raise ValueError("qualification round metrics differ on replay")
             for field in (
                 "scored_count", "challenge_count",
                 "missing_case_ids", "accuracy", "defect_recall",
@@ -209,6 +204,22 @@ def replay_bundle(bundle_path: str | Path, *, report_schema_path: str | Path) ->
                     raise ValueError(
                         f"qualification metric differs on replay: {field}"
                     )
+            replayed = create_qualification(
+                role=qualification["role"], route_id=qualification["route_id"],
+                provider=qualification["provider"],
+                requested_model=qualification["requested_model"],
+                actual_model=qualification["actual_model"],
+                reasoning=qualification["reasoning"],
+                corpus_hash=qualification["corpus_hash"],
+                prompt_hash=qualification["prompt_hash"],
+                schema_hash=qualification["schema_hash"],
+                policy_hash=qualification["policy_hash"], metrics=recomputed,
+                thresholds=qualification["thresholds"],
+                qualified_at=qualification["qualified_at"],
+                valid_until=qualification["valid_until"],
+            )
+            if replayed["status"] != qualification["status"]:
+                raise ValueError("qualification status differs on replay")
         tool_manifest = _read_json(root / "tool-manifest.json", canonical=True)
         claimed_tool_hash = tool_manifest.pop("tool_hash", None)
         if (
@@ -257,6 +268,11 @@ def replay_bundle(bundle_path: str | Path, *, report_schema_path: str | Path) ->
             expected_policy_hash=expected_policy_hash,
             expected_prompt_hash=expected_prompt_hash,
             expected_routes=expected_routes,
+            model_policy=model_policy if model_policy_path.exists() else None,
+            slice_controls_path=(root / "eval-slice-controls.json") if model_policy_path.exists() else None,
+            review_schema_path=(root / "review-schema.json") if model_policy_path.exists() else None,
+            proposal_prompt_path=(root / "prompt-correction-proposal.md") if model_policy_path.exists() else None,
+            verification_prompt_path=(root / "prompt-correction-verification.md") if model_policy_path.exists() else None,
         )
         if replayed_lineage != correction_lineage:
             raise ValueError("correction lineage differs from release report")

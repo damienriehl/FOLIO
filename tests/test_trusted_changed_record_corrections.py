@@ -303,7 +303,8 @@ def test_trusted_runner_accepts_with_stubbed_independent_providers(
                 )
                 if proposer:
                     verdict = "defect"
-                    replacement = record["expected_replacement"]
+                    assert "expected_replacement" not in record
+                    replacement = record["source"]
                 responses.append({
                     "record_id": record["record_id"],
                     "verdict": verdict,
