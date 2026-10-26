@@ -38,22 +38,28 @@ def create_qualification(
         raise ValueError(f"unsupported qualification role: {role}")
     if requested_model != actual_model:
         raise ValueError("served model does not match pinned model")
+    def metrics_pass(candidate: dict[str, Any]) -> bool:
+        slices = candidate.get("slice_metrics", [])
+        return (
+            candidate.get("response_set_complete", True)
+            and not candidate.get("missing_case_ids")
+            and not candidate.get("unsupported_slices")
+            and all(
+                not item.get("missing_case_ids")
+                and item.get("accuracy", 0) >= thresholds["minimum_accuracy"]
+                and item.get("defect_recall", 0) >= thresholds["minimum_defect_recall"]
+                and item.get("false_accept_rate", 1) <= thresholds["maximum_false_accept_rate"]
+                for item in slices
+            )
+            and candidate.get("accuracy", 0) >= thresholds["minimum_accuracy"]
+            and candidate.get("defect_recall", 0) >= thresholds["minimum_defect_recall"]
+            and candidate.get("false_accept_rate", 1) <= thresholds["maximum_false_accept_rate"]
+        )
+
     slice_metrics = metrics.get("slice_metrics", [])
-    slices_pass = all(
-        not item.get("missing_case_ids")
-        and item.get("accuracy", 0) >= thresholds["minimum_accuracy"]
-        and item.get("defect_recall", 0) >= thresholds["minimum_defect_recall"]
-        and item.get("false_accept_rate", 1)
-        <= thresholds["maximum_false_accept_rate"]
-        for item in slice_metrics
-    )
     passes = (
-        not metrics.get("missing_case_ids")
-        and not metrics.get("unsupported_slices")
-        and slices_pass
-        and metrics.get("accuracy", 0) >= thresholds["minimum_accuracy"]
-        and metrics.get("defect_recall", 0) >= thresholds["minimum_defect_recall"]
-        and metrics.get("false_accept_rate", 1) <= thresholds["maximum_false_accept_rate"]
+        metrics_pass(metrics)
+        and all(metrics_pass(item) for item in metrics.get("round_metrics", [metrics]))
         and (
             not thresholds.get("require_repeat_stability", False)
             or metrics.get("repeat_stability") is True

@@ -127,6 +127,7 @@ def test_correction_proposer_qualifies_on_exact_repair_task(tmp_path):
         max_output_tokens = 1000
 
         def assess(self, request):
+            assert all("expected_replacement" not in record for record in request.records)
             responses = tuple({
                 "record_id": record["record_id"],
                 "verdict": "defect",
@@ -138,7 +139,7 @@ def test_correction_proposer_qualifies_on_exact_repair_task(tmp_path):
                 }],
                 "preserved_propositions": ["number restored"],
                 "rationale": "Restores the frozen mutation.",
-                "proposed_replacement": record["expected_replacement"],
+                "proposed_replacement": record["source"],
             } for record in request.records)
             return ProviderReceipt(
                 self.provider, self.model, self.model,

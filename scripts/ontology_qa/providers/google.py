@@ -125,7 +125,7 @@ def _gemini_transport(payload: dict) -> dict:
         ) from exc
     usage = raw.get("usageMetadata") or {}
     return {
-        "model": raw.get("modelVersion", model), "responses": responses,
+        "model": raw.get("modelVersion"), "responses": responses,
         "usage": {
             "input_tokens": usage.get("promptTokenCount", 0),
             "output_tokens": max(
