@@ -1,6 +1,6 @@
 # Automated Ontology QA — Status
 
-STATE: foli-1 endpoint fences verified locally; bounded canary procedure in progress; live canary unverified
+STATE: foli-1 local guards and canary procedure prepared; full-size manifest preflight and live canary unverified
 
 Last updated: 2026-10-26
 
@@ -102,3 +102,11 @@ Release A is implemented on branch `automated-ontology-qa`.
 - Proof first: 28 new regressions failed against the original workflow (including three missing-file paths and absent endpoint fences); fixes passed the focused 84-test suite. Three additional empty-response cases also pass. Final full suite: 235 passed in 17.30s.
 - Integration review caught that adding endpoint observations to the indexed bundle would invalidate replay. A regression demonstrated that failure; diagnostics now live outside the immutable evidence directory and remain in the bounded failure upload.
 - All four workflow YAML files and their Bash blocks parse; `git diff --check` passes. Independent API observations cannot make acceptance atomic with PR mutation; already signed immutable evidence is not revoked if movement is observed afterward.
+
+## 2026-10-26 — foli-1 canary preparation (U3; U4 still open)
+
+- Added `docs/ontology-qa-release-a-canary.md`: exact existing-class mutation, input/record hashes, current-chain approval points, source/fresh lineage checks, attestation/replay and consumer evidence, bounded attempts, and required receipt fields. No ontology or generated output changed in the branch.
+- Disposable Billable Hour fixture: full census inspected 106,271 annotations and passed baseline-relative validation with zero new failures, 199 inherited failures, and 68 semantic-review risks. SHACL remains false because of inherited debt. Full parsed annotation-set comparison found exactly one removed and one added definition; class-scoped existing delta generation confirmed the recorded identity.
+- The committed WebProtégé base has the exact baseline literal and metadata. The existing merge pipeline applied one definition update and passed XML/RDF validation; the resulting bytes equal that base with only the intended definition substituted. This is preparation evidence, not provider acceptance or the real consumer receipt.
+- Full-size canonical manifest generation remains unverified. It did not return within 15 minutes on the 172,062-triple ontology and was stopped with inputs preserved; its runtime preflight remains open before a live dispatch. No delta algorithm, policy, or coverage limit was changed to obtain a result.
+- Local-only lane: no push, PR, deployment, provider call, registry write, credential access, or security-setting change. Provider access/budget and existing reviewer gates still hold U4. Chief campaign excerpts and real Cockpit attribution require controller verification; local file formatting is not scanner evidence.
