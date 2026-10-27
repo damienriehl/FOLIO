@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+    <!-- This is an annotation projection for search acceptance, not an ontology release. -->
+
+    <!-- https://folio.openlegalstandard.org/R88D8i8AcSTUig2X3yPbFHg -->
+    <owl:Class rdf:about="https://folio.openlegalstandard.org/R88D8i8AcSTUig2X3yPbFHg">
+        <rdfs:label>Agreements</rdfs:label>
+        <skos:prefLabel>Contracts</skos:prefLabel>
+        <skos:altLabel>Agreement</skos:altLabel>
+        <skos:altLabel>Contract</skos:altLabel>
+        <skos:altLabel xml:lang="fr-fr">Accords</skos:altLabel>
+        <skos:hiddenLabel>Accord</skos:hiddenLabel>
+        <skos:hiddenLabel>Accords</skos:hiddenLabel>
+        <skos:hiddenLabel>Pact</skos:hiddenLabel>
+        <skos:hiddenLabel>Pacts</skos:hiddenLabel>
+        <skos:hiddenLabel>Compact</skos:hiddenLabel>
+        <skos:hiddenLabel>Compacts</skos:hiddenLabel>
+    </owl:Class>
+
+    <!-- https://folio.openlegalstandard.org/RDtFkLR3v97fran5zQ3ugao -->
+    <owl:Class rdf:about="https://folio.openlegalstandard.org/RDtFkLR3v97fran5zQ3ugao">
+        <rdfs:label>Obligation</rdfs:label>
+        <skos:prefLabel>Covenant</skos:prefLabel>
+    </owl:Class>
+
+    <!-- https://folio.openlegalstandard.org/R8NLKPDCyexTiBJCz8mdsjz -->
+    <owl:Class rdf:about="https://folio.openlegalstandard.org/R8NLKPDCyexTiBJCz8mdsjz">
+        <rdfs:label>Indenture</rdfs:label>
+    </owl:Class>
+</rdf:RDF>
