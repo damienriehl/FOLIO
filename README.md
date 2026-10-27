@@ -77,6 +77,19 @@ pytest -q tests
 python scripts/validate_ontology_annotations.py FOLIO.owl
 ```
 
+Before a provider-backed qualification run, produce a reproducible summary of
+the fixed offline evidence profile (the destination must be new):
+
+```bash
+python scripts/run_offline_ontology_canary.py \
+  --output-dir artifacts/offline-canary
+```
+
+The result covers offline fixtures only: it does not verify live Actions or
+providers and never authorizes a release. See
+[`docs/ontology-qa-offline-canary.md`](docs/ontology-qa-offline-canary.md) for
+the report contract, outcome meanings, and retry procedure.
+
 ### Minting IRIs for new concepts
 
 FOLIO IRIs are permanent: once published, one is never deleted and never reused
