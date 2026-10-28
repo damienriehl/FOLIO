@@ -162,7 +162,7 @@ def iri_family(local_name: str) -> str:
 def resolve_ontologies(root: Path, given: list[str] | None) -> list[Path]:
     """Ontology files to check for collisions, skipping ones not present."""
     if given:
-        return [Path(item) for item in given]
+        return [Path(item) for item in given if Path(item).is_file()]
     return [root / name for name in DEFAULT_ONTOLOGIES if (root / name).is_file()]
 
 

@@ -1,0 +1,3 @@
+# Install this manifest in an isolated environment before producing an audit.
+-r requirements-test.txt
+pip-audit==2.10.1
