@@ -1,42 +1,31 @@
-# foli-6 - Usage documentation planning status
+# foli-6 - Usage documentation build status
 
-STATE: foli-6 plan reviewed; implementation awaits controller campaign-source reconciliation.
+STATE: foli-6 implementation complete; offline consumer guides and tested examples are ready.
 
 Repository ID: `folio`
 
 Item: `foli-6` (`expansion`)
 
-Branch: `drawdown/foli-6`
-
 Plan: [FOLIO Usage Examples and Documentation](docs/plans/2026-10-27-0953-feat-folio-usage-documentation-plan.md)
 
-## Starting state and scope
+## Completed work
 
-Baseline: `417a5e2`.
-Static inspection reconfirmed the two README “coming soon” entries and the absence of `documentation/` and `examples/`.
-The existing Python 3.12 CI job runs the full `tests/` directory, and `scripts/requirements.txt` already includes RDFLib.
+The README now links to delivered consumer documentation and runnable examples. The guides explain local setup, snapshot provenance, opaque identifiers, class and property subjects, label metadata, direct asserted hierarchy, anonymous restrictions, and deprecation semantics.
 
-The plan covers consumer Markdown guides and three read-only examples: load and summarize classes, inspect labels and direct hierarchy, and run a fixed local SELECT query.
-It specifies fixture coverage, real-corpus smoke checks, source-byte preservation and focused documentation-link checks for the build stage.
-It does not implement another mandate item or change ontology data, workflows, services or deployment configuration.
+Three import-safe RDFLib examples load and summarize a local RDF/XML file, inspect a declared named class, and run a fixed bounded SELECT with an optional safely bound parent IRI. They produce deterministic Unicode JSON, reject URL-shaped ontology inputs, require no credentials or providers, and do not modify ontology bytes.
 
-## Evidence and verification
+Focused tests cover fixtures, CLI failures, execution from another working directory, offline and byte-preserving loading, RDF term metadata, immediate hierarchy, unlabeled and deprecated classes, query binding and bounds, the published Investment Funds relation, and documentation links.
 
-This is a planning-only stage: no tests, example execution or dependency installation has occurred.
-No claim of a passing runtime baseline is made.
-The confidence check found no sections needing strengthening.
-Non-interactive `ce-doc-review` completed with no findings from coherence, feasibility, scope-guardian and adversarial reviewers; no review fixes or user decisions remain.
-Automatic cross-model document review was disabled by the checkout's existing configuration; this does not waive the campaign's subsequent PR reviews.
-The plan and these continuity records are the complete local plan-stage change; publication remains with the controller.
+## Verification
 
-## Controller prerequisites and residuals
+The pre-change baseline passed: `python -m pytest tests -q` (191 passed).
 
-The chief source `docs/plans/2026-10-26-0705-feat-codex-drawdown-campaign-plan.md` is not available in this sandbox.
-The plan uses the controller-supplied mandate and campaign rule references without claiming to have read the missing Goal Capsule or requirement text.
-The controller must reconcile those excerpts before build.
+The focused suite passed: `python -m pytest -q tests/test_consumer_examples.py tests/test_consumer_documentation.py` (11 passed).
 
-The Cockpit scanner and its source checkout are unavailable here.
-Actual scanner attribution to repository ID `folio` remains unverified; these top-level files follow the naming contract in `AGENTS.md` but do not replace that check.
-No new decision or credential from Damien is needed for the proposed work.
+All three documented commands ran successfully against `FOLIO.owl`. Its SHA-256 remained `c0f8ca58dad4227e89856d97a0344f45bec37289832837bd11c473dfdc7b44be` before and after.
 
-Markdown and CLI examples introduce no frontend page, so screenshot evidence is not applicable to the current scope.
+No ontology, provider workflow, schema, deployment setting, release artifact, dependency bound outside the consumer example, or external service changed. This is not a frontend change, so screenshot evidence is inapplicable.
+
+## Residual
+
+The checkout documents Cockpit's `folio` assignment, but the external Cockpit scanner is unavailable here. Its actual attribution therefore remains a controller verification rather than a local claim.
