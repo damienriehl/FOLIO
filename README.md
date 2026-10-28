@@ -50,7 +50,9 @@ FOLIO can be applied in various legal technology scenarios, including:
 
 ## Contributing
 
-We welcome contributions from the legal and technology communities. Please see our [CONTRIBUTING.md](CONTRIBUTING.md)(coming soon) file for guidelines on how to participate in FOLIO's development.
+We welcome contributions from the legal and technology communities. Please see
+our [contributor guide](CONTRIBUTING.md) for setup, deterministic checks,
+evidence replay, and dependency-audit instructions.
 
 ### Automated ontology QA
 
@@ -72,10 +74,15 @@ an offline-replayable evidence bundle.
 Local deterministic checks:
 
 ```bash
-python -m pip install -r scripts/requirements.txt pytest jsonschema
-pytest -q tests
+python -m pip install -r scripts/requirements-test.txt
+python -c "import folio.iri"
+python -m pytest tests -q -ra
 python scripts/validate_ontology_annotations.py FOLIO.owl
 ```
+
+The last command is an absolute census and can fail while known legacy debt is
+present. Use a baseline-relative census for change gating as described in
+[`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ### Minting IRIs for new concepts
 

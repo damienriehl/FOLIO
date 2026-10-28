@@ -101,6 +101,43 @@ def test_cli_replays_complete_bundle(tmp_path):
     assert json.loads(completed.stdout)["verified"] is True
 
 
+@pytest.mark.parametrize("failure", ["missing", "tampered"])
+def test_cli_replay_failures_emit_diagnostic_without_success_json(tmp_path, failure):
+    target = bundle(tmp_path)
+    if failure == "missing":
+        (target / "report.json").unlink()
+    else:
+        (target / "report.json").write_bytes(
+            (target / "report.json").read_bytes() + b" "
+        )
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/run_ontology_hydration_qa.py"),
+            "--bundle", str(target), "--replay",
+            "--report-schema", str(SCHEMA),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False, timeout=20,
+    )
+    assert completed.returncode == 1
+    assert completed.stderr.strip()
+    assert completed.stdout == ""
+
+
+def test_missing_assembly_arguments_create_no_bundle(tmp_path):
+    target = tmp_path / "never-created"
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/run_ontology_hydration_qa.py"),
+            "--bundle", str(target),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False, timeout=20,
+    )
+    assert completed.returncode != 0
+    assert not target.exists()
+
+
 def test_fresh_sha_bundle_replays_correction_source_lineage(tmp_path):
     source, candidate, ledger, correction_evidence = correction_fixture(tmp_path)
     baseline = tmp_path / "baseline.owl"
