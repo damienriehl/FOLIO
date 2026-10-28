@@ -4,6 +4,7 @@ import yaml
 
 ROOT = Path(__file__).parents[1]
 QA = ROOT / ".github/workflows/ontology-hydration-qa.yml"
+TESTS = ROOT / ".github/workflows/tests.yml"
 MERGE = ROOT / ".github/workflows/webprotege-merge.yml"
 TRIGGER = ROOT / ".github/workflows/ontology-hydration-qa-trigger.yml"
 TRUSTED_RUNNER = ROOT / "scripts/run_trusted_ontology_qa.py"
@@ -171,3 +172,23 @@ def test_workflows_are_valid_yaml_mappings():
     assert isinstance(yaml.safe_load(text(QA)), dict)
     assert isinstance(yaml.safe_load(text(MERGE)), dict)
     assert isinstance(yaml.safe_load(text(TRIGGER)), dict)
+    assert isinstance(yaml.safe_load(text(TESTS)), dict)
+
+
+def test_full_suite_workflows_share_fail_closed_test_setup():
+    for path, job in ((TESTS, "pytest"), (QA, "deterministic-pr")):
+        workflow = text(path)
+        job_steps = steps(path, job)
+        assert "scripts/requirements-test.txt" in workflow
+        prerequisite = job_steps["Verify required test inputs"]["run"]
+        assert 'python -c "import folio.iri"' in prerequisite
+        assert "test -f FOLIO.owl" in prerequisite
+        assert "test -f FOLIO-webprotege-merge-output.owl" in prerequisite
+        assert "python -m pytest tests -q -ra" in workflow
+
+
+def test_tests_workflow_preserves_pr_and_main_push_triggers():
+    workflow = yaml.safe_load(text(TESTS))
+    triggers = workflow[True]  # PyYAML 1.1 parses the plain `on` key as true.
+    assert triggers["pull_request"] is None
+    assert triggers["push"]["branches"] == ["main"]

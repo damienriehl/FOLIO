@@ -1,39 +1,33 @@
 # FOLIO Drawdown foli-7 - Status
 
-STATE: folio / foli-7 plan reviewed; implementation not started; controller verification pending
+STATE: folio / foli-7 implemented locally; dependency advisory lookup and hosted validation remain open
 
 Repository ID: `folio`
 Branch: `drawdown/foli-7`
-Last updated: 2026-10-27
+Last updated: 2026-10-28
 
-## Completed planning
+## Completed build
 
-The [maintainer hygiene plan](docs/plans/2026-10-27-2109-chore-foli-7-maintainer-hygiene-plan.md) covers mandate item `foli-7` only: selected command/evidence test gaps, existing-suite CI prerequisites, a dependency/security audit, and accurate contributor instructions.
-The mandate calls this hygiene; the campaign handoff uses `KIND: planned`.
+Implemented the [maintainer hygiene plan](docs/plans/2026-10-27-2109-chore-foli-7-maintainer-hygiene-plan.md):
 
-The starting checkout was clean at `417a5e2`, already on the assigned branch, with no git remote.
-Static inspection found 24 pytest modules and an existing full-suite Tests workflow for PRs and `main` pushes.
-The deterministic QA workflow also runs the suite; the plan extends those paths.
-The latest handoff records the keyless canary complete, so that completed work is not included here.
+- deterministic workflows share a bounded test manifest, explicitly verify the IRI module and required ontology files, run the entire suite, and report skips;
+- command-level tests cover validator output/status/baselines and IRI check/audit/mint/no-file behavior;
+- evidence tests cover unsafe archive types and roots, corrupt and empty input, atomic rejection, overwrite preservation, and replay/assembly failures;
+- `CONTRIBUTING.md` now documents Python 3.12 setup, full tests, absolute versus baseline-relative census behavior, offline replay, and dependency auditing;
+- the dated audit receipt contains the resolved local inventory, incomplete advisory disposition, and bounded workflow/evidence/provider source review.
 
-The `ce-plan` confidence check found no sections needing further research.
-Non-interactive `ce-doc-review` completed coherence, feasibility, scope, security, and adversarial reviews with no findings or required changes.
-The checkout disables the automatic cross-model pass; this review does not replace the controller's campaign review requirements.
+One characterized wrapper defect was fixed: explicitly supplied ontology paths that do not exist now follow the documented no-files diagnostic and exit 2, rather than raising an unhandled `FileNotFoundError`.
 
-## Evidence and constraints
+## Evidence
 
-This was a planning-only stage: no tests, package installations, dependency audits, application commands, provider calls, or implementation changes ran.
-Historical pass counts are not a current baseline.
-Only the plan and this item's STATUS/NEXT documents are part of the local delivery; publication remains with the controller.
+Fresh baseline at `c6089a1`: `python -m pip check` reported no broken requirements, and `python -m pytest tests -q -ra` passed 191 tests in 52.79 seconds.
 
-The plan retains existing tests, ontology bytes, IRI ownership, QA policies, workflow identities, and trusted execution boundaries.
-It proposes no UI change, migration, data rewrite, package release, outside service, or credential/security-setting change.
+Final working tree: required `folio.iri` import and ontology-file checks passed; `python -m pip check` reported no broken requirements; and `python -m pytest tests -q -ra` passed 212 tests in 63.57 seconds with no skips.
 
-## Controller verification still needed
+The isolated audit install was attempted but package-index connections were rejected by the sandbox proxy. `pip-audit` therefore could not run and the receipt explicitly remains incomplete rather than claiming a clean result.
 
-The chief campaign repository was not mounted, so the Goal Capsule and cited Campaign R11/R15/R16/R17/R19/R20 source sections could not be read.
-The supplied mandate rules were used and this source limitation is explicit in the plan.
+No ontology, schema, QA policy, prompt, migration, production data, credential, security setting, release, outside service, or trusted model job was changed.
 
-The Cockpit source tree and scanner were also unavailable.
-The new continuity filenames are top-level scanner inputs and explicitly name repository ID `folio`, but actual scanner attribution has not been verified.
-Both checks remain controller actions in `NEXT-FOLI-7.md`; neither requires a new Damien decision.
+## Residuals
+
+The controller still owns campaign-source reconciliation, Cockpit scanner attribution, publication, hosted CI, and campaign reviews. A network-enabled maintainer environment must complete the advisory scan recorded in `NEXT-FOLI-7.md`; this needs no Damien decision or credential.
