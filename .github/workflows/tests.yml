@@ -18,7 +18,13 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install -r scripts/requirements.txt pytest
+        run: pip install -r scripts/requirements-test.txt
+
+      - name: Verify required test inputs
+        run: |
+          python -c "import folio.iri"
+          test -f FOLIO.owl
+          test -f FOLIO-webprotege-merge-output.owl
 
       - name: Run tests
-        run: python -m pytest tests -q
+        run: python -m pytest tests -q -ra

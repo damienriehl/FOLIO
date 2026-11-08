@@ -60,10 +60,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -r scripts/requirements.txt pytest jsonschema
+      - run: pip install -r scripts/requirements-test.txt
+      - name: Verify required test inputs
+        run: |
+          python -c "import folio.iri"
+          test -f FOLIO.owl
+          test -f FOLIO-webprotege-merge-output.owl
       - name: Run tests and full deterministic census
         run: |
-          pytest -q tests
+          python -m pytest tests -q -ra
           git show "${{ github.event.pull_request.base.sha }}:FOLIO.owl" > baseline.owl
           python scripts/validate_ontology_annotations.py FOLIO.owl \
             --baseline baseline.owl \
