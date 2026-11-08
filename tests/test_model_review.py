@@ -151,6 +151,42 @@ def test_google_api_key_is_sent_in_header_not_url(monkeypatch):
     assert seen[0].get_header("X-goog-api-key") == "secret-key"
 
 
+@pytest.mark.parametrize("model_version", [None, "", "   ", "gemini-other"])
+def test_google_raw_transport_never_falls_back_to_requested_model(
+    monkeypatch, model_version,
+):
+    body = {
+        "candidates": [{"content": {"parts": [{"text": "[]"}]}}],
+    }
+    if model_version is not None:
+        body["modelVersion"] = model_version
+
+    monkeypatch.setenv("GOOGLE_API_KEY", "test-only")
+    monkeypatch.setattr(
+        "urllib.request.urlopen",
+        lambda request, timeout: io.BytesIO(json.dumps(body).encode()),
+    )
+    raw = _gemini_transport({
+        "model": "gemini-3.5-flash", "system_instruction": "review",
+        "contents": [],
+        "generation_config": {
+            "response_mime_type": "application/json",
+            "response_json_schema": {"type": "array"},
+            "thinking_config": {"thinking_level": "high"},
+            "max_output_tokens": 100,
+        },
+    })
+    assert raw["model"] == model_version
+    with pytest.raises(ProviderError, match="unpinned model"):
+        GoogleAdapter("gemini-3.5-flash", lambda payload: raw).assess(
+            ReviewRequest(
+                request_id="request", model="gemini-3.5-flash",
+                prompt="review", records=(), schema={"type": "object"},
+                context_hash="context",
+            )
+        )
+
+
 def test_graph_context_is_bounded_hashed_and_ontology_grounded():
     from rdflib import Graph, Literal, URIRef
     from rdflib.namespace import RDFS, SKOS

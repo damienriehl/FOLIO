@@ -171,6 +171,13 @@ class ReviewExecutor:
             maximum_output_tokens=maximum_output_tokens,
         )
         receipt = adapter.assess(request)
+        if (
+            receipt.provider != adapter.provider
+            or receipt.requested_model != adapter.model
+            or receipt.actual_model != adapter.model
+            or receipt.request_id != request.request_id
+        ):
+            raise ValueError("fresh receipt route or request mismatch")
         if validator is not None:
             validator(receipt)
         self.cache.publish(receipt)

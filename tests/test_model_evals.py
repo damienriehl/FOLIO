@@ -14,6 +14,7 @@ from ontology_qa.evals import (
     load_model_policy,
     load_slice_controls,
     qualification_identity,
+    score_qualification_rounds,
 )
 from ontology_qa.records import content_hash
 
@@ -130,3 +131,49 @@ def test_policy_pins_two_non_claude_routes():
     assert policy["routes"]["primary"]["provider"] == "openai"
     assert policy["routes"]["independent"]["provider"] == "google"
     assert set(policy["forbidden_providers"]) == {"anthropic", "claude"}
+
+
+@pytest.mark.parametrize("prediction", ["abstain", "pass", "invalid-replacement", None])
+def test_only_actual_defect_predictions_count_as_detection(prediction):
+    cases = [{
+        "case_id": "defect", "family": "definition", "locale": "en",
+        "authority": "deterministic-gold", "expected_verdict": "defect",
+    }]
+    predictions = {} if prediction is None else {"defect": prediction}
+    result = evaluate_predictions(cases, predictions, minimum_cases_per_slice=1)
+    assert result["defect_recall"] == 0
+    assert result["false_accept_rate"] == (1 if prediction == "pass" else 0)
+
+
+def test_proposer_repeat_stability_includes_exact_replacement():
+    case = {
+        "case_id": "repair", "family": "definition", "locale": "en",
+        "authority": "deterministic-gold", "expected_verdict": "defect",
+        "expected_replacement": "correct",
+    }
+    record_id = content_hash("repair")
+    rounds = [[{
+        "record_id": record_id, "verdict": "defect",
+        "proposed_replacement": replacement,
+    }] for replacement in ("correct", "wrong")]
+    result = score_qualification_rounds(
+        [case], rounds, role="correction-proposer",
+        minimum_cases_per_slice=1, required_slices={("definition", "en")},
+    )
+    assert result["repeat_stability"] is False
+    assert result["round_metrics"][0]["defect_recall"] == 1
+    assert result["round_metrics"][1]["defect_recall"] == 0
+
+
+def test_duplicate_or_extra_round_responses_are_incomplete():
+    case = {
+        "case_id": "one", "family": "definition", "locale": "en",
+        "authority": "deterministic-gold", "expected_verdict": "pass",
+    }
+    record_id = content_hash("one")
+    response = {"record_id": record_id, "verdict": "pass"}
+    result = score_qualification_rounds(
+        [case], [[response, response], [response]], role="production-primary",
+        minimum_cases_per_slice=1, required_slices={("definition", "en")},
+    )
+    assert result["round_metrics"][0]["response_set_complete"] is False
