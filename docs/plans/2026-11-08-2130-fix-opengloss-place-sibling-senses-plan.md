@@ -1,7 +1,7 @@
 ---
 title: "fix: one phrase sense per place name in the OpenGloss mapping set (0.3.0)"
 type: fix
-status: active
+status: rejected
 date: 2026-11-08
 origin: docs/plans/2026-11-08-2000-feat-opengloss-branch-aware-prior-plan.md (set 0.2.0)
 ---
@@ -61,3 +61,19 @@ The method becomes `opengloss-lexical/0.3` and the set becomes 0.3.0.
   - **Determinism:** identical inputs give identical output.
 - **U2:** bump the pins, regenerate, validate, diff against 0.2.0, judge the dropped sample, apply
   the keep rule, write the receipt, update the docs, review, PR, merge, and notify folio-resolve.
+
+## Result (2026-11-08): rejected, set stays 0.2.0
+
+The 0.3.0 build dropped 240 links, all `closeMatch`. On the gold set, judged precision rose from
+0.751 to 0.784 and recall fell from 0.919 to 0.905, so both gold conditions passed.
+
+The dropped-link condition failed. Of a random 30 dropped links, only 15 were wrong (50%, against
+a 60% bar). Many dropped sibling senses were valid alternate referents of the same place: its city,
+province or region sense (*Auckland*, *Ohio*, *Delhi*, *Otago*, *Bali*, *Lisboa*). The gold set's
+eight dropped pairs had overstated the gain. The keep rule therefore reverted the change.
+
+The 30 judgments joined `eval/gold.tsv`, since they judge links that 0.2.0 emits.
+
+**Lesson:** for place names, a sibling sense is not evidence of error. A future fix needs evidence
+that separates referents, such as matching the country or region in the class's parent labels
+against the gloss, rather than a structural rule.

@@ -75,11 +75,16 @@ stay. To recover a raw OpenGloss id, strip the `OGS:` prefix from `object_id`.
 
 ## How good the links are
 
-`eval/gold.tsv` holds 222 judged pairs. An AI agent judged them from the glosses and FOLIO
-definitions alone; no human has audited them. They come from two samples:
+`eval/gold.tsv` holds 252 judged pairs. An AI agent judged them from the glosses and FOLIO
+definitions alone; no human has audited them. They come from three samples:
 
 - **For set 0.1.0:** 25 emitted links per predicate, plus every candidate sense of 30 unlinked classes.
 - **For set 0.2.0:** 60 links that 0.2.0 added, 15 per predicate.
+- **Targeted:** 30 sibling place-name senses, drawn while testing a rejected rule (see
+  `docs/plans/2026-11-08-2130-fix-opengloss-place-sibling-senses-plan.md`).
+
+The targeted sample over-represents a weak group, so the file's raw precision (0.72) runs below
+the set's link-weighted estimate below.
 
 Set 0.1.0, which applied the legal prior to every class:
 
@@ -107,8 +112,10 @@ Links that set 0.2.0 added by keying the prior to the FOLIO branch:
   - **closeMatch:** usually points at a sound sense, but its predicate is a placeholder. The judge
     most often wanted `broadMatch`, `narrowMatch`, or `exactMatch`, which a lexical method cannot
     tell apart. Treat it as "related sense, kind of relation unknown".
-  - **Place-name word links:** the weakest group. A word inside a place name (*Nam Dinh*, *Pando*)
-    can link to an unrelated sense of that word.
+  - **Place names:** the weakest group. A word inside a place name (*Nam Dinh*, *Pando*) can link
+    to an unrelated sense of that word. A place with several OpenGloss senses links each one that
+    scores well, and about half of those extra senses are valid alternate referents (a city, its
+    province or its region).
 - **Rescoring:** each regeneration rescores against the gold file, and `upstream.json` keeps the
   latest raw score.
 
