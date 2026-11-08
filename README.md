@@ -13,8 +13,8 @@
 ## Repository Contents
 
 - `FOLIO.owl`: The primary OWL (Web Ontology Language) file containing the FOLIO ontology
-- `documentation/` (coming soon): Detailed documentation on FOLIO concepts and usage
-- `examples/` (coming soon): Sample implementations and use cases
+- [Consumer documentation](documentation/README.md): FOLIO concepts, RDF semantics, and local setup
+- [Runnable examples](examples/README.md): Offline loading, concept inspection, and class queries
 
 ## Key Features
 
@@ -29,8 +29,9 @@
    ```
    git clone https://github.com/alea-institute/folio.git
    ```
-2. Explore the `FOLIO.owl` file using an ontology editor like Protégé or WebProtégé
-3. Refer to the documentation for implementation guidelines
+2. Follow the [consumer quick start](documentation/README.md#quick-start), or
+   explore `FOLIO.owl` with an ontology editor such as Protégé or WebProtégé
+3. Run the [local examples](examples/README.md) to inspect the checked-in data
 
 ## Use Cases
 
@@ -44,8 +45,8 @@ FOLIO can be applied in various legal technology scenarios, including:
 
 ## Implementation
 
-1. **Explore**: Review our documentation, tutorials, and examples
-2. **Integrate**: Use the FOLIO OWL data or API in your systems and services
+1. **Explore**: Review the consumer documentation and runnable examples
+2. **Integrate**: Use the checked-in FOLIO OWL data in your systems and services
 3. **Collaborate**: Share your experiences and contribute to improving the standard
 
 ## Contributing
