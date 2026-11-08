@@ -1,0 +1,42 @@
+{
+  "folio": {
+    "path": "FOLIO.owl"
+  },
+  "method_version": "opengloss-lexical/0.1",
+  "opengloss": {
+    "dataset": "mjbommar/opengloss-v2.4-senses",
+    "files": [
+      {
+        "path": "data/train-00000.parquet",
+        "sha256": "32f6c69d143082cc23f8a98e7c875a20600cf9ec4de4ca6fd25cb4807c27f719"
+      },
+      {
+        "path": "data/train-00001.parquet",
+        "sha256": "bad7ae8f582bec44e97710f94df1dc81869613f6649e376b9f5feefbac2501e1"
+      },
+      {
+        "path": "data/train-00002.parquet",
+        "sha256": "ddfd0bd844634b605e52189ae8972c2972266772fd9fd1a306e1115f21ab5dec"
+      }
+    ],
+    "license": "CC-BY-4.0",
+    "revision": "c64e480015b8c84f9d08469d4dfd64a7a8fb89bd",
+    "schema_fingerprint": "sha256:5ae72fa47a7c64200aa94c77dd5c66b738815ede8dffe95bbe3885b4eb627130",
+    "series": "2.4"
+  },
+  "score": {
+    "emitted_judged": 97,
+    "judged": 162,
+    "precision": 0.7835,
+    "predicate_agreement": 0.5789,
+    "recall": 0.7308,
+    "rows": 18684,
+    "rows_by_predicate": {
+      "skos:broadMatch": 6804,
+      "skos:closeMatch": 1521,
+      "skos:exactMatch": 558,
+      "skos:relatedMatch": 9801
+    }
+  },
+  "set_version": "0.1.0"
+}

@@ -1,0 +1,87 @@
+{
+  "added": {
+    "count": 18684,
+    "sample": []
+  },
+  "decision": "initial-release",
+  "folio_sha256": {
+    "after": "c0f8ca58dad4227e89856d97a0344f45bec37289832837bd11c473dfdc7b44be",
+    "before": null
+  },
+  "generated_at": "2026-11-08T19:44:08.050629+00:00",
+  "method_version": "opengloss-lexical/0.1",
+  "opengloss": {
+    "after": {
+      "dataset": "mjbommar/opengloss-v2.4-senses",
+      "revision": "c64e480015b8c84f9d08469d4dfd64a7a8fb89bd"
+    },
+    "before": null
+  },
+  "reasons": [
+    "first build of set 0.1.0 (no prior set)"
+  ],
+  "removed": {
+    "count": 0,
+    "sample": []
+  },
+  "rows": {
+    "after": 18684,
+    "before": 0
+  },
+  "rows_by_predicate": {
+    "after": {
+      "skos:broadMatch": 6804,
+      "skos:closeMatch": 1521,
+      "skos:exactMatch": 558,
+      "skos:relatedMatch": 9801
+    },
+    "before": {}
+  },
+  "schema_fingerprint": {
+    "after": "sha256:5ae72fa47a7c64200aa94c77dd5c66b738815ede8dffe95bbe3885b4eb627130",
+    "before": null
+  },
+  "score": {
+    "after": {
+      "emitted_judged": 97,
+      "judged": 162,
+      "precision": 0.7835,
+      "predicate_agreement": 0.5789,
+      "recall": 0.7308,
+      "rows": 18684,
+      "rows_by_predicate": {
+        "skos:broadMatch": 6804,
+        "skos:closeMatch": 1521,
+        "skos:exactMatch": 558,
+        "skos:relatedMatch": 9801
+      }
+    },
+    "before": null
+  },
+  "score_by_predicate": {
+    "skos:broadMatch": {
+      "correct": 15,
+      "judged": 24,
+      "same_predicate": 12
+    },
+    "skos:closeMatch": {
+      "correct": 20,
+      "judged": 25,
+      "same_predicate": 2
+    },
+    "skos:exactMatch": {
+      "correct": 24,
+      "judged": 25,
+      "same_predicate": 14
+    },
+    "skos:relatedMatch": {
+      "correct": 17,
+      "judged": 23,
+      "same_predicate": 16
+    }
+  },
+  "set_version": {
+    "after": "0.1.0",
+    "before": null
+  }
+}

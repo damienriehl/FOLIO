@@ -1,0 +1,7 @@
+sense_id	lexeme_id	headword	pos	sense_index	domain	gloss
+agreement:noun:0	agreement:noun	agreement	noun	0	law_government	A legal agreement.
+agreement:noun:1	agreement:noun	agreement	noun	1	business	An arrangement between parties.
+breach:noun:0	breach:noun	breach	noun	0	law_government	A failure to perform a duty.
+breach:noun:1	breach:noun	breach	noun	1	law_government	A violation of an agreement.
+contract:noun:0	contract:noun	contract	noun	0	law_government	An enforceable agreement.
+duty:noun:0	duty:noun	duty	noun	0	law_government	A legal obligation.

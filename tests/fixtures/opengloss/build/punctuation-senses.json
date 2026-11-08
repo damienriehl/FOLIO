@@ -1,0 +1,9 @@
+[
+  {"sense_id":"beer:noun:0","lexeme_id":"beer:noun","headword":"beer","pos":"noun","sense_index":0,"domain":"business","domain_root":"business","gloss":"Beer"},
+  {"sense_id":"wine:noun:0","lexeme_id":"wine:noun","headword":"wine","pos":"noun","sense_index":0,"domain":"business","domain_root":"business","gloss":"Wine"},
+  {"sense_id":"liquor:noun:0","lexeme_id":"liquor:noun","headword":"liquor","pos":"noun","sense_index":0,"domain":"business","domain_root":"business","gloss":"Liquor"},
+  {"sense_id":"retailers:noun:0","lexeme_id":"retailers:noun","headword":"retailers","pos":"noun","sense_index":0,"domain":"business","domain_root":"business","gloss":"Retailers"},
+  {"sense_id":"agreements:noun:0","lexeme_id":"agreements:noun","headword":"agreements","pos":"noun","sense_index":0,"domain":"law_government","domain_root":"law_government","gloss":"Agreements"},
+  {"sense_id":"contracts:noun:0","lexeme_id":"contracts:noun","headword":"contracts","pos":"noun","sense_index":0,"domain":"law_government","domain_root":"law_government","gloss":"Contracts"},
+  {"sense_id":"contract:noun:0","lexeme_id":"contract:noun","headword":"contract","pos":"noun","sense_index":0,"domain":"law_government","domain_root":"law_government","gloss":"Contract"}
+]

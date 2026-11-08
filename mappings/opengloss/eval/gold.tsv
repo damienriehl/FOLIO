@@ -1,0 +1,168 @@
+# Gold sample for the FOLIO-to-OpenGloss mapping set.
+# Judge: an AI agent (Codex), 2026-11-08, from glosses and FOLIO definitions only; not a human audit.
+# Sample: 25 emitted links per predicate (exact, close, broad, related) and every candidate sense
+#   of 30 unlinked gap classes, drawn with random.Random(20261108) from set version 0.1.0.
+# Rubric: see mappings/opengloss/README.md (Reading the mapping set).
+subject_id	object_id	verdict	expected_predicate	note
+FOLIO:8F6RK7H9Sp-PHM1JAZjmIg	OGS:merchant:noun:0	correct	skos:broadMatch	General trading persons or companies include merchant wholesalers specializing in footwear.
+FOLIO:BOu_F2RbSrybYXlvs8l0IA	OGS:administration:noun:2	incorrect		Sense is a period in office; class concerns administering public-assistance programs.
+FOLIO:R0148be65B5ecA2E1b78B366	OGS:djibouti:noun:0	correct	skos:exactMatch	Country sense matches Djibouti under Africa.
+FOLIO:R07594590A834D8B692F84c0	OGS:lazio:noun:0	correct	skos:exactMatch	Italy parent and Lazio label match the Italian administrative region.
+FOLIO:R07594590A834D8B692F84c0	OGS:lazio:noun:1	incorrect		The football club is a different referent from the Italian location indicated by the parent.
+FOLIO:R07D8a428Baa244B4f47Acb8	OGS:littoral:noun:0	incorrect		A generic shoreline does not denote the named Cameroon location indicated by the parent.
+FOLIO:R08059a46F59fB22a4fDB78c	OGS:dobrich:noun:0	correct	skos:exactMatch	Both identify the city of Dobrich in Bulgaria.
+FOLIO:R08059a46F59fB22a4fDB78c	OGS:dobrich:noun:1	incorrect		Dobrich Province is a different geographic entity from the city specified in the definition.
+FOLIO:R0TZk2qCI4HPwDl3e9FoOo	OGS:human_rights:noun:0	correct	skos:exactMatch	Both describe fundamental entitlements inherent in every human being.
+FOLIO:R144d9777Cc75C0Fa4072795	OGS:andorra_la_vella:noun:0	correct	skos:exactMatch	Both identify Andorra's capital city in the Pyrenees.
+FOLIO:R1A8c03F0A38745568983294	OGS:amtrak:noun:0	correct	skos:exactMatch	Both identify the same US national intercity passenger railroad corporation.
+FOLIO:R21B34b839a8b4DC0d286bc8	OGS:hanover:noun:0	incorrect		The German city is a different location from Hanover in Jamaica.
+FOLIO:R21B34b839a8b4DC0d286bc8	OGS:hanover:noun:1	incorrect		A European royal dynasty is a different referent from the Jamaican location.
+FOLIO:R21B34b839a8b4DC0d286bc8	OGS:hanover:noun:2	incorrect		The New Hampshire town is a different location from Hanover in Jamaica.
+FOLIO:R2311533686ac96916eE33cd	OGS:riga:noun:0	correct	skos:exactMatch	Latvia parent and Riga label match the Latvian capital city.
+FOLIO:R2B0d2d07044cD1E9e5C5eaa	OGS:capital:noun:0	correct	skos:relatedMatch	Capital names the seat-of-government concept used in the territory's label.
+FOLIO:R38rBHNGk58fVQeIw84NvM	OGS:director:noun:2	correct	skos:broadMatch	General organizational directors include the executive director's governance role.
+FOLIO:R46Cb1637Bd308B314cE43b9	OGS:japan:noun:0	correct	skos:exactMatch	Both identify Japan as a country in Asia.
+FOLIO:R692530B6B4266BA38798a0a	OGS:burgas:noun:0	correct	skos:exactMatch	Both identify the city of Burgas in Bulgaria.
+FOLIO:R692530B6B4266BA38798a0a	OGS:burgas:noun:1	incorrect		A surrounding province or metropolitan area is distinct from the city specified by the class.
+FOLIO:R692530B6B4266BA38798a0a	OGS:burgas:noun:2	incorrect		The coastal zone and bay are distinct from the city specified by the class.
+FOLIO:R6A45acB060fdDFC1b334878	OGS:ankara:noun:0	correct	skos:exactMatch	Both identify Ankara as Turkey's capital city.
+FOLIO:R6A45acB060fdDFC1b334878	OGS:ankara:noun:1	incorrect		Wax-print fabric is a different Ankara sense from Turkey's capital city.
+FOLIO:R6BEa09D0Bf77FDB831056c7	OGS:baghdad:noun:1	incorrect		Sense denotes an administrative region; blank definition does not establish that referent for Baghdad.
+FOLIO:R71FTkY4MY6fv6Aguuw5HxP	OGS:bankruptcy:noun:0	correct	skos:relatedMatch	Bankruptcy is the legal proceeding documented by these time records.
+FOLIO:R724b274AAfb8032b150Ec60	OGS:kwazulu_natal:noun:0	correct	skos:exactMatch	Both identify the South African province of KwaZulu-Natal.
+FOLIO:R72lOZM1yGI094Xre49Qsjc	OGS:icelandic:noun:0	correct	skos:exactMatch	Both denote the Icelandic language.
+FOLIO:R72lOZM1yGI094Xre49Qsjc	OGS:icelandic:noun:1	incorrect		Sense denotes a person from Iceland; class denotes the language.
+FOLIO:R74kE1IV2pWp0SSWv8DspZC	OGS:missouri:noun:0	correct	skos:relatedMatch	Missouri names the state in this court's jurisdictional label.
+FOLIO:R76RHEQOV5lf5HrdZ6uL0sf	OGS:bias:noun:0	correct	skos:exactMatch	Both describe unfair or nonobjective judgment arising from an inclination or prejudice.
+FOLIO:R76RHEQOV5lf5HrdZ6uL0sf	OGS:bias:noun:1	incorrect		Systematic measurement error is a different bias sense from personal prejudgment.
+FOLIO:R76RHEQOV5lf5HrdZ6uL0sf	OGS:bias:noun:2	incorrect		Media presentation slant differs from the class's personal prejudgment; equivalence is uncertain.
+FOLIO:R771058D5265501E568ABeb9	OGS:offaly:noun:0	correct	skos:exactMatch	Both identify County Offaly in Ireland.
+FOLIO:R771058D5265501E568ABeb9	OGS:offaly:noun:2	incorrect		A county's governing entity is distinct from the geographic county defined by the class.
+FOLIO:R77pHybcEdlO9OmqSuiyWi1	OGS:debtor:noun:0	correct	skos:narrowMatch	Sense requires money owed; class also includes debts of goods or services.
+FOLIO:R77x3SkEZVElsBUssI5atJB	OGS:debenture:noun:0	correct	skos:exactMatch	Both describe long-term unsecured debt backed by issuer creditworthiness.
+FOLIO:R78aEYlcLKqK3QOL0nQIp9s	OGS:life_sentence:noun:0	correct	skos:exactMatch	Both describe imprisonment for the remainder of the offender's life.
+FOLIO:R79Cc3a5B129e53A6635B5e6	OGS:nagaland:noun:0	correct	skos:exactMatch	India parent and Nagaland label match the Indian state.
+FOLIO:R79Cc3a5B129e53A6635B5e6	OGS:nagaland:noun:1	incorrect		A wider historical Naga cultural region is a different referent; state-equivalent scope is not established.
+FOLIO:R79Cf694CA78d0829c1A91ee	OGS:missouri:noun:0	correct	skos:relatedMatch	Missouri names the state in this bankruptcy court's jurisdictional label.
+FOLIO:R7F7882E88c14CA0d4aAD629	OGS:courts:noun:0	correct	skos:broadMatch	General judicial institutions include Nebraska's state courts.
+FOLIO:R7QiKeEkci1FYlRMv6nDRnv	OGS:bankruptcy:noun:0	correct	skos:relatedMatch	Bankruptcy names the statutory proceeding in which these motions are filed.
+FOLIO:R7VHEoDUFVEwkyvRY96BMGR	OGS:filings:noun:0	incorrect		Sense denotes submitting documents; class explicitly denotes the documents and forms submitted.
+FOLIO:R7bwZeguAOad1yUKbQstNCT	OGS:reentry:noun:1	correct	skos:exactMatch	Both describe community reintegration after incarceration.
+FOLIO:R7kzhdyQ8hygxBWuoIkziix	OGS:kansas:noun:0	correct	skos:relatedMatch	Kansas names the state in this court's jurisdictional label.
+FOLIO:R7nIUZHs8FEmvVOZ76PYOyz	OGS:management:noun:2	correct	skos:broadMatch	General resource management includes organizing and controlling an organization's intranet.
+FOLIO:R7r8FeqnphadygvNP0XHj84	OGS:motorcycle:noun:0	correct	skos:narrowMatch	Sense requires road use; class also expressly includes off-road motorcycles.
+FOLIO:R8LSqagCizuGKyev4G1XO1s	OGS:court:noun:0	incorrect		Sense denotes a courthouse building; class denotes the appellate judicial institution.
+FOLIO:R8NcEcKGyel5bjJtbeSaJpa	OGS:tsimshian:noun:0	incorrect		Definition specifies a language; sense denotes a person, despite the class's additional tribal parent.
+FOLIO:R8NcEcKGyel5bjJtbeSaJpa	OGS:tsimshian:noun:1	correct	skos:exactMatch	Both identify the Tsimshian language.
+FOLIO:R8Owlw8lExgVrP33uVeEYD1	OGS:norwegian:noun:0	incorrect		Sense denotes a person from Norway; class explicitly denotes the language.
+FOLIO:R8Owlw8lExgVrP33uVeEYD1	OGS:norwegian:noun:1	correct	skos:exactMatch	Both identify the Norwegian language.
+FOLIO:R8jkTp5friLuBM7MFd6NPRR	OGS:discovery:noun:2	correct	skos:broadMatch	General pretrial evidence discovery includes the written-request discovery subclass.
+FOLIO:R8kZH8Gb8YPAcEBZuvfA08j	OGS:curfew:noun:0	correct	skos:broadMatch	General stay-indoors orders include curfews imposed as criminal disposition conditions.
+FOLIO:R8qwdsgAn7Q1AOzytfyjNOw	OGS:shareholding:noun:0	correct	skos:relatedMatch	Shareholding means ownership of shares, the subject addressed by the clause.
+FOLIO:R8te32edjcSUX4tMurhyng6	OGS:basque:noun:0	incorrect		Sense denotes a Basque person; class explicitly denotes the language.
+FOLIO:R8te32edjcSUX4tMurhyng6	OGS:basque:noun:1	correct	skos:exactMatch	Both identify the Basque language.
+FOLIO:R8te32edjcSUX4tMurhyng6	OGS:basque:noun:2	incorrect		Sense denotes Basque culture and customs, not the language specified by the class.
+FOLIO:R91D98b850c3219Ceab1E7a3	OGS:taiwan:noun:1	incorrect		Location context does not establish the government or administrative-apparatus sense of Taiwan.
+FOLIO:R93T7OEmCjkwufvhJAY4ScV	OGS:easement:noun:0	correct	skos:broadMatch	Sense includes rights restricting another's land use as well as the class's rights to use it.
+FOLIO:R94lKwArPjDwr5lwj1GIpSq	OGS:mexico:noun:0	incorrect		Mexico the country is a different referent from the US state of New Mexico in the court's label.
+FOLIO:R9ASJjCZKlhBHzey6AXGHmM	OGS:arkansas:noun:0	correct	skos:relatedMatch	Arkansas names the state in this court's jurisdictional label.
+FOLIO:R9EOkKjFMzLEwh7coNAwXjX	OGS:parent:noun:0	correct	skos:exactMatch	Both describe a mother or father of a child.
+FOLIO:R9EOkKjFMzLEwh7coNAwXjX	OGS:parent:noun:1	incorrect		A corporate owner is a different parent sense from a mother or father.
+FOLIO:R9EOkKjFMzLEwh7coNAwXjX	OGS:parent:noun:2	incorrect		A tree node is a different parent sense from a mother or father.
+FOLIO:R9HvF7FfEi0bAHAm2QCwRUe	OGS:sick_leave:noun:0	correct	skos:broadMatch	Sense covers authorized health-related leave without requiring the class's paid status.
+FOLIO:R9JhvLtNkH5oHMJorZyBNz	OGS:county:noun:0	correct	skos:relatedMatch	County names the territorial jurisdiction in this court's label; the court is not a county.
+FOLIO:R9PQzGkaFkFgcMvZOKrmbqT	OGS:time:noun:0	correct	skos:narrowMatch	Experimental measurement of event duration is a specialized use of the class's general temporal measurement.
+FOLIO:R9PQzGkaFkFgcMvZOKrmbqT	OGS:time:noun:1	correct	skos:narrowMatch	A chronological coordinate is a specialized temporal value within the class's duration or event-order concept.
+FOLIO:R9PQzGkaFkFgcMvZOKrmbqT	OGS:time:noun:2	incorrect		Sense denotes a standardized timekeeping system, not duration or event order itself.
+FOLIO:R9TyJ8yqLicto5rFa8puek4	OGS:bank:noun:0	correct	skos:exactMatch	Both describe a deposit-taking, lending financial institution.
+FOLIO:R9YaW0nGKZ57Vp8udUt60d5	OGS:privilege:noun:0	correct	skos:broadMatch	A legally granted special right encompasses the informant's confidentiality protection.
+FOLIO:R9bEI30EOoLdviAO9g4u5SI	OGS:district:noun:0	correct	skos:relatedMatch	District names the bounded territorial area in the court's jurisdictional label.
+FOLIO:R9dOXS25DBd2nPjhbmrzlo8	OGS:florida:noun:0	correct	skos:relatedMatch	Florida names the state in this court's jurisdictional label.
+FOLIO:R9mXb4AjxTfwjZ5tIx50Hbc	OGS:chimariko:noun:0	incorrect		Cultural blending does not denote the Indigenous tribe indicated by the parent.
+FOLIO:R9mXb4AjxTfwjZ5tIx50Hbc	OGS:chimariko:noun:1	incorrect		An intercultural research measure does not denote the Indigenous tribe indicated by the parent.
+FOLIO:RA03e1eB71ca8E7D15dBE3d4	OGS:court:noun:0	incorrect		Sense denotes a courthouse building; class denotes the bankruptcy judicial institution.
+FOLIO:RA123e3847697C0Ef84FBaee	OGS:subdivision:noun:0	correct	skos:broadMatch	General political subdivisions include the specified subdivision of Sao Tome and Principe.
+FOLIO:RA416005F9f4e692029D6f27	OGS:court:noun:0	incorrect		Sense denotes a courthouse building; class denotes the judicial institution.
+FOLIO:RA6Fd547CB5ca7DBca5C0430	OGS:tehran:noun:0	correct	skos:exactMatch	Iran location parents and Tehran label match the Iranian capital city.
+FOLIO:RB2B887FDE5809BE9a2D6b87	OGS:oklahoma:noun:0	correct	skos:exactMatch	US state sense matches Oklahoma's location and US parents.
+FOLIO:RB802582CB1f3C289fc01d77	OGS:alabama:noun:0	correct	skos:exactMatch	Both identify the US state of Alabama.
+FOLIO:RBC419e16Dc0a077cddBA70f	OGS:commission:noun:1	correct	skos:broadMatch	A body charged with official oversight includes this specific basin commission.
+FOLIO:RBCD14b8183909C0f0eBF2ff	OGS:court:noun:0	incorrect		Sense denotes a courthouse building; class denotes the bankruptcy judicial institution.
+FOLIO:RBFLAZ8OTUxzMOdHkrXD32j	OGS:objection:noun:1	correct	skos:broadMatch	General formal objections include objections to professional-employment applications.
+FOLIO:RBLVY0zljWHvn7aUS7BnomS	OGS:bankruptcy:noun:0	incorrect		Bankruptcy supplies context but does not denote setoff or a concept named in the class label.
+FOLIO:RBR4SUW4ZCvh8n2X00nUpYY	OGS:feticide:noun:1	correct	skos:exactMatch	Both describe the criminal killing of a fetus.
+FOLIO:RBU1Gc9qX3aN9NO6DsQX5pj	OGS:european_court_of_justice:noun:0	correct	skos:exactMatch	Both identify the EU court responsible for interpreting and consistently applying EU law.
+FOLIO:RBYrgPRNlmoj5i9Ga40OC3w	OGS:experts:noun:0	correct	skos:relatedMatch	Experts are the people whose specialized knowledge is used in expert practice.
+FOLIO:RBZsudYglnckzDiIt6LK2fk	OGS:tariff:noun:0	correct	skos:relatedMatch	A tariff is the import-duty tax named in the payment category.
+FOLIO:RBdyeqVpZ95dzn6l0hQg3xE	OGS:private:noun:0	incorrect		Sense denotes an enlisted military rank; private in the class means nonpublic personal information.
+FOLIO:RBfi3eGJmdDDpV4EDEf8lVL	OGS:hallucination:noun:0	incorrect		Sense is a perceptual experience; class concerns plausible false outputs from generative AI.
+FOLIO:RBqllOhzLheS3cnSiDAJ5H0	OGS:claims:noun:1	correct	skos:broadMatch	General legal demands for remedies include civil claims for food-related harm.
+FOLIO:RC6SNzsct97dNur2jmCJwg0	OGS:passport:noun:0	correct	skos:relatedMatch	Passport names the travel document identified by the number.
+FOLIO:RC84c4735Ffd39BAd8cC4ecc	OGS:administration:noun:2	incorrect		Sense is a term in office; Administration in the agency name denotes an organization.
+FOLIO:RCDwwDvhcbleBUzY2hO6kWL	OGS:minimum_wage:noun:0	correct	skos:broadMatch	Sense also includes contractual minima and daily or monthly wages; class requires a legal hourly minimum.
+FOLIO:RCE5Ek48Cc0wk8ZFM1dRhLu	OGS:government_grant:noun:0	correct	skos:narrowMatch	A government cash grant is one subsidy form; class also includes tax breaks and reduced-interest loans.
+FOLIO:RCKMOkJxO73X4FuquQYaHwJ	OGS:absentee_ballot:noun:0	correct	skos:closeMatch	Sense is the remotely cast ballot; definition describes absentee voting and parent identifies a ballot.
+FOLIO:RCKrakJNv6b1oTTMhd4c5DU	OGS:license:noun:0	correct	skos:exactMatch	Both describe formal authorization to undertake specified activities.
+FOLIO:RCLoy4oZcw6FxnWja39PwnD	OGS:judge:noun:0	correct	skos:broadMatch	Judges generally include judges serving in trial courts.
+FOLIO:RCOAttIoMLbO1VAdvmk1Ym1	OGS:montauk:noun:0	incorrect		The Long Island settlement is distinct from the Native American tribe indicated by the parent.
+FOLIO:RCOAttIoMLbO1VAdvmk1Ym1	OGS:montauk:noun:1	incorrect		Montauk Point is a landform, not the Native American tribe indicated by the parent.
+FOLIO:RCOAttIoMLbO1VAdvmk1Ym1	OGS:montauk:noun:2	correct	skos:closeMatch	Sense includes the Native American people matching the tribal parent, but also extends to their language.
+FOLIO:RCRwElj3CxkjU0zuKGEQlH4	OGS:court:noun:0	incorrect		Sense denotes a courthouse building; class denotes a court with legal jurisdiction.
+FOLIO:RCT6lR1LjkRk9c9jMljxl4O	OGS:transfer:noun:3	incorrect		Moving money between accounts is a different transfer sense from transferring asset ownership.
+FOLIO:RCVY0cWq1dTHKAIL8c1kYqH	OGS:minister:noun:1	correct	skos:relatedMatch	Minister names the government-official concept in Prime Minister, not the full head-of-government role.
+FOLIO:RCjgFvO2VxpIklnhZMbSD9k	OGS:policy:noun:0	incorrect		Organizational rules are a different policy sense from a health-insurance agreement.
+FOLIO:RCxrHGu0EmJ1y62pVqKCSaw	OGS:cotton:noun:2	incorrect		Sense denotes the cotton plant genus; definition denotes the fiber obtained from its seed hairs.
+FOLIO:RCzj05XX9u5AswWrVhG05nn	OGS:delaware:noun:0	incorrect		Sense is a US state; class explicitly denotes a language.
+FOLIO:RD1267b9D66705225ec102bc	OGS:southern:noun:0	correct	skos:broadMatch	A country's southern region includes the specified southern region of Sierra Leone.
+FOLIO:RD1267b9D66705225ec102bc	OGS:southern:noun:1	incorrect		Sense denotes inhabitants or culture; class denotes a geographic region.
+FOLIO:RD1267b9D66705225ec102bc	OGS:southern:noun:2	incorrect		Sense denotes a dialect; class denotes a geographic region of Sierra Leone.
+FOLIO:RD51d3eBFDe34798f2a53220	OGS:hubei:noun:0	correct	skos:exactMatch	Both identify Hubei province in China.
+FOLIO:RD51d3eBFDe34798f2a53220	OGS:hubei:noun:2	correct	skos:closeMatch	The geographic region associated with Hubei closely anchors the province, with a cultural rather than legal focus.
+FOLIO:RD6D5d3B932115AF9c9CFba4	OGS:laois:noun:0	correct	skos:exactMatch	Both identify County Laois in Ireland.
+FOLIO:RDAgND4YlYrbZnTVh7z0CPT	OGS:authorization:noun:2	incorrect		Sense is a permission document; class is the litigation process of granting permission.
+FOLIO:RDAy5MQTYwrACj2yao4MGbA	OGS:contractor:noun:0	correct	skos:narrowMatch	Sense restricts contractors to construction-related work; class covers independent service providers generally.
+FOLIO:RDB29a37F6e178418e0D9eb8	OGS:andaman_and_nicobar_islands:noun:0	correct	skos:exactMatch	Both identify the Andaman and Nicobar Islands in India.
+FOLIO:RDH6PhhXYNXaBHi0DaFtrdS	OGS:zoning_ordinance:noun:0	correct	skos:exactMatch	Both describe local legislation regulating permitted land uses.
+FOLIO:RDO3UKXcvzCX1v6RIJEbhiy	OGS:wire_transfer:noun:0	correct	skos:exactMatch	Both describe electronic funds transfers between accounts or financial institutions.
+FOLIO:RDZzBk331JIB0uRonHJ9fHu	OGS:permanent_injunction:noun:0	correct	skos:broadMatch	Sense includes continuing mandatory orders; class defines an enduring prohibition.
+FOLIO:RDfdmGR6iPi4k2t6ecIUBkP	OGS:retail:noun:0	correct	skos:relatedMatch	Retail sales are the activity defining the retail trade industry.
+FOLIO:RDfwCFFw23Fb7WhqmrYLBqS	OGS:pets:noun:0	correct	skos:exactMatch	Both describe domesticated animals kept for companionship or enjoyment.
+FOLIO:RDgolAdNltx3eUppC1LnHhv	OGS:terrorism:noun:2	correct	skos:relatedMatch	Terrorism names the political terror phenomenon addressed by the contract provisions.
+FOLIO:RDiv7JSMR8QXdJG121JCQpP	OGS:long_form:noun:0	correct	skos:exactMatch	Both describe a complete, detailed document version rather than an abridged one.
+FOLIO:RDiv7JSMR8QXdJG121JCQpP	OGS:long_form:noun:1	incorrect		Lengthy journalistic content is a different sense from a complete version of a legal document.
+FOLIO:RDiv7JSMR8QXdJG121JCQpP	OGS:long_form:noun:2	incorrect		Expansion of an acronym is a different sense from a detailed document version.
+FOLIO:RDkRMPTPEu06hA4xUSOSGlf	OGS:quechua:noun:0	correct	skos:exactMatch	Both identify Quechua as a South American Indigenous language or language family.
+FOLIO:RDkRMPTPEu06hA4xUSOSGlf	OGS:quechua:noun:1	incorrect		Sense denotes the Quechua people; class explicitly denotes language.
+FOLIO:RDkk9CxYrUrCvDOCrf8PGiH	OGS:district:noun:0	correct	skos:relatedMatch	District names a bounded territorial jurisdiction within the court's label.
+FOLIO:RDlzPpqTf5hPCjbN8mP78NH	OGS:adv:noun:2	incorrect		A published legal announcement is not an investment adviser's regulatory registration document.
+FOLIO:RDmCf4BbT72RDSwn3FMyFt2	OGS:indiana:noun:0	correct	skos:relatedMatch	Indiana names the state in this court's jurisdictional label.
+FOLIO:RDtFkLR3v97fran5zQ3ugao	OGS:obligation:noun:0	correct	skos:broadMatch	General duties and commitments include the class's legal or moral obligations.
+FOLIO:RDu9DwOMBQd0dIKhEhUPKo2	OGS:monoplegia:noun:0	correct	skos:narrowMatch	Sense requires paralysis of one limb; class also allows paralysis of a specific body region.
+FOLIO:RDutJ0S1ZSetoLvJRxavh8J	OGS:investigator:noun:0	correct	skos:narrowMatch	Sense covers individual investigators; class also covers groups and examiners.
+FOLIO:RE030860E08f0C99f2dB35cc	OGS:court:noun:0	incorrect		Sense denotes a courthouse building; class denotes the federal judicial institution.
+FOLIO:RE1Cb65A0Acae88860a0143f	OGS:lilongwe:noun:0	correct	skos:exactMatch	Both identify the city of Lilongwe in Malawi.
+FOLIO:RE3B2bd37Cb45F8566cD7cc3	OGS:chongqing:noun:0	correct	skos:exactMatch	Both identify the city of Chongqing in China.
+FOLIO:RF66aa31F366f311e47A91b0	OGS:colon:noun:0	incorrect		Punctuation is a different colon sense from the Honduran location indicated by the parent.
+FOLIO:RF66aa31F366f311e47A91b0	OGS:colon:noun:1	incorrect		Digestive anatomy is a different colon sense from the Honduran location indicated by the parent.
+FOLIO:RFEC0ea542b2d4CB738A7f33	OGS:gafsa:noun:0	correct	skos:exactMatch	Both identify the city of Gafsa in Tunisia.
+FOLIO:RFEC0ea542b2d4CB738A7f33	OGS:gafsa:noun:1	incorrect		The geological basin is a different geographic entity from the city of Gafsa.
+FOLIO:RFEC0ea542b2d4CB738A7f33	OGS:gafsa:noun:2	incorrect		The administrative division is a different geographic entity from the city of Gafsa.
+FOLIO:RFF96fbD320af575d9b92419	OGS:store:noun:0	correct	skos:broadMatch	General retail establishment is broader than the Slovenia-context store class.
+FOLIO:RLNlm7nXyJQLJmk8qYnaPQ	OGS:indemnity:noun:0	correct	skos:closeMatch	Both concern protection or compensation against financial loss; class frames it as a legal remedy.
+FOLIO:RLcSDERYA3ASx8GMSI9NlF	OGS:standing:noun:1	correct	skos:relatedMatch	Sense names the standing whose absence the definition raises as a litigation defense.
+FOLIO:ROjlFsq58MnIV2nxc0IvNu	OGS:garnishee:noun:0	correct	skos:closeMatch	Both concern a third party holding a debtor's assets; class also expressly includes debts owed to the debtor.
+FOLIO:RQiF2hjodeRJqOHMEKEcHG	OGS:prison:noun:0	correct	skos:broadMatch	Sense includes pretrial confinement; class specifies convicted serious offenders serving sentences.
+FOLIO:RUWO4SzoPWpYF7vZ3XAxEq	OGS:fraud:noun:0	correct	skos:broadMatch	General deliberate financial deception includes fraud involving Medicare benefits or claims.
+FOLIO:RXO2u2WBkUUcEG1jczLIcA	OGS:arbitration_practice:noun:0	correct	skos:exactMatch	Both describe resolving disputes through arbitrators outside the court system.
+FOLIO:RZgFlnVG1yEeXJYQB0esiI	OGS:clause:noun:1	correct	skos:broadMatch	General agreement provisions include a lessor-assignment clause.
+FOLIO:RdeqNhAsNWbConbs3LES52	OGS:wage:noun:0	correct	skos:relatedMatch	Wage means the worker compensation at issue in the minimum-wage claim.
+FOLIO:RkDm9J359mc6mQ5uj6uiXq	OGS:stockholder:noun:0	correct	skos:exactMatch	Both describe a person or entity owning shares of company stock.
+FOLIO:RlNFgB3TQfMzV26V4V7u4E	OGS:objectives:noun:0	correct	skos:closeMatch	Intended outcomes match the class's aims and goals, though its definition also includes supporting frameworks.
+FOLIO:RmCCZU8GS7O8920pkDipw7	OGS:legal_right:noun:0	correct	skos:narrowMatch	Legally protected entitlements are a subset of the class's legal, moral, or social rights.
+FOLIO:RpxsywUcXpBB0v63tUwyOY	OGS:invasion:noun:3	correct	skos:relatedMatch	Sense describes the privacy intrusion alleged by the claim, rather than the claim itself.
+FOLIO:RuWy2Mln0IfiDNDCvyTZo9	OGS:court:noun:0	incorrect		Sense denotes a courthouse building; class denotes the judicial institution.
+FOLIO:RuyZNixKnG2371yxDSwvf1	OGS:court:noun:0	incorrect		Sense denotes a courthouse building; class denotes a judicial institution with jurisdiction.
+FOLIO:RvZL9hXii6Ka5fXySxv05v	OGS:disorder:noun:2	incorrect		Public unrest is a different disorder sense from a mental health condition.
+FOLIO:RvgSllm1V4c8HFGjBKE92i	OGS:verdict:noun:1	correct	skos:broadMatch	General evidence-based decisions include the class's trial-court guilt or innocence decision.
+FOLIO:RvtAG5ZxdY8mteP8zvIRXO	OGS:obligor:noun:0	correct	skos:relatedMatch	An obligor is the legally liable party identified by the codebtor concept in the schedule's label.
+FOLIO:k1--YiHSSZyZN1utWHa5xQ	OGS:veterinary_services:noun:0	correct	skos:relatedMatch	Animal medical care is the activity defining the veterinary-services industry class.
