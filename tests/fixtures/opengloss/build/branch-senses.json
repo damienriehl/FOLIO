@@ -1,0 +1,52 @@
+[
+  {
+    "sense_id": "tenant:noun:0",
+    "lexeme_id": "tenant:noun",
+    "headword": "tenant",
+    "pos": "noun",
+    "sense_index": 0,
+    "domain": "business.real_estate",
+    "domain_root": "business",
+    "gloss": "Tenant return money capital"
+  },
+  {
+    "sense_id": "license:noun:0",
+    "lexeme_id": "license:noun",
+    "headword": "license",
+    "pos": "noun",
+    "sense_index": 0,
+    "domain": "law_government.civil_law",
+    "domain_root": "law_government",
+    "gloss": "Legal permission agreement."
+  },
+  {
+    "sense_id": "cordillera:noun:0",
+    "lexeme_id": "cordillera:noun",
+    "headword": "cordillera",
+    "pos": "noun",
+    "sense_index": 0,
+    "domain": "nature.landforms",
+    "domain_root": "nature",
+    "gloss": ""
+  },
+  {
+    "sense_id": "aquaculture:noun:0",
+    "lexeme_id": "aquaculture:noun",
+    "headword": "aquaculture",
+    "pos": "noun",
+    "sense_index": 0,
+    "domain": "science.biology",
+    "domain_root": "science",
+    "gloss": ""
+  },
+  {
+    "sense_id": "nan:noun:0",
+    "lexeme_id": "nan:noun",
+    "headword": "nan",
+    "pos": "noun",
+    "sense_index": 0,
+    "domain": "technology.computing",
+    "domain_root": "technology",
+    "gloss": ""
+  }
+]

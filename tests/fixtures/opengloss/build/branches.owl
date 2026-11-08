@@ -1,0 +1,62 @@
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+<owl:Class rdf:about="https://folio.openlegalstandard.org/R9aSzp9cEiBCzObnP92jYFX"><rdfs:label>Location</rdfs:label>
+<rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+<owl:Class rdf:about="https://folio.openlegalstandard.org/R8f4qGdjxuiQary8OBpq8W9"><rdfs:label>Industry and Market</rdfs:label>
+<rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+<owl:Class rdf:about="https://folio.openlegalstandard.org/legal"><rdfs:label>Legal Branch</rdfs:label>
+<rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+<owl:Class rdf:about="https://folio.openlegalstandard.org/mountains"><rdfs:label>Mountain Regions</rdfs:label>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/R9aSzp9cEiBCzObnP92jYFX"/>
+</owl:Class>
+<owl:Class rdf:about="https://folio.openlegalstandard.org/cordillera"><rdfs:label>Cordillera</rdfs:label>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/mountains"/>
+</owl:Class>
+<owl:Class rdf:about="https://folio.openlegalstandard.org/aquaculture"><rdfs:label>Aquaculture</rdfs:label>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/R8f4qGdjxuiQary8OBpq8W9"/>
+</owl:Class>
+<owl:Class rdf:about="https://folio.openlegalstandard.org/nan"><rdfs:label>Nan</rdfs:label>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/R9aSzp9cEiBCzObnP92jYFX"/>
+<skos:definition>A province of Thailand</skos:definition>
+</owl:Class>
+<owl:Class rdf:about="https://folio.openlegalstandard.org/multi-nature"><rdfs:label>Cordillera</rdfs:label>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/R9aSzp9cEiBCzObnP92jYFX"/>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/legal"/>
+</owl:Class>
+<owl:Class rdf:about="https://folio.openlegalstandard.org/multi-business"><rdfs:label>Tenant</rdfs:label>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/R9aSzp9cEiBCzObnP92jYFX"/>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/legal"/>
+<skos:definition>Tenant</skos:definition>
+</owl:Class>
+<owl:Class rdf:about="https://folio.openlegalstandard.org/multi-tie"><rdfs:label>License</rdfs:label>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/R9aSzp9cEiBCzObnP92jYFX"/>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/legal"/>
+<skos:definition>Legal permission agreement</skos:definition>
+</owl:Class>
+<owl:Class rdf:about="https://folio.openlegalstandard.org/cycle-a"><rdfs:label>Cyclic Region A</rdfs:label>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/cycle-b"/>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/R9aSzp9cEiBCzObnP92jYFX"/>
+</owl:Class>
+<owl:Class rdf:about="https://folio.openlegalstandard.org/cycle-b"><rdfs:label>Cyclic Region B</rdfs:label>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/cycle-a"/>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/legal"/>
+</owl:Class>
+<owl:Class rdf:about="https://folio.openlegalstandard.org/cycle-child"><rdfs:label>Cyclic Region Child</rdfs:label>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/cycle-b"/>
+</owl:Class>
+<owl:Class rdf:about="https://folio.openlegalstandard.org/isolated-a"><rdfs:label>Isolated A</rdfs:label>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/isolated-b"/>
+</owl:Class>
+<owl:Class rdf:about="https://folio.openlegalstandard.org/isolated-b"><rdfs:label>Isolated B</rdfs:label>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/isolated-a"/>
+</owl:Class>
+<owl:Class rdf:about="https://folio.openlegalstandard.org/orphan"><rdfs:label>Unknown Thing</rdfs:label>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/missing"/>
+</owl:Class>
+<owl:Class rdf:about="https://folio.openlegalstandard.org/self-cycle"><rdfs:label>Self Cycle</rdfs:label>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/self-cycle"/>
+<rdfs:subClassOf rdf:resource="https://folio.openlegalstandard.org/R9aSzp9cEiBCzObnP92jYFX"/>
+</owl:Class>
+</rdf:RDF>

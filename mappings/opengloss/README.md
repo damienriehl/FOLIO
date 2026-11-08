@@ -75,9 +75,13 @@ stay. To recover a raw OpenGloss id, strip the `OGS:` prefix from `object_id`.
 
 ## How good the links are
 
-`eval/gold.tsv` holds 162 judged pairs: 25 emitted links per predicate, plus every candidate sense
-of 30 unlinked classes. An AI agent judged them from the glosses and FOLIO definitions alone; no
-human has audited them. Against set version 0.1.0:
+`eval/gold.tsv` holds 222 judged pairs. An AI agent judged them from the glosses and FOLIO
+definitions alone; no human has audited them. They come from two samples:
+
+- **For set 0.1.0:** 25 emitted links per predicate, plus every candidate sense of 30 unlinked classes.
+- **For set 0.2.0:** 60 links that 0.2.0 added, 15 per predicate.
+
+Set 0.1.0, which applied the legal prior to every class:
 
 | Predicate | Judged correct | Judge chose the same predicate |
 |---|---:|---:|
@@ -86,23 +90,53 @@ human has audited them. Against set version 0.1.0:
 | `skos:broadMatch` | 15 of 24 | 12 of 15 |
 | `skos:relatedMatch` | 17 of 23 | 16 of 17 |
 
-Overall precision on the judged links is 0.78, and the set emits 73% of the pairs the judge called
-correct. (The sample was drawn before a tokenization fix, so 3 sampled links no longer appear.)
-Each regeneration rescores against this file, and `upstream.json` keeps the latest score. Two readings follow. An `exactMatch` is a strong anchor. A `closeMatch` usually points at a
-sound sense, but its predicate is a placeholder: the judge most often wanted `broadMatch`,
-`narrowMatch`, or `exactMatch` instead, which a lexical method cannot tell apart. Treat it as
-"related sense, kind of relation unknown".
+Links that set 0.2.0 added by keying the prior to the FOLIO branch:
 
-## How the links are made (method `opengloss-lexical/0.1`)
+| Predicate | Judged correct |
+|---|---:|
+| `skos:exactMatch` | 14 of 15 |
+| `skos:broadMatch` | 12 of 15 |
+| `skos:closeMatch` | 9 of 15 |
+| `skos:relatedMatch` | 9 of 15 |
+
+- **Precision:** estimated at 0.78 for set 0.2.0, weighting the kept links (0.80) and the added
+  links (0.73) by their counts.
+- **Recall:** of the pairs the judge called correct, 0.2.0 links 89%; 0.1.0 linked 73%.
+- **Readings:**
+  - **exactMatch:** a strong anchor.
+  - **closeMatch:** usually points at a sound sense, but its predicate is a placeholder. The judge
+    most often wanted `broadMatch`, `narrowMatch`, or `exactMatch`, which a lexical method cannot
+    tell apart. Treat it as "related sense, kind of relation unknown".
+  - **Place-name word links:** the weakest group. A word inside a place name (*Nam Dinh*, *Pando*)
+    can link to an unrelated sense of that word.
+- **Rescoring:** each regeneration rescores against the gold file, and `upstream.json` keeps the
+  latest raw score.
+
+## How the links are made (method `opengloss-lexical/0.2`)
 
 1. **FOLIO forms:** each non-deprecated class's `rdfs:label`, `skos:prefLabel`, and English
    `skos:altLabel`s, normalized: case folded, a trailing parenthetical qualifier removed,
    hyphens and slashes read as spaces. Hidden labels are skipped.
 2. **Candidates:** OpenGloss noun senses (from OpenGloss itself, not its WordNet imports)
    whose headword equals a form, or a word in one.
-3. **Score:** half a domain prior (law and government 1.0, business 0.7, other 0.3), half
+3. **Score:** half a domain prior, half
    the share of the gloss's content words that also appear in the class's label, definition,
    or parent labels. This is how *tenant* the renter wins over *tenant* the software customer.
+   The domain prior depends on the FOLIO branch the class sits in (the child of `owl:Thing` it
+   descends from):
+
+   | Profile | FOLIO branches | Strong domains (1.0) |
+   |---|---|---|
+   | `legal` | every branch not listed below | law and government (business 0.7) |
+   | `place` | Location | law and government, nature, people and society |
+   | `commerce` | Industry and Market | business (science, technology, nature, health, arts and others 0.8) |
+   | `finance` | Currency, Financial Concepts and Metrics, Asset Type | business |
+   | `language` | Language | language |
+   | `technical` | Data Format, System Identifiers, Communication Modality | technology |
+   | `service` | Service | business, law and government |
+
+   Unlisted domains score 0.3. A class in several branches takes the best prior any branch gives,
+   and the row's `comment` names the profile (`profile=place`).
 4. **Links:** the best phrase sense becomes `exactMatch` when it scores at least 0.60 and
    leads the runner-up by 0.05; otherwise `closeMatch`. A match through an altLabel stops at
    `closeMatch`. Word links need a score of at least 0.45. Senses below 0.40 never link.

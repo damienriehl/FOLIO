@@ -1,7 +1,7 @@
 ---
 title: "feat: branch-aware domain prior for the OpenGloss mapping set (0.2.0)"
 type: feat
-status: active
+status: completed
 date: 2026-11-08
 origin: docs/plans/2026-11-08-1830-feat-opengloss-mapping-module-plan.md (set 0.1.0)
 ---
@@ -86,3 +86,15 @@ see why a non-legal sense won.
 - **Word links:** lifting the one-sense-per-word cap.
 - **Model judgment:** model-assisted sense disambiguation.
 - **FOLIO.owl:** any change to the ontology itself.
+
+## Result (2026-11-08)
+
+Kept. Set 0.2.0 has 23,885 links over 5,192 senses and links 12,039 classes, up from 9,770.
+
+- **Added links:** 5,854. Their precision on a random 60-link sample is 0.733, against a 0.70 bar.
+  Pooling in the 29 formerly unlinked gold candidates gives 0.697; that pool skews toward hard gap
+  classes, so it is reported but not used.
+- **Overall:** estimated precision is 0.778, against a 0.76 bar. Gold recall rose from 0.731 to 0.885.
+- **Weakest group:** place-name word links (*Nam Dinh*, *Pando*). A follow-up is in
+  `NEXT-OPENGLOSS-MAPPING.md`.
+- **Receipt:** `mappings/opengloss/receipts/2026-11-08-0.2.0.json`.

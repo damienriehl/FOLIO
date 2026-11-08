@@ -1,4 +1,4 @@
-"""Method v0.1: deterministic lexical claims with heuristic confidence.
+"""Method v0.2: branch-aware lexical claims with heuristic confidence.
 
 The suffix stemmer applies the first matching suffix only, in the documented
 order below, and keeps at least three characters. It is intentionally small,
@@ -11,16 +11,42 @@ import re
 import unicodedata
 from typing import Iterable
 
-from .folio_forms import FolioClass, normalize, surface_forms
+from .folio_forms import FOLIO_PREFIX, FolioClass, normalize, surface_forms
 from .senses import Sense, sense_curie
 
-METHOD_VERSION = 'opengloss-lexical/0.1'
+METHOD_VERSION = 'opengloss-lexical/0.2'
+BRANCH_PROFILES = {
+    FOLIO_PREFIX + 'R9aSzp9cEiBCzObnP92jYFX': 'place',
+    FOLIO_PREFIX + 'R8f4qGdjxuiQary8OBpq8W9': 'commerce',
+    FOLIO_PREFIX + 'R767niCLQVC5zIcO5WDQMSl': 'finance',
+    FOLIO_PREFIX + 'RhBgnef56iLBXYfPqWQE41': 'finance',
+    FOLIO_PREFIX + 'RCIwc6WJi6IT7xePURxsi4T': 'finance',
+    FOLIO_PREFIX + 'RDOvAHsvY8TKJ1O1orXPM9o': 'language',
+    FOLIO_PREFIX + 'R79aItNTJQwHgR002wuX3iC': 'technical',
+    FOLIO_PREFIX + 'R8EoZh39tWmXCkmP2Xzjl6E': 'technical',
+    FOLIO_PREFIX + 'R8qItBwG2pRMFhUq1HQEMnb': 'technical',
+    FOLIO_PREFIX + 'RDK1QEdQg1T8B5HQqMK2pZN': 'service',
+}
+PROFILE_PRIORS = {
+    'legal': {'law_government': 1.0, 'business': 0.7, 'other': 0.3},
+    'place': {'law_government': 1.0, 'nature': 1.0, 'people_society': 1.0,
+              'history': 0.7, 'other': 0.3},
+    'commerce': {'business': 1.0, 'science': 0.8, 'technology': 0.8,
+                 'nature': 0.8, 'health': 0.8, 'arts': 0.8, 'everyday_life': 0.8,
+                 'sports_recreation': 0.8, 'education': 0.8,
+                 'law_government': 0.7, 'other': 0.3},
+    'finance': {'business': 1.0, 'law_government': 0.8, 'mathematics': 0.7, 'other': 0.3},
+    'language': {'language': 1.0, 'humanities': 0.8, 'people_society': 0.8, 'other': 0.3},
+    'technical': {'technology': 1.0, 'language': 0.8, 'business': 0.7,
+                  'law_government': 0.7, 'other': 0.3},
+    'service': {'business': 1.0, 'law_government': 1.0, 'technology': 0.8,
+                'health': 0.8, 'other': 0.3},
+}
 STOP_WORDS = frozenset('a an the and or but of for in on to under with without by at from as is are was were be been being that this these those it its which who whom between two more any into through'.split())
 STEM_SUFFIXES = (('ies', 'y'), ('es', ''), ('s', ''), ('ing', ''), ('ed', ''), ('ly', ''), ('ment', ''))
 MIN_STEM_LENGTH = 3
 HEAD_PREPOSITIONS = frozenset(('of', 'for', 'in', 'on', 'to', 'under'))
 MIN_LABEL_WORDS, MAX_LABEL_WORDS = 2, 6
-LEGAL_PRIOR, BUSINESS_PRIOR, OTHER_PRIOR = 1.0, 0.7, 0.3
 PRIOR_WEIGHT, OVERLAP_WEIGHT = 0.5, 0.5
 # The phrase floor admits business senses with modest gloss coverage (Landlord
 # scores 0.406). The exact lead allows closely ranked sibling phrase senses,
@@ -43,16 +69,13 @@ def content_stems(text: str) -> set[str]:
     return {stem(w) for w in re.findall(r'[^\W_]+', unicodedata.normalize('NFKC', text).casefold()) if w not in STOP_WORDS}
 
 
-def domain_prior(sense: Sense) -> float:
-    root = sense.domain.split('.')[0]
-    if root == 'law_government' or sense.domain_root == 'law_government':
-        return LEGAL_PRIOR
-    if root == 'business' or sense.domain_root == 'business':
-        return BUSINESS_PRIOR
-    return OTHER_PRIOR
+def domain_prior(sense: Sense, profiles: Iterable[str] = ('legal',)) -> float:
+    root = sense.domain_root or sense.domain.split('.')[0]
+    return max((PROFILE_PRIORS[p].get(root, PROFILE_PRIORS[p]['other'])
+                for p in profiles), default=PROFILE_PRIORS['legal'].get(root, 0.3))
 
 
-def sense_score(context: set[str], sense: Sense) -> float:
+def sense_score(context: set[str], sense: Sense, profiles: Iterable[str] = ('legal',)) -> float:
     """Combine the domain prior with coverage of the gloss's content stems.
 
     FOLIO contexts (label, definition, and parent labels) are far longer than
@@ -61,7 +84,7 @@ def sense_score(context: set[str], sense: Sense) -> float:
     """
     gloss = content_stems(sense.gloss)
     overlap = len(context & gloss) / len(gloss) if gloss else 0.0
-    return PRIOR_WEIGHT * domain_prior(sense) + OVERLAP_WEIGHT * overlap
+    return PRIOR_WEIGHT * domain_prior(sense, profiles) + OVERLAP_WEIGHT * overlap
 
 
 def candidate_headwords(classes: Iterable[FolioClass]) -> set[str]:
@@ -76,13 +99,15 @@ def match(classes: Iterable[FolioClass], senses: Iterable[Sense]) -> tuple[list[
     mappings = {}
     gaps = {}
     for cls in classes:
+        profiles = tuple(sorted({BRANCH_PROFILES.get(branch, 'legal')
+                                 for branch in cls.branches})) or ('legal',)
         context = content_stems(' '.join([cls.label, *cls.definitions, *cls.parent_labels]))
         ranked = {}
         class_mapped = False
 
         def rank(form: str) -> list[tuple[float, Sense]]:
             if form not in ranked:
-                ranked[form] = sorted(((sense_score(context, s), s) for s in index[form]), key=lambda pair: (-pair[0], pair[1].sense_id))
+                ranked[form] = sorted(((sense_score(context, s, profiles), s) for s in index[form]), key=lambda pair: (-pair[0], pair[1].sense_id))
             return ranked[form]
 
         def emit(
@@ -91,13 +116,14 @@ def match(classes: Iterable[FolioClass], senses: Iterable[Sense]) -> tuple[list[
         ) -> None:
             nonlocal class_mapped
             confidence = round(factor * score, CONFIDENCE_DECIMALS)
+            profile = min(profiles, key=lambda p: (-domain_prior(sense, (p,)), p))
             row = dict(
                 subject_id=cls.subject_id, subject_label=cls.label,
                 predicate_id=predicate, object_id=sense_curie(sense.sense_id),
                 object_label=sense.headword, mapping_justification='semapv:LexicalMatching',
                 confidence=f'{confidence:.3f}', subject_match_field=field,
                 object_match_field='rdfs:label', match_string=form,
-                comment=f'{rule}; score={score:.3f}',
+                comment=f'{rule}; score={score:.3f}; profile={profile}',
             )
             key = (cls.subject_id, row['object_id'])
             old = mappings.get(key)
@@ -133,6 +159,6 @@ def match(classes: Iterable[FolioClass], senses: Iterable[Sense]) -> tuple[list[
                      if field in ('rdfs:label', 'skos:prefLabel')}
         for form in sorted(gap_forms - {''}):
             available = index[form]
-            if available:
+            if available and not any(domain_prior(s, profiles) >= 0.7 for s in available):
                 gaps[cls.subject_id, form] = dict(subject_id=cls.subject_id, subject_label=cls.label, match_string=form, headword_senses_domains='; '.join(f'{s.sense_id}={s.domain}' for s in sorted(available, key=lambda s: s.sense_id)))
     return sorted(mappings.values(), key=lambda r: (r['subject_id'], r['predicate_id'], r['object_id'])), [gaps[k] for k in sorted(gaps)]

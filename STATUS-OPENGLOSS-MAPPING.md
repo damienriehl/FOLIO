@@ -1,6 +1,6 @@
 # FOLIO-to-OpenGloss Mapping (R8) — Status
 
-STATE: OpenGloss map 0-1-0 live; QA Release B awaits keys
+STATE: OpenGloss map 0-2-0; QA Release B awaits keys
 
 Last updated: 2026-11-08
 
@@ -8,7 +8,7 @@ Last updated: 2026-11-08
 
 The mapping set lives in `mappings/opengloss/`, beside `FOLIO.owl`, which this work never edits.
 
-- **Mapping set:** `folio-opengloss.sssom.tsv`, an SSSOM TSV of 18,684 links over 3,203 senses. It links FOLIO classes to OpenGloss v2.4
+- **Mapping set:** `folio-opengloss.sssom.tsv`, an SSSOM TSV of 23,885 links over 5,192 senses (set 0.2.0). It links FOLIO classes to OpenGloss v2.4
   noun senses (revision `c64e480`), one SKOS mapping per row (exact, close, broad, related). The YAML
   header records the justification, confidence, tool, date, and both source versions.
 - **Sidecars:** `senses.tsv` lists the linked senses. `gaps.tsv` lists FOLIO classes whose label is an
@@ -23,9 +23,12 @@ The mapping set lives in `mappings/opengloss/`, beside `FOLIO.owl`, which this w
 
 - **Determinism:** two builds from the same inputs are byte-identical.
 - **Validation:** the validator passes against `FOLIO.owl`. Every subject exists and none is deprecated.
-- **Quality:** 162 pairs, judged by an AI agent (no human audit). exactMatch 24/25 correct, closeMatch
-  20/25, broadMatch 15/24, relatedMatch 17/23. Overall precision 0.78, recall of judged-correct pairs
-  0.73. See `mappings/opengloss/README.md`.
+- **Quality:** 222 pairs, AI-judged with no human audit. Set 0.2.0 keys the domain prior to the FOLIO
+  branch (plan `docs/plans/2026-11-08-2000-feat-opengloss-branch-aware-prior-plan.md`).
+  - **Coverage:** 12,039 classes are now linked, up from 9,770.
+  - **Recall:** recall of judged-correct pairs rose from 0.73 to 0.89.
+  - **Precision:** estimated at 0.78 overall; the added links score 0.73.
+  - **Keep rule:** passed on every condition.
 - **Tests:** the suite runs offline without pyarrow, as CI does.
 - **Review:** the code review returned "Ready with fixes" (one P1, eight P2). Its fixes were applied
   before merge in PR #16 (merge commit `4591b7e`).

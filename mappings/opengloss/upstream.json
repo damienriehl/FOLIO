@@ -2,7 +2,7 @@
   "folio": {
     "path": "FOLIO.owl"
   },
-  "method_version": "opengloss-lexical/0.1",
+  "method_version": "opengloss-lexical/0.2",
   "opengloss": {
     "dataset": "mjbommar/opengloss-v2.4-senses",
     "files": [
@@ -25,18 +25,18 @@
     "series": "2.4"
   },
   "score": {
-    "emitted_judged": 97,
-    "judged": 162,
-    "precision": 0.7835,
-    "predicate_agreement": 0.5789,
-    "recall": 0.7308,
-    "rows": 18684,
+    "emitted_judged": 181,
+    "judged": 222,
+    "precision": 0.7514,
+    "predicate_agreement": 0.6029,
+    "recall": 0.9189,
+    "rows": 23885,
     "rows_by_predicate": {
-      "skos:broadMatch": 6804,
-      "skos:closeMatch": 1521,
-      "skos:exactMatch": 558,
-      "skos:relatedMatch": 9801
+      "skos:broadMatch": 8811,
+      "skos:closeMatch": 2235,
+      "skos:exactMatch": 800,
+      "skos:relatedMatch": 12039
     }
   },
-  "set_version": "0.1.0"
+  "set_version": "0.2.0"
 }
