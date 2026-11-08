@@ -25,11 +25,11 @@
     "series": "2.4"
   },
   "score": {
-    "emitted_judged": 181,
-    "judged": 222,
-    "precision": 0.7514,
-    "predicate_agreement": 0.6029,
-    "recall": 0.9189,
+    "emitted_judged": 211,
+    "judged": 252,
+    "precision": 0.7156,
+    "predicate_agreement": 0.5497,
+    "recall": 0.9264,
     "rows": 23885,
     "rows_by_predicate": {
       "skos:broadMatch": 8811,

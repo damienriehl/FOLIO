@@ -5,6 +5,8 @@
 # Rubric: see mappings/opengloss/README.md (Reading the mapping set).
 # Added 2026-11-08 for set 0.2.0: 60 links that 0.2.0 adds over 0.1.0, 15 per predicate, drawn with
 #   random.Random(20261110); same judge type and rubric.
+# Added 2026-11-08 while testing a rejected 0.3.0 rule: 30 set-0.2.0 sibling phrase senses of Location
+#   classes, drawn with random.Random(20261111); same judge type and rubric.
 subject_id	object_id	verdict	expected_predicate	note
 FOLIO:4XKA3wiDRjqir99lh3Ujtg	OGS:supplies:noun:1	correct	skos:relatedMatch	Inventory items supply the stock-of-supplies concept in photographic wholesale distribution.
 FOLIO:8F6RK7H9Sp-PHM1JAZjmIg	OGS:merchant:noun:0	correct	skos:broadMatch	General trading persons or companies include merchant wholesalers specializing in footwear.
@@ -25,18 +27,33 @@ FOLIO:R07D8a428Baa244B4f47Acb8	OGS:littoral:noun:0	incorrect		A generic shorelin
 FOLIO:R08059a46F59fB22a4fDB78c	OGS:dobrich:noun:0	correct	skos:exactMatch	Both identify the city of Dobrich in Bulgaria.
 FOLIO:R08059a46F59fB22a4fDB78c	OGS:dobrich:noun:1	incorrect		Dobrich Province is a different geographic entity from the city specified in the definition.
 FOLIO:R0TZk2qCI4HPwDl3e9FoOo	OGS:human_rights:noun:0	correct	skos:exactMatch	Both describe fundamental entitlements inherent in every human being.
+FOLIO:R1117dbDF6309A7Cd9571f72	OGS:auckland:noun:0	correct	skos:exactMatch	The city sense identifies Auckland in New Zealand, consistent with the supplied label and parent.
 FOLIO:R144d9777Cc75C0Fa4072795	OGS:andorra_la_vella:noun:0	correct	skos:exactMatch	Both identify Andorra's capital city in the Pyrenees.
+FOLIO:R17D8e56FBefd77Fe39F3b07	OGS:khulna:noun:0	correct	skos:exactMatch	Both denote Khulna city in Bangladesh.
+FOLIO:R17E17c53B8d62CD568D0787	OGS:wyoming:noun:1	incorrect		Surname sense; the class is a United States location.
 FOLIO:R1A8c03F0A38745568983294	OGS:amtrak:noun:0	correct	skos:exactMatch	Both identify the same US national intercity passenger railroad corporation.
 FOLIO:R21B34b839a8b4DC0d286bc8	OGS:hanover:noun:0	incorrect		The German city is a different location from Hanover in Jamaica.
 FOLIO:R21B34b839a8b4DC0d286bc8	OGS:hanover:noun:1	incorrect		A European royal dynasty is a different referent from the Jamaican location.
 FOLIO:R21B34b839a8b4DC0d286bc8	OGS:hanover:noun:2	incorrect		The New Hampshire town is a different location from Hanover in Jamaica.
 FOLIO:R2311533686ac96916eE33cd	OGS:riga:noun:0	correct	skos:exactMatch	Latvia parent and Riga label match the Latvian capital city.
+FOLIO:R249bb9B5370670Fdbc5491e	OGS:atacama:noun:0	incorrect		Desert sense is unconfirmed: the class definition says Macau and the Chile parent leaves scope unclear.
+FOLIO:R25002b3265ad2F1301F4991	OGS:djibouti:noun:1	correct	skos:closeMatch	Capital-city sense anchors the named Djibouti subdivision, though its administrative extent is unspecified.
 FOLIO:R2594e2B4A039EBD21e6622e	OGS:friuli:noun:1	correct	skos:relatedMatch	Friuli names the cultural and geographic component of the Italian regional name.
+FOLIO:R2AAadaAB44795712520Eace	OGS:uruguay:noun:0	correct	skos:exactMatch	Both identify Uruguay as a South American country.
 FOLIO:R2B0d2d07044cD1E9e5C5eaa	OGS:capital:noun:0	correct	skos:relatedMatch	Capital names the seat-of-government concept used in the territory's label.
+FOLIO:R2B6913B96fa367CdefD8671	OGS:lagos:noun:1	incorrect		Sense denotes Lagos State; supplied evidence does not establish a hierarchy with the city class.
+FOLIO:R34D41a788565CAB5d323035	OGS:heilongjiang:noun:0	correct	skos:exactMatch	Both denote the northeastern Chinese province of Heilongjiang.
 FOLIO:R38rBHNGk58fVQeIw84NvM	OGS:director:noun:2	correct	skos:broadMatch	General organizational directors include the executive director's governance role.
+FOLIO:R3B6ac30EC207C27416651f2	OGS:sibiu:noun:2	incorrect		Sense denotes a cultural community and milieu; the class denotes the city as a place.
 FOLIO:R427e8dBF3874EAD4e4ACd23	OGS:terengganu:noun:0	correct	skos:exactMatch	Both identify the Malaysian state Terengganu.
 FOLIO:R46Cb1637Bd308B314cE43b9	OGS:japan:noun:0	correct	skos:exactMatch	Both identify Japan as a country in Asia.
+FOLIO:R47160140678013Fcc5B4426	OGS:ashanti:noun:0	incorrect		Sense denotes an ethnic group; geographic placement under Ghana does not establish that meaning.
+FOLIO:R49465cFB354e621ff2E1f5c	OGS:chittagong:noun:0	correct	skos:exactMatch	Both denote the port city of Chittagong in Bangladesh.
+FOLIO:R49465cFB354e621ff2E1f5c	OGS:chittagong:noun:1	incorrect		Hill Tracts sense denotes a different region from Chittagong city.
 FOLIO:R4EDbcbA5Eb33206c3b090b2	OGS:pando:noun:0	incorrect		The Bolivia parent denotes a Bolivian place; the gloss is an aspen colony in Utah.
+FOLIO:R4F214aC8A1607BB6a386476	OGS:maribor:noun:0	correct	skos:exactMatch	Both denote Maribor city in Slovenia.
+FOLIO:R5C7816FD4d1bD010daCAcb1	OGS:moskva:noun:1	incorrect		Metonym for Russian federal authorities; class denotes the city.
+FOLIO:R6388985663155902cbDC0c6	OGS:perlis:noun:0	correct	skos:exactMatch	Both denote the Malaysian state of Perlis.
 FOLIO:R64Ef32D5F7e3AEBcb042497	OGS:australia:noun:2	correct	skos:broadMatch	The gloss describes a larger region that includes Australia, New Zealand, and neighboring islands.
 FOLIO:R692530B6B4266BA38798a0a	OGS:burgas:noun:0	correct	skos:exactMatch	Both identify the city of Burgas in Bulgaria.
 FOLIO:R692530B6B4266BA38798a0a	OGS:burgas:noun:1	incorrect		A surrounding province or metropolitan area is distinct from the city specified by the class.
@@ -45,6 +62,7 @@ FOLIO:R6A45acB060fdDFC1b334878	OGS:ankara:noun:0	correct	skos:exactMatch	Both id
 FOLIO:R6A45acB060fdDFC1b334878	OGS:ankara:noun:1	incorrect		Wax-print fabric is a different Ankara sense from Turkey's capital city.
 FOLIO:R6B35659D9c4bF9Bc6d71650	OGS:ubangi:noun:0	incorrect		The gloss denotes a river; evidence does not establish that river as the referent of Nord-Ubangi.
 FOLIO:R6BEa09D0Bf77FDB831056c7	OGS:baghdad:noun:1	incorrect		Sense denotes an administrative region; blank definition does not establish that referent for Baghdad.
+FOLIO:R6D79c3B89289CC7f6a556ad	OGS:hainan:noun:0	correct	skos:exactMatch	Both denote Hainan province in China.
 FOLIO:R6FFeb9E9E0790DBe47A2a2a	OGS:samsun:noun:0	correct	skos:exactMatch	Both identify the Turkish city Samsun.
 FOLIO:R71FTkY4MY6fv6Aguuw5HxP	OGS:bankruptcy:noun:0	correct	skos:relatedMatch	Bankruptcy is the legal proceeding documented by these time records.
 FOLIO:R71qNACbDr5N2MmSNNjzepm	OGS:html:noun:2	correct	skos:relatedMatch	The extension identifies HTML files; it is associated with the file format rather than being a file.
@@ -73,7 +91,11 @@ FOLIO:R7kzhdyQ8hygxBWuoIkziix	OGS:kansas:noun:0	correct	skos:relatedMatch	Kansas
 FOLIO:R7nIUZHs8FEmvVOZ76PYOyz	OGS:management:noun:2	correct	skos:broadMatch	General resource management includes organizing and controlling an organization's intranet.
 FOLIO:R7r8FeqnphadygvNP0XHj84	OGS:motorcycle:noun:0	correct	skos:narrowMatch	Sense requires road use; class also expressly includes off-road motorcycles.
 FOLIO:R80Ab2c93B437A2A0ff02cad	OGS:ville:noun:1	correct	skos:broadMatch	The label explicitly identifies Mali as a town; the gloss defines a town or city.
+FOLIO:R845a5cC16ab82AB77aDA091	OGS:clare:noun:1	incorrect		Surname sense; the class denotes an Irish county.
+FOLIO:R862f7f21Cca4B81ac0FBd6e	OGS:mbeya:noun:0	correct	skos:exactMatch	Both denote Mbeya City in Tanzania.
 FOLIO:R884ONg45BgT9DZH0Ma0vDE	OGS:vietnamese:noun:1	correct	skos:exactMatch	Both identify the Vietnamese language.
+FOLIO:R8C2e43863ce61A85aeA47db	OGS:otago:noun:0	correct	skos:exactMatch	The region sense identifies Otago in New Zealand, consistent with the supplied label and parent.
+FOLIO:R8C2e43863ce61A85aeA47db	OGS:otago:noun:1	incorrect		Historical province sense; evidence does not identify the class as that former jurisdiction.
 FOLIO:R8LSqagCizuGKyev4G1XO1s	OGS:court:noun:0	incorrect		Sense denotes a courthouse building; class denotes the appellate judicial institution.
 FOLIO:R8NcEcKGyel5bjJtbeSaJpa	OGS:tsimshian:noun:0	incorrect		Definition specifies a language; sense denotes a person, despite the class's additional tribal parent.
 FOLIO:R8NcEcKGyel5bjJtbeSaJpa	OGS:tsimshian:noun:1	correct	skos:exactMatch	Both identify the Tsimshian language.
@@ -91,6 +113,7 @@ FOLIO:R90Aa080A2e04365863B5573	OGS:kochi:noun:2	correct	skos:closeMatch	The glos
 FOLIO:R91D98b850c3219Ceab1E7a3	OGS:taiwan:noun:1	incorrect		Location context does not establish the government or administrative-apparatus sense of Taiwan.
 FOLIO:R93T7OEmCjkwufvhJAY4ScV	OGS:easement:noun:0	correct	skos:broadMatch	Sense includes rights restricting another's land use as well as the class's rights to use it.
 FOLIO:R94lKwArPjDwr5lwj1GIpSq	OGS:mexico:noun:0	incorrect		Mexico the country is a different referent from the US state of New Mexico in the court's label.
+FOLIO:R99Ca1cB6Eeb281027bFEd4c	OGS:quezon:noun:1	incorrect		Quezon City and Quezon province are distinct places; the class explicitly denotes the province.
 FOLIO:R9ASJjCZKlhBHzey6AXGHmM	OGS:arkansas:noun:0	correct	skos:relatedMatch	Arkansas names the state in this court's jurisdictional label.
 FOLIO:R9DD0f24B145965C15b5104c	OGS:rio:noun:0	correct	skos:relatedMatch	Rio supplies the river meaning used in the Spanish geographic name.
 FOLIO:R9EOkKjFMzLEwh7coNAwXjX	OGS:parent:noun:0	correct	skos:exactMatch	Both describe a mother or father of a child.
@@ -113,17 +136,22 @@ FOLIO:R9dsfVGAzHq2wmzins8Dte2	OGS:sindhi:noun:1	correct	skos:exactMatch	Both ide
 FOLIO:R9mXb4AjxTfwjZ5tIx50Hbc	OGS:chimariko:noun:0	incorrect		Cultural blending does not denote the Indigenous tribe indicated by the parent.
 FOLIO:R9mXb4AjxTfwjZ5tIx50Hbc	OGS:chimariko:noun:1	incorrect		An intercultural research measure does not denote the Indigenous tribe indicated by the parent.
 FOLIO:R9nTelkONEuehaZJPSTLbFb	OGS:thai:noun:0	correct	skos:exactMatch	Both identify the Thai language.
+FOLIO:RA03b9dB249b58C9c5a8F937	OGS:delhi:noun:0	correct	skos:exactMatch	The city sense identifies Delhi in India, consistent with the supplied label and parent.
 FOLIO:RA03e1eB71ca8E7D15dBE3d4	OGS:court:noun:0	incorrect		Sense denotes a courthouse building; class denotes the bankruptcy judicial institution.
 FOLIO:RA123e3847697C0Ef84FBaee	OGS:subdivision:noun:0	correct	skos:broadMatch	General political subdivisions include the specified subdivision of Sao Tome and Principe.
 FOLIO:RA416005F9f4e692029D6f27	OGS:court:noun:0	incorrect		Sense denotes a courthouse building; class denotes the judicial institution.
+FOLIO:RA610a9B9B88a154000A5222	OGS:guantanamo:noun:1	incorrect		Sense denotes a detention facility; the class context does not establish that metonymic meaning.
 FOLIO:RA6Fd547CB5ca7DBca5C0430	OGS:tehran:noun:0	correct	skos:exactMatch	Iran location parents and Tehran label match the Iranian capital city.
 FOLIO:RA8631728464fAEF18944048	OGS:platinum:noun:1	incorrect		The class is a platinum metal currency unit; the gloss is a premium status designation.
 FOLIO:RB2B887FDE5809BE9a2D6b87	OGS:oklahoma:noun:0	correct	skos:exactMatch	US state sense matches Oklahoma's location and US parents.
+FOLIO:RB464235E6338A00355FEc2f	OGS:ohio:noun:0	correct	skos:exactMatch	State sense identifies Ohio as a United States location, matching the supplied class context.
 FOLIO:RB802582CB1f3C289fc01d77	OGS:alabama:noun:0	correct	skos:exactMatch	Both identify the US state of Alabama.
 FOLIO:RB99HoSQuc2imu2vfKs2xNB	OGS:industry:noun:0	correct	skos:broadMatch	This government service sector is a specific branch of organized economic activity.
+FOLIO:RB9EbcbC1675c0EC593F96ea	OGS:bali:noun:1	correct	skos:broadMatch	The province explicitly comprises Bali island and additional areas, giving it broader geographic extent.
 FOLIO:RBB3783BC71e151E00c3Fb5c	OGS:beograd:noun:2	incorrect		The class is a city; the gloss denotes Serbia's government or political leadership.
 FOLIO:RBC419e16Dc0a077cddBA70f	OGS:commission:noun:1	correct	skos:broadMatch	A body charged with official oversight includes this specific basin commission.
 FOLIO:RBCD14b8183909C0f0eBF2ff	OGS:court:noun:0	incorrect		Sense denotes a courthouse building; class denotes the bankruptcy judicial institution.
+FOLIO:RBF11032F548606D1fc87e76	OGS:thessalia:noun:1	incorrect		Ancient homeland sense; evidence does not establish equivalence to the region class.
 FOLIO:RBFLAZ8OTUxzMOdHkrXD32j	OGS:objection:noun:1	correct	skos:broadMatch	General formal objections include objections to professional-employment applications.
 FOLIO:RBLVY0zljWHvn7aUS7BnomS	OGS:bankruptcy:noun:0	incorrect		Bankruptcy supplies context but does not denote setoff or a concept named in the class label.
 FOLIO:RBR4SUW4ZCvh8n2X00nUpYY	OGS:feticide:noun:1	correct	skos:exactMatch	Both describe the criminal killing of a fetus.
@@ -163,6 +191,7 @@ FOLIO:RD51d3eBFDe34798f2a53220	OGS:hubei:noun:0	correct	skos:exactMatch	Both ide
 FOLIO:RD51d3eBFDe34798f2a53220	OGS:hubei:noun:2	correct	skos:closeMatch	The geographic region associated with Hubei closely anchors the province, with a cultural rather than legal focus.
 FOLIO:RD6D5d3B932115AF9c9CFba4	OGS:laois:noun:0	correct	skos:exactMatch	Both identify County Laois in Ireland.
 FOLIO:RD93401D4F038EEA4822Cc56	OGS:ticino:noun:2	correct	skos:broadMatch	The gloss extends the Swiss Ticino region to a cultural area associated with northern Lombardy.
+FOLIO:RD9B5c631F4173E68b1F243f	OGS:taoyuan:noun:2	incorrect		Airport metonym; class denotes Taoyuan city.
 FOLIO:RDAgND4YlYrbZnTVh7z0CPT	OGS:authorization:noun:2	incorrect		Sense is a permission document; class is the litigation process of granting permission.
 FOLIO:RDAy5MQTYwrACj2yao4MGbA	OGS:contractor:noun:0	correct	skos:narrowMatch	Sense restricts contractors to construction-related work; class covers independent service providers generally.
 FOLIO:RDB29a37F6e178418e0D9eb8	OGS:andaman_and_nicobar_islands:noun:0	correct	skos:exactMatch	Both identify the Andaman and Nicobar Islands in India.
@@ -188,10 +217,13 @@ FOLIO:RDutJ0S1ZSetoLvJRxavh8J	OGS:investigator:noun:0	correct	skos:narrowMatch	S
 FOLIO:RE030860E08f0C99f2dB35cc	OGS:court:noun:0	incorrect		Sense denotes a courthouse building; class denotes the federal judicial institution.
 FOLIO:RE1Cb65A0Acae88860a0143f	OGS:lilongwe:noun:0	correct	skos:exactMatch	Both identify the city of Lilongwe in Malawi.
 FOLIO:RE3B2bd37Cb45F8566cD7cc3	OGS:chongqing:noun:0	correct	skos:exactMatch	Both identify the city of Chongqing in China.
+FOLIO:RE695e72C1cf66AB4281F72a	OGS:phuket:noun:0	incorrect		Island sense; gloss does not establish equivalence or geographic containment with the province class.
+FOLIO:RE70fbf523792E4B20741ea1	OGS:cordoba:noun:1	incorrect		Sense denotes an Argentine province; the class is under Colombia.
 FOLIO:RED4a3986B97e936a1eC5cfc	OGS:merida:noun:0	incorrect		The class is in Venezuela; the gloss identifies a city in Mexico.
 FOLIO:RF2A458162986B8F050FF034	OGS:fukushima:noun:1	incorrect		With no definition, the Japan parent cannot resolve city versus prefecture; the gloss selects the city.
 FOLIO:RF66aa31F366f311e47A91b0	OGS:colon:noun:0	incorrect		Punctuation is a different colon sense from the Honduran location indicated by the parent.
 FOLIO:RF66aa31F366f311e47A91b0	OGS:colon:noun:1	incorrect		Digestive anatomy is a different colon sense from the Honduran location indicated by the parent.
+FOLIO:RFB1d54BD3eeeD4D347D3161	OGS:lisboa:noun:1	correct	skos:broadMatch	The metropolitan area explicitly surrounds and includes the city; its geographic extent is broader.
 FOLIO:RFE3f7765278806A6d24Fa87	OGS:hebron:noun:2	incorrect		The class is Hebron in Palestine; the gloss explicitly concerns namesakes outside the Middle East.
 FOLIO:RFEC0ea542b2d4CB738A7f33	OGS:gafsa:noun:0	correct	skos:exactMatch	Both identify the city of Gafsa in Tunisia.
 FOLIO:RFEC0ea542b2d4CB738A7f33	OGS:gafsa:noun:1	incorrect		The geological basin is a different geographic entity from the city of Gafsa.
