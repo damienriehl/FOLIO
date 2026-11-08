@@ -174,3 +174,45 @@ def test_invalid_gold(tmp_path, change):
     path.write_text(text)
     with pytest.raises(ValueError):
         score.read_gold(path)
+
+
+def test_mapping_set_id_is_pinned():
+    header, rows = validate.read_mapping_set(FIXTURES / 'mappings.tsv')
+    header['mapping_set_id'] = 'https://example.org/wrong-set'
+    assert 'mapping-set-id' in {finding.code for finding in validate.validate(header, rows)}
+
+
+def test_quotes_round_trip_through_writer_validator_exporter(tmp_path):
+    from opengloss_mapping.senses import Sense
+    from opengloss_mapping.sssom_writer import write_sssom, write_senses, write_gaps
+    header, original = validate.read_mapping_set(FIXTURES / 'mappings.tsv')
+    label = 'The "Agreement"'
+    gloss = 'An agreement called a "contract", with "quoted" terms.'
+    row = dict(original[0], subject_label=label, object_label='"Agreement"')
+    sense = Sense(row['object_id'].removeprefix('OGS:'), 'agreement:noun',
+                  '"Agreement"', 'noun', 0, 'law_government', 'law_government', gloss)
+    mapping, sidecar, turtle, gaps = [tmp_path / name for name in ('m.tsv', 's.tsv', 'm.ttl', 'g.tsv')]
+    write_sssom(mapping, header, [row])
+    write_senses(sidecar, [sense], [row])
+    write_gaps(gaps, [dict(subject_id=row['subject_id'], subject_label=label,
+                           match_string='"agreement"', headword_senses_domains='a="domain"')])
+    parsed_header, rows = validate.read_mapping_set(mapping)
+    assert rows == [row]
+    assert validate.validate(parsed_header, rows) == []
+    owl_export.export(mapping, sidecar, turtle)
+    graph = Graph().parse(turtle, format='turtle')
+    obj = URIRef(header['curie_map']['OGS'] + sense.sense_id)
+    assert str(graph.value(obj, SKOS.definition)) == gloss
+    import csv
+    with gaps.open() as stream:
+        assert next(csv.DictReader(stream, delimiter='\t', quoting=csv.QUOTE_NONE))['subject_label'] == label
+    for path in (mapping, sidecar, gaps):
+        assert '""' not in path.read_text()
+
+
+def test_writer_rejects_a_delimiter_that_survives_cleaning(tmp_path, monkeypatch):
+    from opengloss_mapping import sssom_writer
+    monkeypatch.setattr(sssom_writer, 'clean', str)
+    gap = dict(subject_id='FOLIO:A', subject_label='bad\tlabel', match_string='a', headword_senses_domains='')
+    with pytest.raises(ValueError, match='delimiter|control'):
+        sssom_writer.write_gaps(tmp_path / 'g.tsv', [gap])

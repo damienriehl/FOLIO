@@ -26,7 +26,8 @@ if name == "build":
         pathlib.Path(args[args.index(flag)+1]).write_text("header\\n")
 elif name == "validate": sys.exit(config.get("validation", 0))
 elif name == "export": pathlib.Path(args[args.index("--out")+1]).write_text("# turtle\\n")
-elif name == "score": print(json.dumps(config["score"]))
+elif name == "score": print(config.get("score_stdout", json.dumps(config["score"])))
+sys.exit(config.get(name + "_exit", 0))
 '''
 
 
@@ -162,11 +163,12 @@ def test_workflow_contract():
     assert workflow['concurrency']['cancel-in-progress'] is False
     assert 'secrets.' not in source
     assert 'GH_TOKEN: ${{ github.token }}' in source
-    assert 'gh pr merge --auto --squash' in source
+    assert 'gh pr merge --repo "$GITHUB_REPOSITORY" --squash --delete-branch "$pr"' in source
+    assert '--auto' not in source
     assert '--output-decision' in source
     steps = workflow['jobs']['heartbeat']['steps']
     assert {step['uses'] for step in steps if 'uses' in step} == {
-        'actions/checkout@v4', 'actions/setup-python@v5'}
+        'actions/checkout@v4', 'actions/setup-python@v5', 'actions/upload-artifact@v4'}
     assert steps[0]['with']['fetch-depth'] == 0
     assert steps[1]['with']['python-version'] == '3.12'
     assert 'git config user.name \'github-actions[bot]\'' in source
@@ -240,3 +242,87 @@ def test_cli_help_exposes_workflow_interface():
                             capture_output=True, text=True)
     assert result.returncode == 0
     assert all(flag in result.stdout for flag in ('--repo-root', '--dry-run', '--output-decision'))
+
+
+@pytest.mark.parametrize(('change', 'reason'), [
+    ({'build_exit': 1}, 'build failed'),
+    ({'validation': 1}, 'validation failed'),
+    ({'export_exit': 1}, 'export failed'),
+    ({'score_exit': 1}, 'score failed'),
+    ({'score_stdout': 'not JSON'}, 'score failed'),
+    ({'score_stdout': '[1]'}, 'score failed'),
+    ({'score_stdout': 'null'}, 'score failed'),
+])
+def test_failed_run_preserves_artifacts_and_pins(repo, change, reason):
+    root = repo[0]
+    base = root / 'mappings/opengloss'
+    for name in ('senses.tsv', 'gaps.tsv', 'folio-opengloss.ttl'):
+        (base / name).write_text('committed ' + name)
+    before = {path.name: path.read_bytes() for path in base.iterdir() if path.is_file()}
+    config_path = root / 'config.json'
+    config = json.loads(config_path.read_text())
+    config.update(change)
+    config_path.write_text(json.dumps(config))
+    result = execute(repo)
+    assert result.exit_code == 1 and result.decision == 'needs-damien'
+    assert result.receipt.is_file()
+    receipt = json.loads(result.receipt.read_text())
+    assert reason in receipt['reasons']
+    assert receipt['decision'] == 'needs-damien'
+    assert {path.name: path.read_bytes() for path in base.iterdir() if path.is_file()} == before
+
+
+def test_heartbeat_uses_canonical_readers_and_hashes(repo):
+    from opengloss_mapping import heartbeat, senses, validate
+    # Quoted text and leading-only YAML use the same dialect as the public validator.
+    assert not hasattr(heartbeat, 'read_tsv')
+    assert not hasattr(heartbeat, 'sha256')
+    root = repo[0]
+    config_path = root / 'config.json'
+    config = json.loads(config_path.read_text())
+    config['tsv'] = config['tsv'].replace('FOLIO:1\t', 'FOLIO:"1"\t')
+    config_path.write_text(json.dumps(config))
+    result = execute(repo)
+    receipt = json.loads(result.receipt.read_text())
+    assert 'FOLIO:"1" skos:closeMatch OGS:sense:noun:1' in receipt['added']['sample']
+    assert receipt['folio_sha256']['after'] == senses.sha256_file(root / 'FOLIO.owl')
+    _, rows = validate.read_mapping_set(root / 'mappings/opengloss/folio-opengloss.sssom.tsv')
+    assert len(rows) == receipt['rows']['after']
+
+
+def test_workflow_publish_guards_and_failure_evidence():
+    import re
+    source = (Path(__file__).parents[1] / '.github/workflows/opengloss-mapping-heartbeat.yml').read_text()
+    job = yaml.safe_load(source)['jobs']['heartbeat']
+    assert job['timeout-minutes'] == 60
+    steps = job['steps']
+    tests = next(s for s in steps if s.get('id') == 'tests')
+    publish = next(s for s in steps if s['name'] == 'Publish heartbeat pull request')
+    regenerate = next(s for s in steps if s.get('id') == 'heartbeat')
+    guard = next(s for s in steps if 'gh pr list' in s.get('run', ''))
+    assert steps.index(guard) < steps.index(regenerate)
+    assert 'startswith("heartbeat/opengloss-")' in guard['run']
+    assert '::notice::' in guard['run'] and 'exit 0' in guard['run']
+    assert guard.get('id')
+    assert f"steps.{guard['id']}.outputs.skip != 'true'" in regenerate['if']
+    assert tests['continue-on-error'] is True
+    assert steps.index(tests) < steps.index(publish)
+    assert "steps.changes.outputs.changed == 'true'" in publish['if']
+    assert 'always()' in publish['if']
+    script = publish['run']
+    assert script.index('if [ "$decision" = auto ]') < script.index('gh pr merge')
+    assert 'label="heartbeat:$decision"' in script
+    assert 'heartbeat/opengloss-$(date -u +%F)-${GITHUB_RUN_ID}' in script
+    assert "steps.tests.outcome" in script and 'failure' in script
+    assert 'decision=needs-damien' in script and 'tests failed' in script.lower()
+    assert '::error::' in script
+    assert '|| echo' not in script
+    for call in re.findall(r'gh (?:pr|label) [^\n]+', source):
+        assert '--repo "$GITHUB_REPOSITORY"' in call
+    artifact = next(s for s in steps if s.get('uses') == 'actions/upload-artifact@v4')
+    assert artifact['if'] == 'always()'
+    assert artifact['with']['path'] == 'mappings/opengloss'
+    final = steps[-1]
+    assert "steps.tests.outcome == 'failure'" in final['if']
+    assert 'exit 1' in final['run']
+    assert 'secrets.' not in source

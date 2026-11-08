@@ -36,6 +36,7 @@ actions:noun:1	actions	actions	noun	1	law_government.courts_justice	A legal acti
 active:noun:1	active	active	noun	1	business.finance	In finance or armed forces contexts, a person or unit that is currently engaged in service or operations, as opposed to being in reserve or retired.
 activist:noun:0	activist	activist	noun	0	law_government.elections_politics	A person who works to bring about social or political change through organized action and advocacy.
 acts:noun:0	acts	acts	noun	0	law_government.public_policy	Formal written laws enacted by a legislature; collectively, these measures comprise the statutory framework of a jurisdiction.
+ad_hoc:noun:0	ad_hoc	ad hoc	noun	0	business.management	A body or organization formed for a specific task and intended to be temporary; a temporary group created to accomplish a defined objective.
 ad_hoc_committee:noun:0	ad_hoc_committee	ad hoc committee	noun	0	law_government.government_structure	A temporary committee formed for a specific, narrowly defined purpose or task, usually within an organization, legislature, or academic body, and dissolved once that task is completed.
 ada:noun:2	ada	ada	noun	2	law_government.civil_law	ADA denotes the Americans with Disabilities Act, a United States civil rights law prohibiting discrimination on the basis of disability in employment, public services, and accommodation.
 adhd:noun:0	adhd	adhd	noun	0	health.mental_health	A neurodevelopmental disorder characterized by persistent patterns of inattention and/or hyperactivity-impulsivity that impair functioning across settings.
@@ -177,6 +178,7 @@ arbitrator:noun:1	arbitrator	arbitrator	noun	1	law_government.civil_law	The proc
 archives:noun:0	archives	archives	noun	0	history.general	A collection of historical records and documents preserved for reference.
 area_of_law:noun:0	area_of_law	area of law	noun	0	law_government.general	An organized branch of the law governing a defined subject matter within the legal system.
 argentina:noun:0	argentina	argentina	noun	0	law_government.government_structure	The sovereign state of Argentina, located in the southern cone of South America, a federal republic with diverse geographic regions and a long coastline along the Atlantic Ocean.
+ariana:noun:1	ariana	ariana	noun	1	law_government.government_structure	A geographic toponym for a northern Tunisian region and the corresponding administrative division.
 arizona:noun:0	arizona	arizona	noun	0	law_government.government_structure	The southwestern United States state of Arizona, a political subdivision of the United States, with Phoenix as its capital and a diverse geography ranging from deserts to pine forests; admitted to statehood in 1912.
 arkansas:noun:0	arkansas	arkansas	noun	0	law_government.government_structure	The United States state of Arkansas, a political subdivision of the United States located in the southern region; capital Little Rock; abbreviation AR; admitted to statehood in 1836.
 arm:noun:1	arm	arm	noun	1	law_government.criminal_law	A weapon or weapons used for defense or attack; instruments of defense or combat.
@@ -224,6 +226,8 @@ association:noun:1	association	association	noun	1	people_society.community_life	
 assurance:noun:0	assurance	assurance	noun	0	business.value_quality	A formal or informal pledge that a product or outcome will meet specified standards.
 astana:noun:0	astana	astana	noun	0	law_government.government_structure	Astana is the capital city of Kazakhstan, located in the north-central part of the country along the Ishim River, serving as the political, administrative, and cultural center, and historically known as Akmola and Nur-Sultan.
 asthma:noun:0	asthma	asthma	noun	0	health.disease_illness	A chronic inflammatory disorder of the airways characterized by recurrent episodes of variable airflow obstruction, bronchial hyperresponsiveness, wheezing, dyspnea, chest tightness, and coughing, typically reversible with treatment.
+asturian:noun:0	asturian	asturian	noun	0	law_government.polities	A native or inhabitant of Asturias, an autonomous community in northwestern Spain.
+asturias:noun:0	asturias	asturias	noun	0	law_government.government_structure	Asturias is an autonomous community and historic province of northern Spain, officially titled the Principality of Asturias.
 aswan:noun:2	aswan	aswan	noun	2	law_government.government_structure	Aswan Governorate is an administrative division of Egypt with Aswan city as its capital.
 asylum:noun:0	asylum	asylum	noun	0	law_government.international_law	A refuge or sanctuary from danger or persecution; a place offering safety to individuals or groups.
 asylum:noun:1	asylum	asylum	noun	1	law_government.international_law	The protection granted by a state to a foreign national who has fled persecution or fear of persecution in their homeland.
@@ -299,6 +303,7 @@ barley:noun:1	barley	barley	noun	1	nature.plants	Hordeum vulgare, the annual gra
 barrister:noun:0	barrister	barrister	noun	0	law_government.courts_justice	In common-law jurisdictions, a lawyer specializing in courtroom advocacy and appellate proceedings, typically representing clients in higher courts and receiving instructions from solicitors.
 base:noun:2	base	base	noun	2	law_government.government_structure	A fixed installation used by the military as a headquarters or operational center.
 bases:noun:1	bases	bases	noun	1	law_government.general	A facility or location used by a military organization for conducting operations or housing troops and equipment.
+bashkortostan:noun:0	bashkortostan	bashkortostan	noun	0	law_government.government_structure	A federal subject of the Russian Federation, officially the Republic of Bashkortostan, located between the Volga River and the Ural Mountains, with its capital in Ufa.
 battery:noun:2	battery	battery	noun	2	law_government.criminal_law	In law and common usage, the intentional and unlawful physical contact or use of force against another person without consent.
 bayern:noun:2	bayern	bayern	noun	2	law_government.polities	By extension, organizations, institutions, or entities associated with the German state of Bavaria, especially in branding, media, or political discourse.
 bd:noun:2	bd	bd	noun	2	business.entrepreneurship	An organizational function focused on market expansion, revenue growth, and the development of strategic relationships.
@@ -482,6 +487,7 @@ checking:noun:1	checking	checking	noun	1	business.finance	A bank account from wh
 checklist:noun:0	checklist	checklist	noun	0	business.management	A list of items or tasks to be completed or verified, used to guide work and track progress.
 cheque:noun:0	cheque	cheque	noun	0	business.finance	A written order on a bank account directing the bank to pay a stated amount to a person or organization.
 cherokee_nation:noun:0	cherokee_nation	Cherokee Nation	noun	0	law_government.government_structure	Cherokee Nation is a federally recognized tribal government serving the Cherokee people and headquartered in Tahlequah, Oklahoma.
+chewa:noun:1	chewa	chewa	noun	1	language.linguistics	The Chewa language, also referred to as Chichewa, a Bantu language spoken by Chewa communities in Malawi, Zambia, and Mozambique.
 chhattisgarh:noun:2	chhattisgarh	chhattisgarh	noun	2	law_government.government_structure	In Indian political and administrative discourse, the government, bureaucracy, or polity of the state of Chhattisgarh considered as a collective entity.
 chiapas:noun:2	chiapas	chiapas	noun	2	law_government.elections_politics	By metonymy, the governmental institutions, political class, or social movements based in or associated with the state of Chiapas, especially as actors in national and transnational political arenas.
 chiba:noun:0	chiba	chiba	noun	0	law_government.government_structure	Chiba Prefecture is an administrative region on eastern Honshu, Japan, in the Kantō region, bordering Tokyo Metropolis to the west and the Pacific Ocean to the south; its capital is Chiba City.
@@ -701,6 +707,7 @@ corrective_action_plan:noun:0	corrective_action_plan	corrective action plan	noun
 correspondent:noun:1	correspondent	correspondent	noun	1	business.occupations_careers	A journalist who reports news from a location for a news organization.
 corrupt:noun:0	corrupt	corrupt	noun	0	law_government.criminal_law	an individual who behaves dishonestly or illegally for personal gain, especially in positions of public trust
 corruption:noun:0	corruption	corruption	noun	0	law_government.public_policy	The abuse of entrusted power for private gain within political or public administration contexts, including bribery, graft, and related illicit practices.
+cosmetics:noun:1	cosmetics	cosmetics	noun	1	business.marketing	The beauty-products industry refers to the design, manufacture, and marketing of products intended to enhance personal appearance.
 cost:noun:0	cost	cost	noun	0	business.finance	The monetary amount required to purchase goods or obtain services.
 cost:noun:1	cost	cost	noun	1	business.value_quality	The resources or effort required to achieve a task including time, energy, or materials.
 cost_center:noun:0	cost_center	cost center	noun	0	business.accounting	In managerial accounting, an organizational unit for which expenses are accumulated and monitored for budgeting, variance analysis, and internal reporting, typically without generating direct revenue.
@@ -753,6 +760,7 @@ crops:noun:0	crops	crops	noun	0	nature.plants	Cultivated plants grown in fields 
 cruelty_to_animals:noun:0	cruelty_to_animals	cruelty to animals	noun	0	people_society.social_issues	The act of causing suffering or harm to animals through careless or intentional mistreatment.
 crypto:noun:1	crypto	crypto	noun	1	business.finance	The field, market, or industry concerned with cryptocurrencies, digital tokens, and related technologies and institutions.
 cryptocurrency:noun:3	cryptocurrency	cryptocurrency	noun	3	law_government.public_policy	Not recognized as legal tender; regulatory status varies by jurisdiction and classification, with many regimes treating such assets as property or commodities for tax and regulatory purposes.
+csr:noun:0	csr	csr	noun	0	business.management	Corporate social responsibility; a business management concept in which companies integrate social and environmental concerns into their operations and interactions with stakeholders on a voluntary or self-regulatory basis
 cta:noun:1	cta	cta	noun	1	law_government.civics	In organizational and advocacy contexts, a formal request for members of a group or the public to undertake a coordinated action, such as contacting representatives or attending an event.
 cuba:noun:0	cuba	cuba	noun	0	law_government.government_structure	A Caribbean country and sovereign state located on the island of Cuba and its surrounding archipelagoes.
 cuba:noun:2	cuba	cuba	noun	2	law_government.government_structure	In political discourse, Cuba may be used as a metonym for the Cuban state or its government.
@@ -772,6 +780,7 @@ cyclist:noun:0	cyclist	cyclist	noun	0	sports_recreation.individual_sports	A pers
 cyprus:noun:0	cyprus	cyprus	noun	0	law_government.government_structure	A sovereign island country in the Eastern Mediterranean, officially known as the Republic of Cyprus, with defined territory and governance and membership in international organizations.
 czech:noun:1	czech	czech	noun	1	language.linguistics	The West Slavic language spoken in the Czech Republic.
 da:noun:0	da	da	noun	0	law_government.criminal_law	District attorney is a public official at the county or metropolitan level who prosecutes criminal cases on behalf of the government and oversees prosecutors within the district attorney's office.
+dagestan:noun:0	dagestan	dagestan	noun	0	law_government.government_structure	A federal subject of the Russian Federation located in the North Caucasus region, bordering the Caspian Sea, known for its high ethnic, linguistic, and religious diversity and its capital city Makhachkala.
 dairy:noun:0	dairy	dairy	noun	0	business.manufacturing	A facility where milk is processed and milk-based products are manufactured and packaged for distribution.
 dairy:noun:2	dairy	dairy	noun	2	business.trade_commerce	The economic sector involved in milk production, processing, distribution, and sale.
 dakota:noun:1	dakota	dakota	noun	1	language.linguistics	The Dakota language, a Siouan language spoken by the Dakota people.
@@ -851,6 +860,7 @@ deposition:noun:1	deposition	deposition	noun	1	law_government.courts_justice	The
 deposition:noun:2	deposition	deposition	noun	2	law_government.government_structure	The act of removing a person from office, especially a monarch, through dethronement.
 depository:noun:1	depository	depository	noun	1	business.finance	A financial institution that accepts deposits and holds them on behalf of customers, typically regulated as part of the banking system.
 depreciation:noun:0	depreciation	depreciation	noun	0	business.accounting	The gradual decline in the market or book value of a tangible asset over time due to wear, use, aging, or obsolescence.
+dept:noun:0	dept	dept	noun	0	business.management	Informally, it is an abbreviation for department, meaning a subdivision within an organization or institution responsible for a specific function or field.
 deputy:noun:1	deputy	deputy	noun	1	law_government.elections_politics	A member of a legislative or representative assembly, especially in countries where this is the formal title of the office.
 derivative:noun:3	derivative	derivative	noun	3	business.finance	In finance, a contract whose value depends on the performance of an underlying asset, index, or rate.
 derivative_work:noun:0	derivative_work	derivative work	noun	0	law_government.civil_law	A new creative work based on an existing work that reuses its story, characters, or expressions.
@@ -932,6 +942,7 @@ dower:noun:0	dower	dower	noun	0	law_government.civil_law	The widow's legal right
 downgrade:noun:0	downgrade	downgrade	noun	0	business.management	The act or result of lowering rank, status, or authority through formal action or an administrative decision.
 dreamer:noun:2	dreamer	dreamer	noun	2	law_government.public_policy	In policy discourse, undocumented youths granted deferred action under programs such as DACA.
 dressing:noun:0	dressing	dressing	noun	0	everyday_life.food	The sauce used to flavor salads and other foods.
+driver:noun:2	driver	driver	noun	2	business.management	A factor that has a significant influence on the development or outcome of a phenomenon.
 droit:noun:0	droit	droit	noun	0	law_government.civil_law	A legal right or entitlement, especially as recognized and protected within a formal system of law; often used in comparative law and legal theory drawing on French terminology.
 drone:noun:1	drone	drone	noun	1	technology.transportation_technology	An unmanned aerial vehicle controlled remotely or autonomously.
 drugs:noun:1	drugs	drugs	noun	1	law_government.criminal_law	A chemical substance subject to legal control because of its potential for abuse, whether prohibited or available only by prescription.
@@ -1008,6 +1019,7 @@ entertainment:noun:0	entertainment	entertainment	noun	0	arts.general	Amusement o
 entitlement:noun:0	entitlement	entitlement	noun	0	law_government.civil_law	A right or claim to have or obtain something, often through law or policy.
 entombment:noun:0	entombment	entombment	noun	0	humanities.religion	The act or process of placing a body in a tomb or grave.
 entrapment:noun:0	entrapment	entrapment	noun	0	law_government.criminal_law	The act or practice by a law enforcement official to induce another person to commit a crime, typically by deceit or manipulation, in order to prosecute the person for that offense.
+entry:noun:2	entry	entry	noun	2	language.writing	A dated note recorded in a diary.
 enugu:noun:2	enugu	enugu	noun	2	law_government.government_structure	Enugu State, a federated state in southeastern Nigeria with Enugu city as its capital, known for its mixed economy, educational institutions, and cultural diversity.
 environmental_impact_assessment:noun:2	environmental_impact_assessment	environmental impact assessment	noun	2	law_government.public_policy	A regulatory and decision-support instrument used by public authorities to integrate environmental considerations into planning and permitting processes.
 environmental_impact_statement:noun:0	environmental_impact_statement	environmental impact statement	noun	0	law_government.public_policy	A formal document describing a proposed project's potential effects on the natural world and specifying measures to reduce them.
@@ -1027,6 +1039,7 @@ escrow:noun:1	escrow	escrow	noun	1	business.finance	Funds or assets held by a ne
 esfahan:noun:1	esfahan	esfahan	noun	1	law_government.government_structure	Esfahan Province is a central Iranian province whose capital is the city of Isfahan; it constitutes one of Iran's 31 administrative provinces.
 esop:noun:0	esop	esop	noun	0	business.finance	An acronym for Employee stock ownership plan, a tax-qualified employee benefit plan that allocates employer stock to participating employees and holds it in trust for distribution upon vesting or separation.
 espionage:noun:0	espionage	espionage	noun	0	law_government.international_law	The practice of obtaining secret or sensitive information through clandestine means, typically by state actors, for political or military advantage.
+esq:noun:0	esq	esq	noun	0	law_government.civics	An abbreviation for Esquire used as a postnominal courtesy title after the name of a licensed attorney.
 essex:noun:0	essex	essex	noun	0	law_government.government_structure	A ceremonial and historic county in the east of England, located northeast of London, with its administrative center at Chelmsford and including towns such as Colchester and Southend-on-Sea.
 estate:noun:0	estate	estate	noun	0	business.real_estate	A large area of land with a house, grounds, and outbuildings, usually owned by a person or family.
 estate:noun:1	estate	estate	noun	1	business.finance	All the money and property owned by a person, especially at death; the total net worth.
@@ -1099,6 +1112,7 @@ faroese:noun:1	faroese	faroese	noun	1	people_society.demographics	A native or in
 fayette:noun:1	fayette	fayette	noun	1	law_government.polities	A place name used for towns, counties, and other geographic or administrative units, particularly in the United States, usually derived from the French surname Fayette or La Fayette.
 fca:noun:1	fca	fca	noun	1	law_government.courts_justice	In law and regulation, often an abbreviation for specific statutes or authorities, such as the Federal Court of Appeal in Canada or the Financial Conduct Authority in the United Kingdom.
 fda:noun:0	fda	fda	noun	0	law_government.public_policy	The Food and Drug Administration, a U.S. federal agency responsible for regulating food, drugs, medical devices, cosmetics, and tobacco products to protect public health.
+fed:noun:1	fed	fed	noun	1	law_government.criminal_law	A slang term for a national law-enforcement officer, typically a member of an agency such as the FBI or DEA.
 federal:noun:0	federal	federal	noun	0	law_government.government_structure	The term “federal” as a noun refers to the central government in a federation, especially the national government of a country with a federal system.
 federal_legislature:noun:0	federal_legislature	federal legislature	noun	0	law_government.government_structure	The national lawmaking body of a federation, typically composed of elected representatives from the states or regions, that drafts, debates, and enacts laws for the entire country.
 federal_legislature:noun:1	federal_legislature	federal legislature	noun	1	law_government.public_policy	The act or process by which the country's national lawmaking body creates, debates, and enacts laws for the country.
@@ -1212,6 +1226,7 @@ furniture:noun:1	furniture	furniture	noun	1	business.manufacturing	The business 
 futures:noun:1	futures	futures	noun	1	business.finance	In finance, a standardized contract obligating the purchase or sale of a specified asset at a predetermined price on a specified future date.
 gaap:noun:0	gaap	gaap	noun	0	business.accounting	A standardized body of accounting principles, standards, and procedures used to prepare and present financial statements.
 gabon:noun:0	gabon	gabon	noun	0	law_government.polities	The sovereign state of Gabon, located on the west-central coast of Africa, officially the Gabonese Republic.
+gagauzia:noun:0	gagauzia	Gagauzia	noun	0	law_government.polities	Gagauzia is an autonomous territorial unit in southern Moldova inhabited mainly by the Gagauz people.
 galicia:noun:0	galicia	galicia	noun	0	law_government.polities	Galicia is an autonomous community in northwestern Spain, comprising the provinces of A Coruna, Lugo, Ourense, and Pontevedra, with Santiago de Compostela as its capital.
 gambia:noun:0	gambia	gambia	noun	0	law_government.polities	The Gambia is a sovereign country located in West Africa, bordered by Senegal and with a coastline on the Atlantic Ocean.
 gang:noun:0	gang	gang	noun	0	law_government.criminal_law	A criminal organization comprising individuals who collaborate to commit illegal activities, often with formal leadership and a strategic structure.
@@ -1222,6 +1237,7 @@ gaza:noun:1	gaza	gaza	noun	1	law_government.government_structure	Gaza Strip is a
 gaza:noun:3	gaza	gaza	noun	3	law_government.government_structure	Gaza Governorate is an administrative district of the Gaza Strip in Palestine, encompassing Gaza City and surrounding towns and municipalities.
 gaziantep:noun:1	gaziantep	gaziantep	noun	1	people_society.community_life	Gaziantep Province is a province of Turkey in the Southeastern Anatolia Region with the city Gaziantep as its capital and multiple districts.
 ged:noun:0	ged	ged	noun	0	education.assessment	General Educational Development test; a credential earned by passing a battery of tests that demonstrate high school level knowledge and skills, serving as an alternative to a high school diploma in the United States.
+gehrig:noun:1	gehrig	gehrig	noun	1	health.disease_illness	Gehrig's disease is the historical term for amyotrophic lateral sclerosis, a progressive neurodegenerative disorder affecting motor neurons.
 gelderland:noun:1	gelderland	gelderland	noun	1	law_government.government_structure	A constituent province of the Kingdom of the Netherlands, with Arnhem as its capital, characterized by a mixed economy, significant agricultural output, and extensive natural reserves such as the Veluwe.
 general:noun:0	general	general	noun	0	law_government.government_structure	a senior officer in the army air force or marine corps who typically commands large formations and participates in strategic planning.
 general_contractor:noun:0	general_contractor	general contractor	noun	0	business.management	A primary contractor responsible for the overall coordination of a construction project, including procurement of materials, hiring and supervising subcontractors, scheduling work, and ensuring compliance with design specifications and building codes.
@@ -1365,6 +1381,7 @@ human_trafficking:noun:0	human_trafficking	human trafficking	noun	0	law_governme
 hunan:noun:0	hunan	hunan	noun	0	law_government.government_structure	Hunan is a province of the People's Republic of China located in south central China, a political and geographic unit within the central region of the country.
 hungary:noun:0	hungary	hungary	noun	0	law_government.polities	The country of Hungary, a landlocked sovereign state in Central Europe bordered by Slovakia, Ukraine, Romania, Serbia, Croatia, Slovenia, and Austria.
 hunter:noun:2	hunter	hunter	noun	2	law_government.criminal_law	A person paid or rewarded for pursuing and capturing wanted individuals.
+huntington:noun:2	huntington	huntington	noun	2	health.disease_illness	A hereditary neurodegenerative disorder caused by a CAG repeat expansion in the HTT gene, characterized by chorea, psychiatric symptoms, and cognitive decline.
 husband:noun:1	husband	husband	noun	1	business.management	A person who manages resources economically; a steward of assets; a frugal or prudent keeper of resources.
 iceland:noun:0	iceland	iceland	noun	0	law_government.polities	A sovereign island country in the North Atlantic with a stable democratic government and a high level of development, whose capital is Reykjavík.
 id:noun:0	id	id	noun	0	law_government.civics	A document or credential used to establish or verify who a person is or what an object is.
@@ -1525,6 +1542,7 @@ jordan:noun:0	jordan	jordan	noun	0	law_government.polities	An Arab sovereign sta
 journal:noun:1	journal	journal	noun	1	language.reading_comprehension	A scholarly periodical that publishes articles on a subject, issued at regular intervals.
 journalist:noun:0	journalist	journalist	noun	0	business.occupations_careers	A person whose professional occupation is to gather, evaluate, and present news or current information to the public through print, broadcast, or digital media.
 joy:noun:0	joy	joy	noun	0	people_society.emotion_attitude	A strong feeling of happiness or pleasure.
+jr:noun:0	jr	jr	noun	0	people_society.personal_names	A noun sense defined as an abbreviation for Junior used as a suffix in personal names to distinguish a son from his father; commonly rendered as Jr.
 judge:noun:0	judge	judge	noun	0	law_government.courts_justice	A person who presides in a court and makes legal rulings.
 judgement:noun:1	judgement	judgement	noun	1	law_government.courts_justice	A formal decision of a court or tribunal; a judicial ruling issued after consideration of the case and arguments.
 judges:noun:0	judges	judges	noun	0	law_government.courts_justice	An official authorized to preside over and decide cases in a court of law, interpret statutes, and issue rulings.
@@ -1552,6 +1570,7 @@ kabul:noun:0	kabul	kabul	noun	0	law_government.government_structure	Kabul is the
 kaduna:noun:1	kaduna	kaduna	noun	1	law_government.government_structure	A state in north-central Nigeria, officially known as Kaduna State, with Kaduna city as its capital and characterized by significant ethnic and religious diversity.
 kagoshima:noun:1	kagoshima	kagoshima	noun	1	law_government.government_structure	An administrative division on Kyushu Island, Japan, comprising multiple municipalities with Kagoshima City as its capital.
 kale:noun:0	kale	kale	noun	0	everyday_life.food	A hardy leafy green vegetable of the species Brassica oleracea var acephala, cultivated for its edible leaves.
+kalmyk:noun:1	kalmyk	kalmyk	noun	1	language.linguistics	The Kalmyk language, a Mongolic language of the Oirat branch spoken by the Kalmyk people, primarily in Kalmykia.
 kampala:noun:0	kampala	kampala	noun	0	law_government.government_structure	Kampala is the capital and largest city of Uganda, serving as the nations administrative, economic, and cultural hub on the northern shores of Lake Victoria.
 kampala:noun:1	kampala	kampala	noun	1	law_government.government_structure	Kampala District is an administrative district in the Central Region of Uganda that contains Kampala city and coordinates local government and service delivery.
 kampala:noun:2	kampala	kampala	noun	2	law_government.government_structure	Kampala Metropolitan Area refers to the urban agglomeration comprising Kampala city and adjacent municipalities and districts, central to regional planning and cross-boundary governance.
@@ -1578,6 +1597,7 @@ kiribati:noun:0	kiribati	kiribati	noun	0	law_government.government_structure	Kir
 kirinyaga:noun:0	kirinyaga	kirinyaga	noun	0	law_government.government_structure	Kirinyaga is a county in central Kenya named after the Kikuyu name for Mount Kenya, functioning as an administrative unit with Kerugoya as its capital.
 kirinyaga:noun:2	kirinyaga	kirinyaga	noun	2	law_government.polities	The toponym Kirinyaga is used in Kenyan place names and institutions to denote affiliation with Kirinyaga County or Mount Kenya.
 kirkuk:noun:1	kirkuk	kirkuk	noun	1	law_government.government_structure	The administrative governorate (province) in northern Iraq for which the city of Kirkuk serves as the capital, encompassing both urban and rural districts with a diverse population.
+klingon:noun:1	klingon	klingon	noun	1	language.linguistics	The Klingon language, a constructed language associated with the Klingon people in the Star Trek franchise.
 knowledge_representation:noun:0	knowledge_representation	knowledge representation	noun	0	technology.robotics_ai	A field of study in artificial intelligence and cognitive science concerned with how knowledge about the world can be formally modeled, encoded, and manipulated by computational systems.
 knox:noun:0	knox	knox	noun	0	law_government.government_structure	Fort Knox is the United States Bullion Depository, a fortified facility in Kentucky that stores a substantial portion of the U.S. gold reserves and serves as a symbol of security and impenetrability.
 kodiak:noun:2	kodiak	kodiak	noun	2	law_government.government_structure	Kodiak, Alaska, a city on the southeastern coast of Kodiak Island and the administrative center of the Kodiak Island Borough.
@@ -1752,6 +1772,7 @@ lorestan:noun:1	lorestan	lorestan	noun	1	law_government.government_structure	An 
 lottery:noun:1	lottery	lottery	noun	1	business.finance	The prize money paid to winners in a random drawing.
 louisiana:noun:0	louisiana	louisiana	noun	0	law_government.government_structure	A state of the United States in the Deep South, bordered by Texas, Arkansas, Mississippi, and the Gulf of Mexico, with Baton Rouge as its capital and known for New Orleans and Creole culture.
 lowndes:noun:1	lowndes	lowndes	noun	1	law_government.polities	A proper‑name identifier for several geographic locations, institutions, or entities, most commonly Lowndes County in certain U.S. states.
+ltd:noun:0	ltd	ltd	noun	0	business.general	A private limited company is denoted by “Ltd,” and is a corporate form in which shareholder liability is limited to the amount unpaid on their shares.
 lusaka:noun:0	lusaka	lusaka	noun	0	law_government.government_structure	Lusaka is the capital and largest city of Zambia, serving as the political, administrative, and economic center of the country.
 luxembourg:noun:0	luxembourg	luxembourg	noun	0	law_government.polities	A small landlocked country in Western Europe, officially the Grand Duchy of Luxembourg, bordered by Belgium, Germany, and France, noted for its high-income economy, multilingual population, and role as a European Union and financial center.
 luxembourg:noun:2	luxembourg	luxembourg	noun	2	law_government.government_structure	By extension, the government, institutions, or people of the Grand Duchy of Luxembourg considered collectively, especially in diplomatic, economic, or historical contexts.
@@ -1959,7 +1980,9 @@ natural_person:noun:0	natural_person	natural person	noun	0	law_government.civil_
 natural_person:noun:1	natural_person	natural person	noun	1	law_government.civil_law	In ethical and jurisprudential discourse, a living human regarded as possessing moral status and autonomy, rather than an artificial or corporate entity.
 naturalization:noun:0	naturalization	naturalization	noun	0	law_government.civics	The legal process by which a foreign national becomes a citizen of a country.
 nauru:noun:0	nauru	nauru	noun	0	law_government.polities	Nauru is a sovereign island country in Micronesia, located in the central Pacific Ocean.
+navajo:noun:1	navajo	navajo	noun	1	language.linguistics	The Navajo language, an Athabaskan language spoken by the Navajo people in the southwestern United States.
 navajo_nation:noun:0	navajo_nation	Navajo Nation	noun	0	law_government.polities	Navajo Nation is a large Native American reservation and sovereign tribal homeland in Arizona, New Mexico, and Utah.
+navarra:noun:1	navarra	navarra	noun	1	law_government.government_structure	An autonomous community and province in northern Spain, officially known as the Chartered Community of Navarre, with Pamplona as its capital.
 navy:noun:1	navy	navy	noun	1	law_government.government_structure	The maritime military branch of a country.
 nay:noun:0	nay	nay	noun	0	law_government.elections_politics	A negative vote or expression of disapproval cast in a formal decision-making process.
 nda:noun:0	nda	nda	noun	0	law_government.civil_law	A legal contract in which one or more parties agree not to disclose specified confidential information; abbreviation of non-disclosure agreement.
@@ -2097,8 +2120,10 @@ painting:noun:1	painting	painting	noun	1	arts.visual_art	The act or process of a
 pais:noun:0	pais	pais	noun	0	law_government.government_structure	Territorio con fronteras definidas, población permanente y un gobierno propio reconocido, que constituye una entidad política y geográfica relativamente unificada.
 pakhtunkhwa:noun:0	pakhtunkhwa	pakhtunkhwa	noun	0	law_government.government_structure	A northwestern province of Pakistan, officially named Khyber Pakhtunkhwa, bordering Afghanistan and characterized by a predominantly Pashtun (Pakhtun) population, mountainous terrain, and a history as a strategic frontier zone.
 pakistan:noun:0	pakistan	pakistan	noun	0	law_government.polities	A sovereign state in South Asia, officially the Islamic Republic of Pakistan, bordered by India, Afghanistan, Iran, and China.
+palestine:noun:1	palestine	palestine	noun	1	law_government.international_law	The political entity known as the State of Palestine, proclaimed in 1988 and recognized by numerous states and international bodies, comprising the Palestinian territories.
 panama:noun:0	panama	panama	noun	0	law_government.polities	A sovereign state in Central America with coastlines on both the Caribbean Sea and the Pacific Ocean.
 panels:noun:1	panels	panels	noun	1	law_government.courts_justice	A group of experts assembled to deliberate or judge a matter, typically for evaluation, decision making, or advisory purposes.
+panjabi:noun:0	panjabi	panjabi	noun	0	language.linguistics	An Indo-Aryan language spoken in the Punjab region of India and Pakistan.
 paper:noun:2	paper	paper	noun	2	language.reading_comprehension	A newspaper is a printed publication containing news, articles, and advertisements.
 papers:noun:1	papers	papers	noun	1	law_government.civil_law	Official or legal documents that establish identity, ownership, status, or authorization, especially in bureaucratic, legal, or administrative contexts.
 papua:noun:1	papua	papua	noun	1	law_government.government_structure	An Indonesian province named Papua, a political and administrative unit on the western part of the island of New Guinea; capital Jayapura; one of Indonesia's 34 provinces.
@@ -2114,6 +2139,7 @@ pardon:noun:0	pardon	pardon	noun	0	law_government.criminal_law	Official forgiven
 parent:noun:1	parent	parent	noun	1	business.management	An organization that owns one or more subsidiary companies.
 parking:noun:2	parking	parking	noun	2	business.real_estate	The provision and administration of facilities where vehicles may be left, including management, enforcement, and fee collection.
 parking_ticket:noun:0	parking_ticket	parking ticket	noun	0	law_government.civil_law	An official citation or notice issued to a vehicle owner or driver for violating parking regulations, typically requiring payment of a fine or other penalty.
+parkinson:noun:1	parkinson	parkinson	noun	1	health.disease_illness	A progressive neurodegenerative disorder characterized by motor and non-motor symptoms, most notably tremor, bradykinesia, rigidity, and postural instability.
 parliament:noun:0	parliament	parliament	noun	0	law_government.government_structure	The formal legislative body of a country or region made up of elected representatives who debate and pass laws.
 parliament:noun:2	parliament	parliament	noun	2	law_government.government_structure	The building or chamber where a legislative assembly meets to conduct its business.
 parole:noun:0	parole	parole	noun	0	law_government.criminal_law	The conditional release of a prisoner before completion of the sentence, subject to supervision and specified conditions.
@@ -2160,6 +2186,7 @@ pension:noun:0	pension	pension	noun	0	business.finance	A regular payment, typica
 pension:noun:1	pension	pension	noun	1	business.finance	A fund or account used to finance regular retirement payments; the assets designated to support benefits paid after employment.
 pensions:noun:2	pensions	pensions	noun	2	business.finance	System or entitlement scheme governing the provision of pension benefits.
 people:noun:2	people	people	noun	2	law_government.civics	A formal term for the public or citizenry in civic discourse.
+peoples:noun:1	peoples	peoples	noun	1	law_government.international_law	The plural noun used in international law and political discourse to denote a group with a collective political identity that can exercise self-determination rights; refers to a distinct population within or across states.
 perak:noun:0	perak	perak	noun	0	law_government.government_structure	A state on the west coast of Peninsular Malaysia, known for its historical tin-mining industry, diverse population, and capital city of Ipoh.
 perak:noun:2	perak	perak	noun	2	law_government.government_structure	In discussions of Malaysian federalism, the government, institutions, or ruling authority of the state of Perak.
 performance_indicator:noun:0	performance_indicator	performance indicator	noun	0	business.management	A measurable variable or metric used to assess, quantitatively or qualitatively, the extent to which an activity, process, project, organization, or system is achieving its stated objectives.
@@ -2559,6 +2586,7 @@ robbery:noun:0	robbery	robbery	noun	0	law_government.criminal_law	The act of for
 roi:noun:0	roi	roi	noun	0	business.finance	An abbreviation for return on investment, a quantitative measure of the gain or loss generated on an investment relative to the amount of money invested, typically expressed as a percentage.
 rollover:noun:1	rollover	rollover	noun	1	business.finance	The process of reinvesting funds or extending a financial term by transferring an asset to another instrument or plan, thereby deferring tax consequences or interest payments.
 romagna:noun:0	romagna	romagna	noun	0	law_government.polities	A historical and geographical region of northern Italy, roughly corresponding to the southeastern part of the modern Emilia-Romagna administrative region, with Ravenna as its principal city.
+romanian:noun:1	romanian	romanian	noun	1	language.linguistics	the language spoken in Romania by Romanians; a Romance language
 round:noun:1	round	round	noun	1	law_government.criminal_law	A single cartridge or projectile to be fired from a firearm.
 round:noun:2	round	round	noun	2	business.management	A phase or sequence in a business, sporting, or administrative process; one iteration in a series.
 royalty:noun:0	royalty	royalty	noun	0	business.finance	A payment to the owner of a work or resource for the use or exploitation of that asset, typically calculated as a percentage of revenue or on a per-unit basis.
@@ -2860,6 +2888,7 @@ tanning:noun:3	tanning	tanning	noun	3	business.manufacturing	The craft or indust
 tanzania:noun:0	tanzania	tanzania	noun	0	law_government.polities	A sovereign state in East Africa, officially named the United Republic of Tanzania, bordered by the Indian Ocean to the southeast and by Kenya, Uganda, Rwanda, Burundi, the Democratic Republic of the Congo, Zambia, Malawi, and Mozambique.
 tariff:noun:0	tariff	tariff	noun	0	law_government.public_policy	Tax levied by a government on goods imported into the country, often imposed to raise revenue or protect domestic producers.
 tasmania:noun:0	tasmania	tasmania	noun	0	law_government.government_structure	The Australian state of Tasmania, a federated political entity occupying the island of Tasmania and surrounding islands located south of the Australian mainland.
+tatarstan:noun:0	tatarstan	tatarstan	noun	0	law_government.government_structure	A republic within the Russian Federation, located in the Volga Federal District, with its capital at Kazan, known officially as the Republic of Tatarstan.
 tax:noun:0	tax	tax	noun	0	law_government.public_policy	A compulsory monetary levy imposed by a government on individuals or organizations to fund public services and general government expenditures.
 tax_administration:noun:0	tax_administration	tax administration	noun	0	law_government.public_policy	The government agency or department that collects taxes from individuals and businesses.
 tax_administration:noun:1	tax_administration	tax administration	noun	1	law_government.public_policy	The activity of collecting taxes and managing payments owed to the government.
@@ -3088,6 +3117,7 @@ wallis_and_futuna:noun:0	wallis_and_futuna	Wallis and Futuna	noun	0	law_governme
 walloon:noun:1	walloon	walloon	noun	1	language.linguistics	The Walloon language, a Romance language spoken in Wallonia by the Walloon people.
 war:noun:1	war	war	noun	1	law_government.international_law	A sustained campaign or organized effort against an adversary, problem, or threat, often used figuratively for a nonphysical struggle.
 warden:noun:0	warden	warden	noun	0	law_government.criminal_law	An official in charge of a prison or jail, responsible for the supervision, security, and custody of inmates.
+warehouse:noun:0	warehouse	warehouse	noun	0	business.manufacturing	A large building used for storing and distributing goods, typically equipped with loading docks, racking systems, and handling infrastructure to support inventory management and logistics.
 warrant:noun:0	warrant	warrant	noun	0	law_government.courts_justice	A legal document, usually issued by a court or competent authority, that authorizes law enforcement or another official body to perform a specific act, such as arrest, search, or seizure.
 warrant:noun:2	warrant	warrant	noun	2	business.finance	A certificate or contractual instrument granting the holder the right to buy or sell a security at a specified price before a specified date.
 warranties:noun:0	warranties	warranties	noun	0	law_government.civil_law	A warranty is a contractual promise by a seller or manufacturer that a product will meet stated quality or performance standards, and that defects will be repaired or replaced within a specified period.

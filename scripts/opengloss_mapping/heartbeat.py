@@ -3,11 +3,9 @@ from __future__ import annotations
 
 from collections import Counter
 from copy import deepcopy
-import csv
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 import hashlib
-import io
 import json
 import math
 from pathlib import Path, PurePosixPath
@@ -20,7 +18,8 @@ from typing import Callable
 from urllib.parse import quote
 from urllib.request import urlopen
 
-import yaml
+from .senses import sha256_file
+from .validate import read_mapping_set
 
 API = 'https://huggingface.co/api/datasets'
 SERIES_API = API + '?author=mjbommar&search=opengloss-v&limit=100'
@@ -68,14 +67,6 @@ def download(url: str, dest: Path) -> None:
         shutil.copyfileobj(response, output)
 
 
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open('rb') as stream:
-        for block in iter(lambda: stream.read(1024 * 1024), b''):
-            digest.update(block)
-    return digest.hexdigest()
-
-
 def check(upstream: dict, folio_path: Path, current_tsv_header: dict,
           fetch_json: Callable) -> Check:
     """Inspect both upstreams without changing local files."""
@@ -93,19 +84,11 @@ def check(upstream: dict, folio_path: Path, current_tsv_header: dict,
                          if item['rfilename'].endswith('.parquet')))
     old_hash = re.search(r'sha256:([a-fA-F0-9]{64})', str(current_tsv_header.get('subject_source_version', '')))
     old_hash = old_hash.group(1).lower() if old_hash else None
-    folio_hash = sha256(Path(folio_path))
+    folio_hash = sha256_file(Path(folio_path))
     return Check(dataset != pinned['dataset'] or revision != pinned['revision'],
                  folio_hash != old_hash, dataset, revision,
                  '.'.join(map(str, target_version)), files, target_version[0] > version[0],
                  old_hash, folio_hash)
-
-
-def read_tsv(path: Path) -> tuple[dict, list[dict]]:
-    with path.open(encoding='utf-8') as stream:
-        lines = stream.readlines()
-    header = yaml.safe_load('\n'.join(line[1:] for line in lines if line.startswith('#'))) or {}
-    rows = list(csv.DictReader(io.StringIO(''.join(line for line in lines if not line.startswith('#'))), delimiter='\t'))
-    return header, rows
 
 
 def fingerprint(path: Path) -> str:
@@ -144,7 +127,7 @@ def run(repo_root: Path | str = '.', *, fetch_json: Callable = fetch_json,
     pins_path = base / 'upstream.json'
     tsv_path = base / 'folio-opengloss.sssom.tsv'
     old = json.loads(pins_path.read_text(encoding='utf-8'))
-    header, before_rows = read_tsv(tsv_path)
+    header, before_rows = read_mapping_set(tsv_path)
     folio = root / old.get('folio', {}).get('path', 'FOLIO.owl')
     state = check(old, folio, header, fetch_json)
     if dry_run:
@@ -196,7 +179,7 @@ def run(repo_root: Path | str = '.', *, fetch_json: Callable = fetch_json,
                 url = (f'https://huggingface.co/datasets/{state.dataset}/resolve/'
                        f'{quote(state.revision, safe="")}/{quote(str(relative), safe="/")}')
                 download(url, dest)
-            digest = sha256(dest)
+            digest = sha256_file(dest)
             if not state.opengloss_changed and digest != item['sha256'].removeprefix('sha256:'):
                 raise ValueError(f'pinned parquet hash mismatch: {relative}')
             item['sha256'] = digest
@@ -218,7 +201,7 @@ def run(repo_root: Path | str = '.', *, fetch_json: Callable = fetch_json,
             reasons.append('build failed')
             exit_code = 1
         else:
-            _, after_rows = read_tsv(staged_tsv)
+            _, after_rows = read_mapping_set(staged_tsv)
             validation = invoke('validate', staged_tsv, '--folio', folio)
             if validation.returncode:
                 reasons.append('validation failed')
@@ -231,15 +214,17 @@ def run(repo_root: Path | str = '.', *, fetch_json: Callable = fetch_json,
             try:
                 if score.returncode:
                     raise ValueError('score CLI failed')
-                score_after = json.loads(score.stdout)
-                if not isinstance(score_after, dict):
+                parsed_score = json.loads(score.stdout)
+                if not isinstance(parsed_score, dict):
                     raise ValueError('score must be an object')
+                score_after = parsed_score
             except (ValueError, json.JSONDecodeError):
                 reasons.append('score failed')
                 exit_code = 1
-            for path in (staged_tsv, senses, gaps, ttl):
-                if path.exists():
-                    shutil.copyfile(path, base / path.name)
+            if exit_code == 0:
+                for path in (staged_tsv, senses, gaps, ttl):
+                    if path.exists():
+                        shutil.copyfile(path, base / path.name)
     score_before = old.get('score', {})
     old_precision = score_before.get('precision')
     new_precision = (score_after or {}).get('precision')
@@ -267,7 +252,8 @@ def run(repo_root: Path | str = '.', *, fetch_json: Callable = fetch_json,
         'removed': {'count': len(removed), 'sample': removed[:50]},
     }
     receipt_path = base / 'receipts' / f'{date}-{new["set_version"]}.json'
-    write_json(pins_path, new)
+    if exit_code == 0:
+        write_json(pins_path, new)
     write_json(receipt_path, receipt)
     if output_decision is not None:
         output_decision = Path(output_decision)

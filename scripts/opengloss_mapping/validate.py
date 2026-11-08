@@ -21,6 +21,7 @@ CURIE_MAP = {
 }
 COLUMNS = "subject_id subject_label predicate_id object_id object_label mapping_justification confidence subject_match_field object_match_field match_string comment".split()
 REQUIRED_KEYS = "curie_map mapping_set_id mapping_set_version mapping_set_title mapping_set_description license mapping_date mapping_tool mapping_tool_version subject_source subject_source_version object_source object_source_version".split()
+MAPPING_SET_ID = "https://folio.openlegalstandard.org/mappings/opengloss"
 PREDICATES = {f"skos:{name}Match" for name in ("exact", "close", "broad", "narrow", "related")}
 CURIE_FIELDS = "subject_id predicate_id object_id mapping_justification subject_match_field object_match_field".split()
 FORBIDDEN = re.compile(r"owl:sameAs|owl:equivalentClass|owl#sameAs|owl#equivalentClass|openGlossID", re.IGNORECASE)
@@ -88,6 +89,8 @@ def validate(header: dict, rows: list[dict], folio_path: str | Path | None = Non
         value = header.get(key)
         if not value or (isinstance(value, str) and not value.strip()):
             add("header-missing-key", f"missing or empty header key: {key}")
+    if header.get("mapping_set_id") != MAPPING_SET_ID:
+        add("mapping-set-id", f"mapping_set_id must equal {MAPPING_SET_ID}")
     curies = header.get("curie_map")
     if not isinstance(curies, dict):
         curies = {}

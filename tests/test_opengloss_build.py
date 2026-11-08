@@ -315,3 +315,74 @@ def test_gaps_use_only_whole_labels_and_preflabels():
                          headword_senses_domains='property:noun:0=science.materials_science')]
     words_only = FolioClass(cls.iri, (('Unknown Property', 'rdfs:label'), ('Attribute', 'skos:altLabel')))
     assert match([words_only], senses) == ([], [])
+
+
+def test_punctuated_candidates_and_word_links():
+    from opengloss_mapping.folio_forms import load_folio
+    from opengloss_mapping.matcher import candidate_headwords, match
+    from opengloss_mapping.senses import load_json
+    cls = next(c for c in load_folio(FIXTURES / 'punctuation.owl') if c.subject_id == 'FOLIO:retailers')
+    candidates = candidate_headwords([cls])
+    assert {'beer', 'wine', 'and', 'liquor', 'retailers', 'beer, wine, and liquor retailers'} <= candidates
+    assert 'beer,' not in candidates and 'wine,' not in candidates
+    senses = load_json(FIXTURES / 'punctuation-senses.json', candidates)
+    rows, gaps = match([cls], senses)
+    assert {r['object_label']: r['predicate_id'] for r in rows} == {
+        'beer': 'skos:relatedMatch', 'wine': 'skos:relatedMatch',
+        'liquor': 'skos:relatedMatch', 'retailers': 'skos:broadMatch',
+    }
+    assert gaps == []
+
+
+@pytest.mark.parametrize('label', ['Agreements/Contracts', 'Agreements /Contracts', 'Agreements/ Contracts', 'Agreements / Contracts'])
+def test_slash_forms_and_phrase_links(label):
+    from dataclasses import replace
+    from opengloss_mapping.folio_forms import load_folio, surface_forms
+    from opengloss_mapping.matcher import candidate_headwords, match
+    from opengloss_mapping.senses import load_json
+    fixture = next(c for c in load_folio(FIXTURES / 'punctuation.owl') if c.subject_id == 'FOLIO:slash')
+    cls = replace(fixture, labels=((label, 'rdfs:label'),))
+    assert {form for form, _ in surface_forms(cls)} == {'agreements', 'contracts', 'agreements contracts'}
+    senses = load_json(FIXTURES / 'punctuation-senses.json', candidate_headwords([cls]))
+    rows, _ = match([cls], senses)
+    assert {r['object_label']: r['predicate_id'] for r in rows} == {
+        'agreements': 'skos:exactMatch', 'contracts': 'skos:exactMatch'}
+
+
+def test_phrase_trims_boundary_punctuation():
+    from opengloss_mapping.folio_forms import load_folio
+    from opengloss_mapping.matcher import candidate_headwords, match
+    from opengloss_mapping.senses import load_json
+    cls = next(c for c in load_folio(FIXTURES / 'punctuation.owl') if c.subject_id == 'FOLIO:quoted')
+    candidates = candidate_headwords([cls])
+    assert 'contract' in candidates
+    senses = load_json(FIXTURES / 'punctuation-senses.json', candidates)
+    rows, _ = match([cls], senses)
+    assert len(rows) == 1 and rows[0]['predicate_id'] == 'skos:exactMatch'
+    assert rows[0]['match_string'] == 'contract'
+
+
+@pytest.mark.parametrize('with_source', [True, False])
+def test_parquet_nouns_sources_and_normalization(tmp_path, with_source):
+    pa = pytest.importorskip('pyarrow')
+    import pyarrow.parquet as pq
+    from opengloss_mapping.senses import load_parquet, sha256_file
+    base = dict(lexeme_id='tenant:noun', headword='tenant', pos='noun', sense_index=0,
+                domain='law_government', domain_root='law_government', gloss='Tenant')
+    rows = [
+        dict(base, sense_id='tenant:noun:0', source='opengloss'),
+        dict(base, sense_id='tenant:verb:0', pos='verb', source='opengloss'),
+        dict(base, sense_id='tenant:noun:1', source='wordnet-3.0'),
+        dict(base, sense_id='tenant:noun:2', source=None),
+        dict(base, sense_id='tenant:noun:3', headword='ＴＥＮＡＮＴ', source='opengloss'),
+        dict(base, sense_id='other:noun:0', headword='other', source='opengloss'),
+    ]
+    if not with_source:
+        rows = [{k: v for k, v in row.items() if k != 'source'} for row in rows]
+    path = tmp_path / 'tiny.parquet'
+    pq.write_table(pa.Table.from_pylist(rows), path)
+    pins = {'opengloss': {'files': [{'path': 'data/tiny.parquet', 'sha256': sha256_file(path)}]}}
+    expected = ['tenant:noun:0', 'tenant:noun:2', 'tenant:noun:3']
+    if not with_source:
+        expected.insert(1, 'tenant:noun:1')
+    assert [s.sense_id for s in load_parquet(tmp_path, pins, {'tenant'})] == expected

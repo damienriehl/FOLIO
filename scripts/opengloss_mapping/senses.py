@@ -10,6 +10,17 @@ from typing import Iterable
 from .folio_forms import normalize
 
 COLUMNS = ('sense_id', 'lexeme_id', 'headword', 'pos', 'sense_index', 'domain', 'domain_root', 'gloss')
+OGS_PREFIX = 'OGS:'
+
+
+def sense_curie(sense_id: str) -> str:
+    return OGS_PREFIX + sense_id
+
+
+def raw_sense_id(curie: str) -> str:
+    if not curie.startswith(OGS_PREFIX):
+        raise ValueError(f'Expected an {OGS_PREFIX} sense CURIE: {curie!r}')
+    return curie.removeprefix(OGS_PREFIX)
 
 
 @dataclass(frozen=True)

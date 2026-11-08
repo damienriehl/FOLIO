@@ -19,6 +19,7 @@ concurrency:
 jobs:
   heartbeat:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -32,8 +33,19 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: pip install -r scripts/requirements-authoring.txt pytest
+      - name: Check for an open heartbeat pull request
+        id: pending
+        run: |
+          set -euo pipefail
+          count=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --json headRefName --jq '[.[] | select(.headRefName | startswith("heartbeat/opengloss-"))] | length')
+          if [ "$count" -gt 0 ]; then
+            echo '::notice::An OpenGloss heartbeat pull request is already open; skipping regeneration.'
+            echo 'skip=true' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
       - name: Regenerate mappings and receipt
         id: heartbeat
+        if: steps.pending.outputs.skip != 'true'
         continue-on-error: true
         run: python scripts/opengloss_heartbeat.py --repo-root . --output-decision "$RUNNER_TEMP/opengloss-decision"
       - name: Detect changed mapping files
@@ -43,10 +55,12 @@ jobs:
             echo 'changed=true' >> "$GITHUB_OUTPUT"
           fi
       - name: Run tests
+        id: tests
+        continue-on-error: true
         if: steps.changes.outputs.changed == 'true'
         run: python -m pytest tests -q
       - name: Publish heartbeat pull request
-        if: steps.changes.outputs.changed == 'true'
+        if: always() && steps.changes.outputs.changed == 'true'
         run: |
           set -euo pipefail
           decision=$(cat "$RUNNER_TEMP/opengloss-decision")
@@ -54,16 +68,19 @@ jobs:
             auto|needs-damien) ;;
             *) echo 'Invalid heartbeat decision'; exit 1 ;;
           esac
+          if [ "${{ steps.tests.outcome }}" = failure ]; then
+            decision=needs-damien
+          fi
           receipt=$(git ls-files --others --exclude-standard mappings/opengloss/receipts | sort | tail -1)
           test -n "$receipt"
-          branch="heartbeat/opengloss-$(date -u +%F)"
+          branch="heartbeat/opengloss-$(date -u +%F)-${GITHUB_RUN_ID}"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git switch -c "$branch"
           git add mappings/opengloss
           git commit -m "Update OpenGloss mappings; receipt $receipt"
           git push --set-upstream origin "$branch"
-          export RECEIPT="$receipt" DECISION="$decision"
+          export RECEIPT="$receipt" DECISION="$decision" TEST_OUTCOME="${{ steps.tests.outcome }}"
           python - <<'PY'
           import json
           import os
@@ -71,6 +88,7 @@ jobs:
           receipt = json.loads(Path(os.environ['RECEIPT']).read_text())
           body = '\n'.join([
               f"Decision: **{os.environ['DECISION']}**",
+              'Tests failed; manual review required.' if os.environ['TEST_OUTCOME'] == 'failure' else 'Tests passed.',
               f"Receipt: `{os.environ['RECEIPT']}`",
               '',
               '```json',
@@ -80,13 +98,23 @@ jobs:
           Path(os.environ['RUNNER_TEMP'], 'opengloss-pr.md').write_text(body + '\n')
           PY
           label="heartbeat:$decision"
-          gh label create "$label" --force --description "OpenGloss heartbeat decision: $decision"
-          pr=$(gh pr create --base main --head "$branch" --title "OpenGloss mapping heartbeat $(date -u +%F)" --body-file "$RUNNER_TEMP/opengloss-pr.md" --label "$label")
+          gh label create --repo "$GITHUB_REPOSITORY" "$label" --force --description "OpenGloss heartbeat decision: $decision"
+          pr=$(gh pr create --repo "$GITHUB_REPOSITORY" --base main --head "$branch" --title "OpenGloss mapping heartbeat $(date -u +%F)" --body-file "$RUNNER_TEMP/opengloss-pr.md" --label "$label")
           if [ "$decision" = auto ]; then
-            gh pr merge --auto --squash "$pr" || echo 'Auto-merge request unavailable; PR remains open for review.'
+            # GITHUB_TOKEN PRs do not trigger Tests; this job's pytest run is the gate.
+            if ! gh pr merge --repo "$GITHUB_REPOSITORY" --squash --delete-branch "$pr"; then
+              echo '::error::OpenGloss heartbeat merge failed; the pull request remains open.'
+              exit 1
+            fi
           fi
+      - name: Upload mapping artifacts and receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opengloss-mapping-heartbeat-${{ github.run_id }}
+          path: mappings/opengloss
       - name: Report heartbeat failure
-        if: always() && steps.heartbeat.outcome == 'failure'
+        if: always() && (steps.heartbeat.outcome == 'failure' || steps.tests.outcome == 'failure')
         run: |
-          echo 'Heartbeat failed. Any available receipt was retained in the pull request.'
+          echo '::error::Heartbeat regeneration or tests failed. Check the step logs, uploaded artifacts, and any created pull request for evidence.'
           exit 1

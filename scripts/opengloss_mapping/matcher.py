@@ -11,8 +11,8 @@ import re
 import unicodedata
 from typing import Iterable
 
-from .folio_forms import FolioClass, surface_forms
-from .senses import Sense
+from .folio_forms import FolioClass, normalize, surface_forms
+from .senses import Sense, sense_curie
 
 METHOD_VERSION = 'opengloss-lexical/0.1'
 STOP_WORDS = frozenset('a an the and or but of for in on to under with without by at from as is are was were be been being that this these those it its which who whom between two more any into through'.split())
@@ -22,10 +22,9 @@ HEAD_PREPOSITIONS = frozenset(('of', 'for', 'in', 'on', 'to', 'under'))
 MIN_LABEL_WORDS, MAX_LABEL_WORDS = 2, 6
 LEGAL_PRIOR, BUSINESS_PRIOR, OTHER_PRIOR = 1.0, 0.7, 0.3
 PRIOR_WEIGHT, OVERLAP_WEIGHT = 0.5, 0.5
-# Business scores are 0.35 + 0.5 * overlap; real glosses rarely cover 20% of
-# a FOLIO context (Landlord scored 0.406), so the old floor dropped most property
-# and commercial senses. Sibling phrase senses (breach of contract senses 1–3)
-# also kept the main sense within 0.10 of its runner-up.
+# The phrase floor admits business senses with modest gloss coverage (Landlord
+# scores 0.406). The exact lead allows closely ranked sibling phrase senses,
+# including the subtopics listed under breach of contract.
 EXACT_THRESHOLD, EXACT_LEAD = 0.60, 0.05
 OTHER_PHRASE_THRESHOLD, PHRASE_FLOOR = 0.55, 0.40
 WORD_THRESHOLD, WORD_CONFIDENCE_FACTOR = 0.45, 0.8
@@ -66,11 +65,11 @@ def sense_score(context: set[str], sense: Sense) -> float:
 
 
 def candidate_headwords(classes: Iterable[FolioClass]) -> set[str]:
-    return {word for cls in classes for form, _ in surface_forms(cls) for word in (form, *form.split())}
+    return {word for cls in classes for form, _ in surface_forms(cls)
+            for word in (form, *re.findall(r'[^\W_]+', form))}
 
 
 def match(classes: Iterable[FolioClass], senses: Iterable[Sense]) -> tuple[list[dict], list[dict]]:
-    from .folio_forms import normalize
     index = defaultdict(list)
     for sense in senses:
         index[normalize(sense.headword)].append(sense)
@@ -94,7 +93,7 @@ def match(classes: Iterable[FolioClass], senses: Iterable[Sense]) -> tuple[list[
             confidence = round(factor * score, CONFIDENCE_DECIMALS)
             row = dict(
                 subject_id=cls.subject_id, subject_label=cls.label,
-                predicate_id=predicate, object_id='OGS:' + sense.sense_id,
+                predicate_id=predicate, object_id=sense_curie(sense.sense_id),
                 object_label=sense.headword, mapping_justification='semapv:LexicalMatching',
                 confidence=f'{confidence:.3f}', subject_match_field=field,
                 object_match_field='rdfs:label', match_string=form,
@@ -119,7 +118,7 @@ def match(classes: Iterable[FolioClass], senses: Iterable[Sense]) -> tuple[list[
                     for other_score, other in phrase[1:]:
                         if other_score >= OTHER_PHRASE_THRESHOLD:
                             emit(other, other_score, 'skos:closeMatch', form, field, rule)
-            words = form.split()
+            words = re.findall(r'[^\W_]+', form)
             if MIN_LABEL_WORDS <= len(words) <= MAX_LABEL_WORDS:
                 before = next((i for i, w in enumerate(words) if w in HEAD_PREPOSITIONS), None)
                 head = words[before - 1] if before is not None and before > 0 else words[-1]

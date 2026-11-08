@@ -8,7 +8,7 @@ from typing import Iterable
 
 import yaml
 
-from .senses import Sense
+from .senses import Sense, raw_sense_id
 
 CURIE_MAP = {
     'FOLIO': 'https://folio.openlegalstandard.org/',
@@ -36,10 +36,14 @@ def _write(path: str | Path, columns: tuple[str, ...], rows: Iterable[dict], hea
         if header is not None:
             for line in yaml.safe_dump(header, sort_keys=False, allow_unicode=True).splitlines():
                 stream.write('# ' + line + '\n')
-        writer = csv.DictWriter(stream, fieldnames=columns, delimiter='\t', lineterminator='\n')
+        writer = csv.DictWriter(stream, fieldnames=columns, delimiter='\t', lineterminator='\n',
+                                quoting=csv.QUOTE_NONE, quotechar=None, escapechar=None)
         writer.writeheader()
         for row in rows:
-            writer.writerow({key: clean(row[key]) for key in columns})
+            cleaned = {key: clean(row[key]) for key in columns}
+            if any(any(char in value for char in '\t\r\n') for value in cleaned.values()):
+                raise ValueError('TSV delimiter or control character survived cleaning')
+            writer.writerow(cleaned)
 
 
 def write_sssom(path: str | Path, header: dict, rows: list[dict]) -> None:
@@ -47,7 +51,7 @@ def write_sssom(path: str | Path, header: dict, rows: list[dict]) -> None:
 
 
 def write_senses(path: str | Path, senses: Iterable[Sense], rows: list[dict]) -> None:
-    used = {r['object_id'][4:] for r in rows}
+    used = {raw_sense_id(r['object_id']) for r in rows}
     unique = {s.sense_id: s for s in senses if s.sense_id in used}
     _write(path, SENSE_COLUMNS, (asdict(unique[k]) for k in sorted(unique)))
 

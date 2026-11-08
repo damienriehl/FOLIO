@@ -48,8 +48,8 @@ def normalize(text: str) -> str:
 def surface_forms(cls: FolioClass) -> tuple[tuple[str, str], ...]:
     forms = set()
     for label, field in cls.labels:
-        for value in [label] + (label.split(' / ') if ' / ' in label else []):
-            form = normalize(value)
+        for value in [label, *re.split(r'\s*/\s*', label)]:
+            form = re.sub(r'^\W+|\W+$', '', normalize(value))
             if form:
                 forms.add((form, field))
     return tuple(sorted(forms))

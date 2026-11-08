@@ -54,6 +54,10 @@ fired (`label-phrase`, `altlabel-phrase`, `head-word`, `modifier-word`) and the 
 Set-wide values (license, date, tool and method version, both source versions) live in the
 YAML header, per SSSOM.
 
+**TSV dialect.** Every TSV here is tab-separated with no quoting: no field contains a tab or a
+newline, and a label may contain a literal `"`. Read it with
+`csv.DictReader(lines, delimiter="\t", quoting=csv.QUOTE_NONE)` on the lines after the `#` header.
+
 ## Sense identifiers are provisional
 
 OpenGloss publishes sense ids such as `breach:noun:1`, which are not IRIs. Until OpenGloss
@@ -68,6 +72,26 @@ OGL: tag:folio.openlegalstandard.org,2026:opengloss/lexeme/   (lexemes)
 **Consumers must read the expansion from the header's `curie_map`, not hard-code it.** When
 OpenGloss publishes a namespace, the expansion changes and the prefix names `OGS` and `OGL`
 stay. To recover a raw OpenGloss id, strip the `OGS:` prefix from `object_id`.
+
+## How good the links are
+
+`eval/gold.tsv` holds 162 judged pairs: 25 emitted links per predicate, plus every candidate sense
+of 30 unlinked classes. An AI agent judged them from the glosses and FOLIO definitions alone; no
+human has audited them. Against set version 0.1.0:
+
+| Predicate | Judged correct | Judge chose the same predicate |
+|---|---:|---:|
+| `skos:exactMatch` | 24 of 25 | 14 of 24 |
+| `skos:closeMatch` | 20 of 25 | 2 of 20 |
+| `skos:broadMatch` | 15 of 24 | 12 of 15 |
+| `skos:relatedMatch` | 17 of 23 | 16 of 17 |
+
+Overall precision on the judged links is 0.78, and the set emits 73% of the pairs the judge called
+correct. (The sample was drawn before a tokenization fix, so 3 sampled links no longer appear.)
+Each regeneration rescores against this file, and `upstream.json` keeps the latest score. Two readings follow. An `exactMatch` is a strong anchor. A `closeMatch` usually points at a
+sound sense, but its predicate is a placeholder: the judge most often wanted `broadMatch`,
+`narrowMatch`, or `exactMatch` instead, which a lexical method cannot tell apart. Treat it as
+"related sense, kind of relation unknown".
 
 ## How the links are made (method `opengloss-lexical/0.1`)
 
@@ -109,13 +133,14 @@ The builder checks every parquet file against the sha256 in `upstream.json` befo
 changed, it regenerates the set, validates and scores it, writes a receipt, and opens a pull
 request.
 
-- **Upgrades on its own** (label `heartbeat:auto`, auto-merge requested) when the checks pass.
+- **Upgrades on its own** (label `heartbeat:auto`, merged by the workflow) when the checks pass.
 - **Waits for a maintainer** (label `heartbeat:needs-damien`) on an OpenGloss schema change, a
   new major OpenGloss series, a failed validation, a precision drop above 0.02, or a drop of more
   than 10% in links.
 
 A pull request opened with the workflow token does not start other workflows, so the heartbeat
-runs the test suite itself before it opens one.
+runs the test suite itself and treats that run as the merge gate. It keeps one heartbeat pull request
+open at a time, and a failed run changes no mapping file: its pull request carries only the receipt.
 
 ## Versioning
 
