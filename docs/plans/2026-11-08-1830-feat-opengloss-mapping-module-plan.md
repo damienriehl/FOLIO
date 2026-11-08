@@ -1,7 +1,7 @@
 ---
 title: "feat: FOLIO-to-OpenGloss mapping module (R8)"
 type: feat
-status: active
+status: completed
 date: 2026-11-08
 origin: lexplicit docs/plans/2026-11-08-1017-feat-opengloss-folio-anchoring-plan.md (R8, R20), branch wip/opengloss-anchoring
 ---
