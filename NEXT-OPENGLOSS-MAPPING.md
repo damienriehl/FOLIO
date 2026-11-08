@@ -1,6 +1,6 @@
 # FOLIO-to-OpenGloss Mapping (R8) — Next Actions
 
-STATE: OpenGloss map built; QA Release B awaits keys
+STATE: OpenGloss map 0-1-0 live; QA Release B awaits keys
 
 - [ ] [P2] Damien: send Mike Bommarito the drafted note asking OpenGloss to publish a sense and lexeme namespace, say whether sense indices stay stable across releases, and add a LICENSE file to opengloss-rs (the draft sits in this work's private handoff; it goes out in Damien's voice).
 - [ ] [P2] Decide whether to offer the mapping module upstream to alea-institute/FOLIO, which is a maintainer-relationship call.

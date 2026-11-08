@@ -1,6 +1,6 @@
 # FOLIO-to-OpenGloss Mapping (R8) — Status
 
-STATE: OpenGloss map built; QA Release B awaits keys
+STATE: OpenGloss map 0-1-0 live; QA Release B awaits keys
 
 Last updated: 2026-11-08
 
@@ -28,7 +28,8 @@ The mapping set lives in `mappings/opengloss/`, beside `FOLIO.owl`, which this w
   0.73. See `mappings/opengloss/README.md`.
 - **Tests:** the suite runs offline without pyarrow, as CI does.
 - **Review:** the code review returned "Ready with fixes" (one P1, eight P2). Its fixes were applied
-  before merge.
+  before merge in PR #16 (merge commit `4591b7e`).
+- **Consumer:** folio-resolve pinned `4591b7e` and parsed the real file cleanly.
 
 ## Decisions (best practice, recorded)
 
@@ -44,6 +45,9 @@ The mapping set lives in `mappings/opengloss/`, beside `FOLIO.owl`, which this w
 
 - **Lexical method:** a `closeMatch` usually points at a sound sense, but its predicate is often not
   the best fit.
-- **Unproven heartbeat:** the workflow has not run live yet. It runs only from `main`.
+- **Heartbeat merge leg unexercised:** on 2026-11-08 a `workflow_dispatch` canary on `main` (run
+  42516764717) queried Hugging Face, compared the `FOLIO.owl` hash, and reported "up to date". The
+  pull-request-and-merge leg runs only when an upstream moves, so its first live run will be the
+  first real upgrade.
 - **Sameas defect:** the `owl:sameAs` restriction defect in `FOLIO.owl` is recorded in
   `docs/residual-review-findings/owl-sameas-restrictions.md`, not fixed here.
