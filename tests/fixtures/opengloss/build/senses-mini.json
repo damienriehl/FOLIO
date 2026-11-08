@@ -1,0 +1,162 @@
+[
+  {
+    "sense_id": "breach:noun:1",
+    "lexeme_id": "breach:noun",
+    "headword": "breach",
+    "pos": "noun",
+    "sense_index": 1,
+    "domain": "law_government.civil_law",
+    "domain_root": "law_government",
+    "gloss": "Failure to fulfill a contractual obligation or covenant."
+  },
+  {
+    "sense_id": "breach:noun:0",
+    "lexeme_id": "breach:noun",
+    "headword": "breach",
+    "pos": "noun",
+    "sense_index": 0,
+    "domain": "technology.engineering",
+    "domain_root": "technology",
+    "gloss": "A physical opening in a barrier."
+  },
+  {
+    "sense_id": "breach_of_contract:noun:0",
+    "lexeme_id": "breach_of_contract:noun",
+    "headword": "breach of contract",
+    "pos": "noun",
+    "sense_index": 0,
+    "domain": "law_government.civil_law",
+    "domain_root": "law_government",
+    "gloss": "Failure, without lawful excuse, to perform a contractual obligation."
+  },
+  {
+    "sense_id": "contract:noun:0",
+    "lexeme_id": "contract:noun",
+    "headword": "contract",
+    "pos": "noun",
+    "sense_index": 0,
+    "domain": "law_government.civil_law",
+    "domain_root": "law_government",
+    "gloss": "A written or spoken agreement between two or more parties that creates legally binding obligations"
+  },
+  {
+    "sense_id": "property:noun:0",
+    "lexeme_id": "property:noun",
+    "headword": "property",
+    "pos": "noun",
+    "sense_index": 0,
+    "domain": "science.materials_science",
+    "domain_root": "science",
+    "gloss": "A measurable physical attribute of a substance."
+  },
+  {
+    "sense_id": "real_property:noun:1",
+    "lexeme_id": "real_property:noun",
+    "headword": "real property",
+    "pos": "noun",
+    "sense_index": 1,
+    "domain": "law_government.civil_law",
+    "domain_root": "law_government",
+    "gloss": "In legal contexts, property rights in land and attached improvements."
+  },
+  {
+    "sense_id": "tenant:noun:0",
+    "lexeme_id": "tenant:noun",
+    "headword": "tenant",
+    "pos": "noun",
+    "sense_index": 0,
+    "domain": "business.real_estate",
+    "domain_root": "business",
+    "gloss": "A person who rents and occupies real property under a lease or rental agreement."
+  },
+  {
+    "sense_id": "tenant:noun:1",
+    "lexeme_id": "tenant:noun",
+    "headword": "tenant",
+    "pos": "noun",
+    "sense_index": 1,
+    "domain": "technology.computing_software",
+    "domain_root": "technology",
+    "gloss": "A client organization or account that shares a common software instance."
+  },
+  {
+    "sense_id": "license:noun:0",
+    "lexeme_id": "license:noun",
+    "headword": "license",
+    "pos": "noun",
+    "sense_index": 0,
+    "domain": "law_government.civil_law",
+    "domain_root": "law_government",
+    "gloss": "Legal permission agreement."
+  },
+  {
+    "sense_id": "contracts:noun:0",
+    "lexeme_id": "contracts:noun",
+    "headword": "contracts",
+    "pos": "noun",
+    "sense_index": 0,
+    "domain": "law_government.civil_law",
+    "domain_root": "law_government",
+    "gloss": "A written or spoken agreement between two or more parties that creates legally binding obligations"
+  },
+  {
+    "sense_id": "agreements:noun:0",
+    "lexeme_id": "agreements:noun",
+    "headword": "agreements",
+    "pos": "noun",
+    "sense_index": 0,
+    "domain": "law_government.civil_law",
+    "domain_root": "law_government",
+    "gloss": "A written or spoken agreement between two or more parties that creates legally binding obligations"
+  },
+  {
+    "sense_id": "locataire:noun:0",
+    "lexeme_id": "locataire:noun",
+    "headword": "locataire",
+    "pos": "noun",
+    "sense_index": 0,
+    "domain": "law_government.civil_law",
+    "domain_root": "law_government",
+    "gloss": "A written or spoken agreement between two or more parties that creates legally binding obligations"
+  },
+  {
+    "sense_id": "material:noun:0",
+    "lexeme_id": "material:noun",
+    "headword": "material",
+    "pos": "noun",
+    "sense_index": 0,
+    "domain": "law_government.civil_law",
+    "domain_root": "law_government",
+    "gloss": "An essential matter in an agreement."
+  },
+  {
+    "sense_id": "landlord:noun:0",
+    "lexeme_id": "landlord:noun",
+    "headword": "landlord",
+    "pos": "noun",
+    "sense_index": 0,
+    "domain": "business.real_estate",
+    "domain_root": "business",
+    "gloss": "A person who owns property and leases it to tenants; the lessor responsible for maintaining the premises"
+  },
+  {
+    "sense_id": "unclassified_term:noun:0",
+    "lexeme_id": null,
+    "headword": "unclassified term",
+    "pos": "noun",
+    "sense_index": null,
+    "domain": null,
+    "domain_root": null,
+    "gloss": "An unclassified term."
+  },
+  {
+    "sense_id": "unclassified_term:noun:1",
+    "lexeme_id": "unclassified_term:noun",
+    "headword": "unclassified term",
+    "pos": "noun",
+    "sense_index": 1,
+    "domain": null,
+    "domain_root": null,
+    "gloss": null
+  }
+]

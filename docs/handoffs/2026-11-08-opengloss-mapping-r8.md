@@ -1,7 +1,7 @@
 ---
 artifact_contract: "ce-handoff/v1"
 title: "FOLIO-to-OpenGloss mapping module (R8): planning checkpoint"
-summary: "Resumed the R8 brief; format agreed with folio-resolve; plan and build not yet written."
+summary: "Plan committed; three Codex workers (U1 builder, U2 validator/export/score, U3 heartbeat) building in parallel; README written."
 keywords: ["opengloss", "sssom", "skos", "mapping", "R8"]
 repository: "damienriehl/folio"
 session: "b824c3ef-503a-5bae-b5d5-d7f7ef8605cb"
@@ -37,13 +37,19 @@ on lexplicit branch `wip/opengloss-anchoring`). Additive only; `FOLIO.owl` is no
 
 ## Current state
 
-- Branch `feat/opengloss-mapping`, nothing committed yet beyond this file.
-- OpenGloss v2.4 senses: 300,787 rows; columns include `domain`, `domain_root`,
-  `lexeme_id`, `relations`; multiword sense IDs use underscores (`unverified_claim:adjective:0`).
-- Confirmed the separate defect: 217 `owl:Restriction`s on `owl:sameAs` in `FOLIO.owl`.
+- Plan committed: `docs/plans/2026-11-08-1830-feat-opengloss-mapping-module-plan.md`.
+- Codex workers U1 (builder), U2 (validator, OWL export, score), U3 (heartbeat, workflow) run in
+  parallel in this worktree on disjoint files; task specs are in the cockpit's `agents/tasks/`
+  as `folio-opengloss-u{1,2,3}-20261108.md`. Workers do not commit; the orchestrator does.
+- `mappings/opengloss/README.md` written (counts to fill after the real build).
+- Decision: exclude OpenGloss rows with `source == wordnet-3.0` (WordNet license); needs a
+  follow-up filter in U1's loader.
+- Confirmed the separate defect: 217 `owl:Restriction`s on `owl:sameAs` (18 PACER NoS classes);
+  issue not yet filed.
+- Baseline: 191 tests pass.
 
 ## Next
 
-1. Write the CE plan in `docs/plans/`.
-2. Build generator, validator, OWL export, tests, docs, and heartbeat workflow.
+1. Integrate U1-U3, add the WordNet filter, run the real build under a memory cap, judge `eval/gold.tsv`.
+2. Review (ce-code-review), fix, commit.
 3. Review, PR, merge; file the `owl:sameAs` issue; tell folio-resolve the merge commit.

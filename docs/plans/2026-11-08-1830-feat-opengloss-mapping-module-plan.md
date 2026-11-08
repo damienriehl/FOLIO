@@ -108,28 +108,40 @@ tests/test_opengloss_*.py       fixture-driven; CI needs no parquet and no pyarr
 2. **OpenGloss index:** read only `sense_id`, `lexeme_id`, `headword`, `pos`,
    `sense_index`, `domain`, `domain_root`, `gloss`, filtered to headwords that equal a
    normalized form or a word in one. Keep `pos == noun` only (FOLIO classes are nominal).
+   Drop rows with `source == wordnet-3.0` (42,924 of 300,787): they are Princeton WordNet
+   imports under WordNet's own license, and lexplicit's extract excludes them too, so the
+   module quotes only CC BY 4.0 OpenGloss text.
 3. **Sense score** for a (class, sense) pair, in [0, 1]:
    `0.5 * domain_prior + 0.5 * overlap`, where `domain_prior` is 1.0 for
-   `law_government.*`, 0.7 for `business.*`, 0.3 otherwise, and `overlap` is the
-   Jaccard overlap of content-word stems between the sense gloss and the class context
-   (label, definition, and parent labels). A simple deterministic suffix stemmer and a
+   `law_government.*`, 0.7 for `business.*`, 0.3 otherwise, and `overlap` is the share
+   of the gloss's content-word stems that also appear in the class context (label,
+   definition, and parent labels). The first draft used Jaccard overlap; FOLIO contexts
+   run far longer than glosses, so Jaccard collapsed toward zero and left the domain prior
+   to decide every link. A simple deterministic suffix stemmer and a
    fixed stop list are part of the method version.
 4. **Phrase links:** when a whole normalized form equals a headword, the best-scoring
    sense becomes `skos:exactMatch` if its score ≥ 0.60 and it leads the runner-up by
-   ≥ 0.10, from `rdfs:label`/`prefLabel`; otherwise `skos:closeMatch`. Any other
+   ≥ 0.05, from `rdfs:label`/`prefLabel`; otherwise `skos:closeMatch`. Any other
    sense of that headword scoring ≥ 0.55 becomes `skos:closeMatch`. Matches through an
-   altLabel cap at `closeMatch`. Senses scoring below 0.45 never link.
-5. **Word links (atoms):** for a label of 2-6 words, the head word (the first noun
-   before `of`/`for`/`in`/`on`/`to`/`under`, else the last word) links its best sense by
+   altLabel cap at `closeMatch`. Senses scoring below 0.40 never link.
+5. **Word links (atoms):** for a label of 2-6 words, the head word (the word just
+   before the first `of`/`for`/`in`/`on`/`to`/`under`, else the last word) links its best sense by
    `skos:broadMatch`; other content words link by `skos:relatedMatch`. Each needs a
-   sense score ≥ 0.50 and confidence = 0.8 × score. Word links remain even when a
+   sense score ≥ 0.45 and confidence = 0.8 × score. Word links remain even when a
    phrase link exists (R7: the phrase outranks its words, which stay as fallback evidence).
 6. **Dedup:** per (subject, object), keep the strongest predicate
    (exact > close > broad = narrow > related), then the highest confidence.
-7. **Gaps:** a FOLIO form whose headword exists in OpenGloss but has no noun sense in
-   `law_government.*` or `business.*`, and that produced no link, goes to `gaps.tsv`
-   (the `property` case), for the OpenGloss maintainer.
+7. **Gaps:** a class that produced no link at all, but whose `rdfs:label` or
+   `skos:prefLabel` is an OpenGloss noun headword, goes to `gaps.tsv` with that headword's
+   senses and domains: the `property` case, for the OpenGloss maintainer.
 8. **Determinism:** ties break by `sense_id`; identical inputs give byte-identical output.
+
+**Calibration (2026-11-08, before first release).** The first real build kept the
+draft's thresholds (exact lead 0.10, phrase floor 0.45, word threshold 0.50) and showed two
+faults: business-domain senses rarely cleared the floor (FOLIO *Landlord* scored 0.406
+against its only sense), and OpenGloss lists sub-topics of a phrase as sibling senses (four
+*breach of contract* senses), which kept the main sense inside the exact lead. The
+thresholds above are the corrected values.
 
 The thresholds are method constants, versioned with `mapping_tool_version`. Changing
 one is a method change, so it bumps the method version and the set's major version.

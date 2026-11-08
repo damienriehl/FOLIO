@@ -11,3 +11,4 @@
 # install it and tests/test_iri_minting.py gates CI. This file now just pulls
 # the runtime set; add authoring-only tools here.
 -r requirements.txt
+pyarrow>=17,<27  # Authoring-only for the OpenGloss builder.

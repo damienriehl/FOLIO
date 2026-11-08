@@ -15,3 +15,6 @@ FOLIO-webprotege-merge.owl
 
 # Local virtualenv
 .venv/
+
+# Generated OWL export of the OpenGloss mapping set (about 22 MB); rebuild with scripts/export_opengloss_owl.py
+mappings/opengloss/folio-opengloss.ttl

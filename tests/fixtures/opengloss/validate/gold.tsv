@@ -1,0 +1,7 @@
+# Judged by fixture author, manually, 2026-11-08.
+subject_id	object_id	verdict	expected_predicate	note
+FOLIO:A	OGS:agreement:noun:0	correct	skos:broadMatch	Matching relation
+FOLIO:A	OGS:agreement:noun:1	incorrect		Wrong sense
+FOLIO:A	OGS:contract:noun:0	correct	skos:closeMatch	Predicate differs
+FOLIO:B	OGS:breach:noun:0	correct		No predicate judgment
+FOLIO:B	OGS:absent:noun:0	correct	skos:exactMatch	Not emitted

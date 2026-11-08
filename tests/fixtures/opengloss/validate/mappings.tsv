@@ -1,0 +1,27 @@
+# curie_map:
+#   FOLIO: https://folio.openlegalstandard.org/
+#   OGS: tag:folio.openlegalstandard.org,2026:opengloss/sense/
+#   OGL: tag:folio.openlegalstandard.org,2026:opengloss/lexeme/
+#   skos: http://www.w3.org/2004/02/skos/core#
+#   semapv: https://w3id.org/semapv/vocab/
+#   rdfs: http://www.w3.org/2000/01/rdf-schema#
+#   sssom: https://w3id.org/sssom/
+# mapping_set_id: https://folio.openlegalstandard.org/mappings/opengloss
+# mapping_set_version: 0.1.0
+# mapping_set_title: OpenGloss fixture
+# mapping_set_description: Handwritten offline test mappings
+# license: https://creativecommons.org/licenses/by/4.0/
+# mapping_date: '2026-11-08'
+# mapping_tool: scripts/build_opengloss_mappings.py
+# mapping_tool_version: opengloss-lexical/0.1
+# subject_source: https://folio.openlegalstandard.org/
+# subject_source_version: fixture-sha256
+# object_source: https://huggingface.co/datasets/mjbommar/opengloss-v2.4-senses
+# object_source_version: c64e480015b8c84f9d08469d4dfd64a7a8fb89bd
+subject_id	subject_label	predicate_id	object_id	object_label	mapping_justification	confidence	subject_match_field	object_match_field	match_string	comment
+FOLIO:A	Agreement	skos:broadMatch	OGS:agreement:noun:0	agreement	semapv:LexicalMatching	0.700	rdfs:label	OGL:headword	agreement	head-word score=0.7
+FOLIO:A	Agreement	skos:closeMatch	OGS:agreement:noun:1	agreement	semapv:LexicalMatching	0.600	rdfs:label	OGL:headword	agreement	label-phrase score=0.6
+FOLIO:A	Agreement	skos:exactMatch	OGS:contract:noun:0	contract	semapv:LexicalMatching	0.900	rdfs:label	OGL:headword	contract	label-phrase score=0.9
+FOLIO:B	Breach	skos:exactMatch	OGS:breach:noun:0	breach	semapv:LexicalMatching	0.900	rdfs:label	OGL:headword	breach	label-phrase score=0.9
+FOLIO:B	Breach	skos:narrowMatch	OGS:breach:noun:1	breach	semapv:LexicalMatching	0.800	rdfs:label	OGL:headword	breach	label-phrase score=0.8
+FOLIO:B	Breach	skos:relatedMatch	OGS:duty:noun:0	duty	semapv:LexicalMatching	0.500	rdfs:label	OGL:headword	duty	modifier-word score=0.5

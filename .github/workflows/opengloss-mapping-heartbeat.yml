@@ -1,0 +1,92 @@
+name: OpenGloss mapping heartbeat
+
+on:
+  schedule:
+    - cron: '17 7 * * 1'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [FOLIO.owl]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: opengloss-mapping-heartbeat
+  cancel-in-progress: false
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r scripts/requirements-authoring.txt pytest
+      - name: Regenerate mappings and receipt
+        id: heartbeat
+        continue-on-error: true
+        run: python scripts/opengloss_heartbeat.py --repo-root . --output-decision "$RUNNER_TEMP/opengloss-decision"
+      - name: Detect changed mapping files
+        id: changes
+        run: |
+          if [ -n "$(git status --porcelain -- mappings/opengloss)" ]; then
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Run tests
+        if: steps.changes.outputs.changed == 'true'
+        run: python -m pytest tests -q
+      - name: Publish heartbeat pull request
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          decision=$(cat "$RUNNER_TEMP/opengloss-decision")
+          case "$decision" in
+            auto|needs-damien) ;;
+            *) echo 'Invalid heartbeat decision'; exit 1 ;;
+          esac
+          receipt=$(git ls-files --others --exclude-standard mappings/opengloss/receipts | sort | tail -1)
+          test -n "$receipt"
+          branch="heartbeat/opengloss-$(date -u +%F)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "$branch"
+          git add mappings/opengloss
+          git commit -m "Update OpenGloss mappings; receipt $receipt"
+          git push --set-upstream origin "$branch"
+          export RECEIPT="$receipt" DECISION="$decision"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          receipt = json.loads(Path(os.environ['RECEIPT']).read_text())
+          body = '\n'.join([
+              f"Decision: **{os.environ['DECISION']}**",
+              f"Receipt: `{os.environ['RECEIPT']}`",
+              '',
+              '```json',
+              json.dumps(receipt, indent=2, sort_keys=True),
+              '```',
+          ])
+          Path(os.environ['RUNNER_TEMP'], 'opengloss-pr.md').write_text(body + '\n')
+          PY
+          label="heartbeat:$decision"
+          gh label create "$label" --force --description "OpenGloss heartbeat decision: $decision"
+          pr=$(gh pr create --base main --head "$branch" --title "OpenGloss mapping heartbeat $(date -u +%F)" --body-file "$RUNNER_TEMP/opengloss-pr.md" --label "$label")
+          if [ "$decision" = auto ]; then
+            gh pr merge --auto --squash "$pr" || echo 'Auto-merge request unavailable; PR remains open for review.'
+          fi
+      - name: Report heartbeat failure
+        if: always() && steps.heartbeat.outcome == 'failure'
+        run: |
+          echo 'Heartbeat failed. Any available receipt was retained in the pull request.'
+          exit 1

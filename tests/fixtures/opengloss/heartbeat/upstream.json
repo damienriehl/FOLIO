@@ -1,0 +1,25 @@
+{
+  "set_version": "0.1.0",
+  "method_version": "opengloss-lexical/0.1",
+  "opengloss": {
+    "dataset": "mjbommar/opengloss-v2.4-senses",
+    "series": "2.4",
+    "revision": "old",
+    "license": "CC-BY-4.0",
+    "files": [
+      {
+        "path": "data/train.parquet",
+        "sha256": "37a0fe5ae24a60682faa103d3808c86efe98a83dd414af81d9b01eef26a3be87"
+      }
+    ],
+    "schema_fingerprint": "sha256:same"
+  },
+  "folio": {
+    "path": "FOLIO.owl"
+  },
+  "score": {
+    "precision": 0.9,
+    "recall": 0.8,
+    "judged": 10
+  }
+}
