@@ -1,0 +1,179 @@
+{
+  "added": {
+    "count": 5960,
+    "sample": [
+      "FOLIO:-1J12mefTK-mm-m8-Klmow skos:relatedMatch OGS:casino:noun:0",
+      "FOLIO:-2Lhd7qESeGn8ri84qBhBA skos:broadMatch OGS:manufacturing:noun:0",
+      "FOLIO:-37inK4ESva_AnpLBUMm2A skos:relatedMatch OGS:warehouse:noun:0",
+      "FOLIO:-4wB9ZyCQUKEkK823tvfqg skos:broadMatch OGS:production:noun:0",
+      "FOLIO:-6FDm3tWRequJ90cvT0ySQ skos:broadMatch OGS:farming:noun:0",
+      "FOLIO:-AKi-qdIQB6zXs-uHPYUZA skos:broadMatch OGS:manufacturing:noun:0",
+      "FOLIO:-AKi-qdIQB6zXs-uHPYUZA skos:relatedMatch OGS:product:noun:0",
+      "FOLIO:-ETiJxzDR46hSADYcR63-g skos:relatedMatch OGS:parks:noun:1",
+      "FOLIO:-GOKvKWcSEShOMp5Y2jhmQ skos:broadMatch OGS:farming:noun:1",
+      "FOLIO:-HM4zEgFTSGy0IZWTbGuPg skos:broadMatch OGS:services:noun:0",
+      "FOLIO:-HM4zEgFTSGy0IZWTbGuPg skos:relatedMatch OGS:payroll:noun:1",
+      "FOLIO:-QaHZ5SVRZGMUtQHQchlQA skos:broadMatch OGS:mining:noun:1",
+      "FOLIO:-QaHZ5SVRZGMUtQHQchlQA skos:relatedMatch OGS:copper:noun:1",
+      "FOLIO:-QaHZ5SVRZGMUtQHQchlQA skos:relatedMatch OGS:lead:noun:0",
+      "FOLIO:-QaHZ5SVRZGMUtQHQchlQA skos:relatedMatch OGS:nickel:noun:1",
+      "FOLIO:-Tf1tMZOQKSMxkfZMkw7ow skos:broadMatch OGS:manufacturing:noun:1",
+      "FOLIO:-YMvXxl2S0SCYd_nLyY58Q skos:broadMatch OGS:farming:noun:1",
+      "FOLIO:-YMvXxl2S0SCYd_nLyY58Q skos:relatedMatch OGS:sheep:noun:0",
+      "FOLIO:-ZPiIAUYS0KY9O3R-aqa_g skos:broadMatch OGS:distribution:noun:0",
+      "FOLIO:-Zk9alx9TrS9ND1RpkWMgw skos:relatedMatch OGS:advertising:noun:0",
+      "FOLIO:-Zk9alx9TrS9ND1RpkWMgw skos:relatedMatch OGS:services:noun:0",
+      "FOLIO:-n1HB-QfSV-Eu80Lh0E1OQ skos:broadMatch OGS:construction:noun:0",
+      "FOLIO:-uics1YTQhK4gZLQRSV2FQ skos:broadMatch OGS:services:noun:0",
+      "FOLIO:-vDKmAoBQiyxS37Pou5yOA skos:broadMatch OGS:publishers:noun:0",
+      "FOLIO:-zor2cm6TsaWYo2Nntag3w skos:broadMatch OGS:services:noun:0",
+      "FOLIO:-zor2cm6TsaWYo2Nntag3w skos:relatedMatch OGS:inspection:noun:0",
+      "FOLIO:06iHQO2wTVKIE2dHOrNOcQ skos:broadMatch OGS:manufacturing:noun:0",
+      "FOLIO:07E21cF8S0aK3RoTYjm0eQ skos:broadMatch OGS:leasing:noun:0",
+      "FOLIO:07E21cF8S0aK3RoTYjm0eQ skos:relatedMatch OGS:car:noun:1",
+      "FOLIO:092qXu1-RfGs4yDbsiZDog skos:broadMatch OGS:dealers:noun:1",
+      "FOLIO:09q_kVr1TZCaYKhWNE13SA skos:relatedMatch OGS:iron:noun:2",
+      "FOLIO:0CoEowfXRtO3Turx_iCsqA skos:broadMatch OGS:farming:noun:1",
+      "FOLIO:0EDf6KE8RZytGU0z8uCDrQ skos:broadMatch OGS:carriers:noun:0",
+      "FOLIO:0EFXs9IOSrqpfv2AltDcjA skos:broadMatch OGS:manufacturing:noun:0",
+      "FOLIO:0EFXs9IOSrqpfv2AltDcjA skos:relatedMatch OGS:work:noun:0",
+      "FOLIO:0J-LIWv8QqS8ClPgXXieaA skos:broadMatch OGS:services:noun:0",
+      "FOLIO:0K_BMejJS72mVDXFcz_QSw skos:relatedMatch OGS:estate:noun:0",
+      "FOLIO:0NfzPKamRQaQXoR447jVgQ skos:broadMatch OGS:manufacturing:noun:0",
+      "FOLIO:0NfzPKamRQaQXoR447jVgQ skos:relatedMatch OGS:motor:noun:0",
+      "FOLIO:0ObzcrKxQfShmkYBi7WRIQ skos:broadMatch OGS:maintenance:noun:0",
+      "FOLIO:0ObzcrKxQfShmkYBi7WRIQ skos:relatedMatch OGS:appliance:noun:0",
+      "FOLIO:0ObzcrKxQfShmkYBi7WRIQ skos:relatedMatch OGS:repair:noun:2",
+      "FOLIO:0VzcYLtjSMWuFGIiBIVy-A skos:broadMatch OGS:industry:noun:0",
+      "FOLIO:0_XaS5vQTbmSeBs5-zrJ-Q skos:broadMatch OGS:stores:noun:0",
+      "FOLIO:0_XaS5vQTbmSeBs5-zrJ-Q skos:relatedMatch OGS:department:noun:0",
+      "FOLIO:0a5qByVCRzqm9eq9WYlUMA skos:relatedMatch OGS:probation:noun:0",
+      "FOLIO:0dB4lp8-SmqZ-TtV9Mms-A skos:relatedMatch OGS:petroleum:noun:2",
+      "FOLIO:0o0IYQqjTQOOJIBIRfEhnA skos:broadMatch OGS:manufacturing:noun:0",
+      "FOLIO:0o0IYQqjTQOOJIBIRfEhnA skos:relatedMatch OGS:furniture:noun:1",
+      "FOLIO:0o0IYQqjTQOOJIBIRfEhnA skos:relatedMatch OGS:product:noun:0"
+    ]
+  },
+  "decision": "kept-by-keep-rule",
+  "folio_sha256": {
+    "after": "c0f8ca58dad4227e89856d97a0344f45bec37289832837bd11c473dfdc7b44be",
+    "before": "c0f8ca58dad4227e89856d97a0344f45bec37289832837bd11c473dfdc7b44be"
+  },
+  "generated_at": "2026-11-08T20:51:16.309671+00:00",
+  "method_version": {
+    "after": "opengloss-lexical/0.2",
+    "before": "opengloss-lexical/0.1"
+  },
+  "opengloss": {
+    "after": {
+      "dataset": "mjbommar/opengloss-v2.4-senses",
+      "revision": "c64e480015b8c84f9d08469d4dfd64a7a8fb89bd"
+    },
+    "before": {
+      "dataset": "mjbommar/opengloss-v2.4-senses",
+      "revision": "c64e480015b8c84f9d08469d4dfd64a7a8fb89bd"
+    }
+  },
+  "reasons": [
+    "method change opengloss-lexical/0.1 -> 0.2 (branch-aware domain prior); plan docs/plans/2026-11-08-2000-feat-opengloss-branch-aware-prior-plan.md",
+    "keep rule: added-link precision 0.733 (60-link random sample) >= 0.70; estimated overall precision 0.778 >= 0.76; gold recall 0.731 -> 0.885",
+    "pooled added-link precision including 29 previously unlinked gold candidates: 0.697 (biased toward hard gap classes; reported, not used)"
+  ],
+  "removed": {
+    "count": 759,
+    "sample": [
+      "FOLIO:-QaHZ5SVRZGMUtQHQchlQA skos:relatedMatch OGS:copper:noun:3",
+      "FOLIO:-uics1YTQhK4gZLQRSV2FQ skos:relatedMatch OGS:emergency:noun:1",
+      "FOLIO:092qXu1-RfGs4yDbsiZDog skos:broadMatch OGS:dealers:noun:2",
+      "FOLIO:0VzcYLtjSMWuFGIiBIVy-A skos:relatedMatch OGS:private:noun:0",
+      "FOLIO:0a5qByVCRzqm9eq9WYlUMA skos:relatedMatch OGS:parole:noun:0",
+      "FOLIO:0o5hdV03RtKfKqXq0oed6Q skos:broadMatch OGS:theaters:noun:3",
+      "FOLIO:0o5hdV03RtKfKqXq0oed6Q skos:relatedMatch OGS:companies:noun:2",
+      "FOLIO:0sF26grRQ7-QHjEPJOprIg skos:broadMatch OGS:funds:noun:2",
+      "FOLIO:0xsU9gpYRkabv5pLh6GvGQ skos:broadMatch OGS:funds:noun:2",
+      "FOLIO:1hRbYyZ3SUikDxHtmOxjbw skos:relatedMatch OGS:plate:noun:3",
+      "FOLIO:1n8WzhIBRJuB796TVihXfg skos:relatedMatch OGS:consumer:noun:2",
+      "FOLIO:1vi1NWSDSMKp4xURTipE7g skos:relatedMatch OGS:consumer:noun:2",
+      "FOLIO:2TjncALVS2yfMofOQm4sfw skos:relatedMatch OGS:service:noun:1",
+      "FOLIO:2UU3O83LQWOr41rYmPHrdg skos:broadMatch OGS:funds:noun:2",
+      "FOLIO:2VLYpKrGRyaC6xaiy_y9gA skos:relatedMatch OGS:companies:noun:2",
+      "FOLIO:2VLYpKrGRyaC6xaiy_y9gA skos:relatedMatch OGS:holding:noun:2",
+      "FOLIO:2wtP-Y9BTkGZHiVAMyvlWA skos:relatedMatch OGS:power:noun:1",
+      "FOLIO:32FsJm8_QUmM-Ki_gtHoRg skos:broadMatch OGS:administration:noun:2",
+      "FOLIO:32FsJm8_QUmM-Ki_gtHoRg skos:relatedMatch OGS:programs:noun:3",
+      "FOLIO:3G5UeK7AQYCylMGi4vdq-A skos:relatedMatch OGS:general:noun:0",
+      "FOLIO:3G5UeK7AQYCylMGi4vdq-A skos:relatedMatch OGS:government:noun:1",
+      "FOLIO:3HyVqLgRRPyVmXs8Z7B6DQ skos:broadMatch OGS:service:noun:1",
+      "FOLIO:3NcP9ox8RxKQHdSeh-q3Ig skos:relatedMatch OGS:battery:noun:2",
+      "FOLIO:3QMD26oxS-KqHJDr_VyQnQ skos:broadMatch OGS:dealers:noun:2",
+      "FOLIO:3ocz7MdYSiuoBhWuervqOw skos:broadMatch OGS:funds:noun:2",
+      "FOLIO:3ocz7MdYSiuoBhWuervqOw skos:relatedMatch OGS:welfare:noun:1",
+      "FOLIO:3qS4ZAL9RmOMdAF8LxEgTQ skos:broadMatch OGS:centers:noun:3",
+      "FOLIO:42JL-2LmRkyOB6I22vDukA skos:relatedMatch OGS:union:noun:2",
+      "FOLIO:48sxry7yS2GtZEhKxwI03g skos:relatedMatch OGS:power:noun:1",
+      "FOLIO:4Gp8FjauQ9y8aBSZcsnceg skos:relatedMatch OGS:abuse:noun:1",
+      "FOLIO:4H0Zw0_FRVCUCbfjpUyMJQ skos:broadMatch OGS:centers:noun:3",
+      "FOLIO:4cxOGWKKSOWBDzcpBHqreg skos:broadMatch OGS:dealers:noun:2",
+      "FOLIO:4hVjuhgrQYu-wkitHRFIHQ skos:relatedMatch OGS:consumer:noun:2",
+      "FOLIO:4lyJL_5PS96gm6EAke8iSA skos:relatedMatch OGS:custom:noun:2",
+      "FOLIO:4rtApGTMRZmzNeItpwQvRA skos:broadMatch OGS:dealers:noun:2",
+      "FOLIO:5a3MB0kHRTK6yiNRFYKcjQ skos:relatedMatch OGS:general:noun:0",
+      "FOLIO:5botOgK6S4OW6KhiVfSNlg skos:relatedMatch OGS:copper:noun:3",
+      "FOLIO:5gJZDWXcQ5O9wbwXV3oJ1A skos:relatedMatch OGS:power:noun:1",
+      "FOLIO:6GjQ1MBXRxeI8N0qMlyEPg skos:relatedMatch OGS:independent:noun:0",
+      "FOLIO:6OA2yfFNSw-nd97JTKTF_g skos:relatedMatch OGS:apparatus:noun:2",
+      "FOLIO:6X6xJ7TuSFmlAW6Yr-JH6w skos:broadMatch OGS:centers:noun:3",
+      "FOLIO:6YhGnUcTRIW9qLZZmOJAHw skos:relatedMatch OGS:marine:noun:0",
+      "FOLIO:6emZ3X6XRJ61lff_nXHYDw skos:broadMatch OGS:centers:noun:3",
+      "FOLIO:6emZ3X6XRJ61lff_nXHYDw skos:relatedMatch OGS:service:noun:1",
+      "FOLIO:6hr6liRTSX6Wmxsn_wob_w skos:relatedMatch OGS:duty:noun:0",
+      "FOLIO:72Lorx9CQZ6LQgdd2rgoIg skos:relatedMatch OGS:court:noun:0",
+      "FOLIO:72WuskHAQ7eNM-Rc-ATvlQ skos:broadMatch OGS:subdivision:noun:0",
+      "FOLIO:72WuskHAQ7eNM-Rc-ATvlQ skos:relatedMatch OGS:land:noun:1",
+      "FOLIO:7MgoS11HTvC5UBEHdX0Q4A skos:relatedMatch OGS:charter:noun:0",
+      "FOLIO:7Q9JSH4JQamJSllTSkaewQ skos:relatedMatch OGS:general:noun:0"
+    ]
+  },
+  "rows": {
+    "after": 23885,
+    "before": 18684
+  },
+  "schema_fingerprint": {
+    "after": "sha256:5ae72fa47a7c64200aa94c77dd5c66b738815ede8dffe95bbe3885b4eb627130",
+    "before": "sha256:5ae72fa47a7c64200aa94c77dd5c66b738815ede8dffe95bbe3885b4eb627130"
+  },
+  "score": {
+    "after": {
+      "emitted_judged": 181,
+      "judged": 222,
+      "precision": 0.7514,
+      "predicate_agreement": 0.6029,
+      "recall": 0.9189,
+      "rows": 23885,
+      "rows_by_predicate": {
+        "skos:broadMatch": 8811,
+        "skos:closeMatch": 2235,
+        "skos:exactMatch": 800,
+        "skos:relatedMatch": 12039
+      }
+    },
+    "before": {
+      "emitted_judged": 97,
+      "judged": 162,
+      "precision": 0.7835,
+      "predicate_agreement": 0.5789,
+      "recall": 0.7308,
+      "rows": 18684,
+      "rows_by_predicate": {
+        "skos:broadMatch": 6804,
+        "skos:closeMatch": 1521,
+        "skos:exactMatch": 558,
+        "skos:relatedMatch": 9801
+      }
+    }
+  },
+  "set_version": {
+    "after": "0.2.0",
+    "before": "0.1.0"
+  }
+}

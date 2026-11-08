@@ -1,271 +1,45 @@
 subject_id	subject_label	match_string	headword_senses_domains
-FOLIO:5uTZQJ54RrS09SwZ9yZCOA	Aquaculture	aquaculture	aquaculture:noun:0=science.biology
-FOLIO:HhyNbulHSZqmHGobYpSiAw	Logging	logging	logging:noun:0=business.manufacturing; logging:noun:1=technology.computing_software
-FOLIO:HmiKW24HStOR9ekPviypfA	Aquaculture	aquaculture	aquaculture:noun:0=science.biology
-FOLIO:I0xM16oaTRGcgM9qfBZkvg	Apiculture	apiculture	apiculture:noun:0=nature.animals; apiculture:noun:1=science.biology
-FOLIO:JrHNw0yWQ2GuY0Io-8seEQ	Interior Design Services	interior design services	interior_design_services:noun:0=arts.design
-FOLIO:R0043e3466ab162E7445Bc5e	Marlborough	marlborough	marlborough:noun:0=nature.settlements; marlborough:noun:1=nature.settlements; marlborough:noun:2=history.historical_figures; marlborough:noun:3=everyday_life.food
-FOLIO:R0169512D45c95E53deB23a8	Cordillera	cordillera	cordillera:noun:0=nature.landforms
 FOLIO:R019f3a5219f430A7619Dde3	Cavan	cavan	cavan:noun:0=everyday_life.quantity_time; cavan:noun:1=everyday_life.household_tools
-FOLIO:R01F6b40483530E5f6a3Ad34	Haryana	haryana	haryana:noun:0=nature.landforms; haryana:noun:1=nature.landforms; haryana:noun:2=nature.landforms
-FOLIO:R028f3b4655788F182a354e9	Baa	baa	baa:noun:0=nature.animals; baa:noun:1=language.vocabulary
-FOLIO:R033ecdF6A4d162B9a05342e	Lima	lima	lima:noun:0=people_society.community_life; lima:noun:1=nature.plants; lima:noun:2=arts.design
-FOLIO:R0369176BA9a5FC5d19005b9	Rio Negro	rio negro	rio_negro:noun:0=nature.water_bodies
-FOLIO:R0389e6A7353230Eb487D119	Golestan	golestan	golestan:noun:0=nature.landforms; golestan:noun:1=nature.landforms; golestan:noun:2=nature.landforms
 FOLIO:R03B98a9EBc895E4d318045e	Nan	nan	nan:noun:0=technology.computing_software
-FOLIO:R042768C7A9ccD7E4a50Ae7f	Arauca	arauca	arauca:noun:0=nature.landforms; arauca:noun:1=nature.landforms; arauca:noun:2=nature.landforms
-FOLIO:R0473ce5A732aCE7394AE287	Izmir	izmir	izmir:noun:0=people_society.community_life
-FOLIO:R05980713C928CD35ca1884d	Shandong	shandong	shandong:noun:0=nature.landforms; shandong:noun:1=nature.landforms
-FOLIO:R06A21f4E6c25F9Db0b57f7c	Iraq	iraq	iraq:noun:0=history.modern_history; iraq:noun:1=history.ancient_history
-FOLIO:R06F97b0EB371ED0e3aD14a7	Centre	centre	centre:noun:0=mathematics.geometry; centre:noun:1=everyday_life.general; centre:noun:2=people_society.community_life
-FOLIO:R07594590A834D8B692F84c0	Lazio	lazio	lazio:noun:0=nature.landforms; lazio:noun:1=nature.landforms
-FOLIO:R078b3cDEA6c04C3a9cE545a	Bamako	bamako	bamako:noun:0=nature.settlements; bamako:noun:1=arts.film
-FOLIO:R07AeecBFFc17BBD40440243	Vestfold	vestfold	vestfold:noun:0=nature.landforms; vestfold:noun:1=nature.landforms
-FOLIO:R07C36b6DC6e8C190beC0f5f	South East	south east	south_east:noun:0=nature.landforms; south_east:noun:1=nature.landforms
-FOLIO:R07D8a428Baa244B4f47Acb8	Littoral	littoral	littoral:noun:0=nature.water_bodies
-FOLIO:R08059a46F59fB22a4fDB78c	Dobrich	dobrich	dobrich:noun:0=nature.landforms; dobrich:noun:1=nature.landforms
 FOLIO:R0865e3890088AA93b6E81dd	Colon	colon	colon:noun:0=language.grammar; colon:noun:1=health.anatomy
-FOLIO:R08Bb2e4784dd54E8feD3c9e	Ardabil	ardabil	ardabil:noun:0=history.modern_history; ardabil:noun:1=nature.landforms; ardabil:noun:2=arts.crafts
-FOLIO:R08Db64CBEce47E8a06281ef	Bataan	bataan	bataan:noun:0=nature.landforms; bataan:noun:1=nature.landforms; bataan:noun:2=nature.landforms
-FOLIO:R08Dcd257C8b32CBadeCEadb	Mpumalanga	mpumalanga	mpumalanga:noun:0=nature.landforms
-FOLIO:R0940d28C0cd79F7793263b0	Istanbul	istanbul	istanbul:noun:0=nature.settlements; istanbul:noun:2=people_society.demographics
-FOLIO:R0A93eb295c4cEBFe4d66577	Tirol	tirol	tirol:noun:0=nature.landforms; tirol:noun:1=nature.landforms
-FOLIO:R0AFf1a2E2ea3FD248068e54	Groningen	groningen	groningen:noun:0=history.modern_history; groningen:noun:1=nature.landforms; groningen:noun:2=education.higher_education
-FOLIO:R0B9e9643A3c460C9b14580e	Puglia	puglia	puglia:noun:0=nature.landforms
-FOLIO:R0CBee42F53515E1d216300c	Manchester	manchester	manchester:noun:0=nature.settlements; manchester:noun:1=everyday_life.home
-FOLIO:R0CE767F7237769B2d3ECc2e	Ouest	ouest	ouest:noun:0=nature.landforms; ouest:noun:1=nature.landforms; ouest:noun:2=nature.landforms
-FOLIO:R0D6668652470D0D1d26B519	Darien	darien	darien:noun:0=people_society.community_life; darien:noun:1=history.exploration_colonization; darien:noun:2=people_society.personal_names
-FOLIO:R0D79557394598BEcd3F4c96	Waterford	waterford	waterford:noun:0=people_society.community_life; waterford:noun:1=arts.crafts; waterford:noun:2=people_society.community_life
-FOLIO:R0DD6a2AC6d96C9C1ff8B4aa	Kermanshah	kermanshah	kermanshah:noun:0=nature.landforms; kermanshah:noun:1=nature.landforms
 FOLIO:R0JVSlp5HGa008rbHqx03i	Hispanic	hispanic	hispanic:noun:0=people_society.ethnicity_race
-FOLIO:R1061c89122113F444b1E585	Gulf	gulf	gulf:noun:0=nature.water_bodies; gulf:noun:1=people_society.social_issues; gulf:noun:2=nature.landforms
 FOLIO:R10Ad4927B5942E1a71F4648	Chin	chin	chin:noun:0=health.anatomy
-FOLIO:R11B09e21F3cd600ef887ccb	Rangpur	rangpur	rangpur:noun:0=nature.plants; rangpur:noun:1=nature.plants; rangpur:noun:2=people_society.community_life
-FOLIO:R1231de3EA1a4AA2455302af	Cantabria	cantabria	cantabria:noun:0=nature.landforms; cantabria:noun:1=nature.landforms; cantabria:noun:2=nature.landforms
-FOLIO:R134e167D3f09C90718A98e0	Amazonas	amazonas	amazonas:noun:0=nature.landforms; amazonas:noun:1=nature.landforms; amazonas:noun:2=nature.landforms
-FOLIO:R135e477A55e134597041f71	Cavite	cavite	cavite:noun:0=nature.landforms; cavite:noun:1=nature.landforms; cavite:noun:2=nature.landforms
-FOLIO:R142ef0925a54D0116e031bb	Nelson	nelson	nelson:noun:0=people_society.personal_names; nelson:noun:1=nature.settlements
 FOLIO:R1481c12795ed328c3561972	Hefa	hefa	hefa:noun:0=education.higher_education
-FOLIO:R1484bcF7678f602c8289200	Gitega	gitega	gitega:noun:0=nature.settlements
 FOLIO:R150c92D3D9ca88Bea44B976	Medea	medea	medea:noun:0=humanities.mythology; medea:noun:1=humanities.classical_studies
-FOLIO:R1569940C01be6C49a5722f2	Castries	castries	castries:noun:0=nature.landforms
-FOLIO:R15A88496443aE00c0118b3b	Cochabamba	cochabamba	cochabamba:noun:0=nature.landforms; cochabamba:noun:1=nature.landforms; cochabamba:noun:2=nature.landforms
-FOLIO:R15E945B1Dc01430fd4DEf04	Guinea	guinea	guinea:noun:0=history.modern_history; guinea:noun:1=business.finance; guinea:noun:2=history.exploration_colonization
-FOLIO:R16AadfDF9f2c10686318d5b	Leon	leon	leon:noun:0=people_society.personal_names
 FOLIO:R16F0bd7D0f9aDBEa2433f99	Fuzuli	fuzuli	fuzuli:noun:0=humanities.literature
-FOLIO:R1733ea1E6e8104C7c583990	Tartar	tartar	tartar:noun:0=health.anatomy; tartar:noun:1=people_society.character_traits; tartar:noun:2=everyday_life.food
-FOLIO:R17D8e56FBefd77Fe39F3b07	Khulna	khulna	khulna:noun:0=nature.landforms; khulna:noun:1=nature.landforms
-FOLIO:R1985b1B1B024855f782170b	Maputo	maputo	maputo:noun:0=nature.settlements
-FOLIO:R19B3479BB259504af52F084	Nablus	nablus	nablus:noun:0=nature.landforms
-FOLIO:R1A427e687efb63F41278d8f	Managua	managua	managua:noun:0=nature.landforms
-FOLIO:R1AE5eb36Dfce249802A6672	Edirne	edirne	edirne:noun:0=history.modern_history
-FOLIO:R1B3e203D75cb685492EFc43	Jiangxi	jiangxi	jiangxi:noun:0=nature.landforms
-FOLIO:R1B4f337BAac4283a086Bc22	Dakar	dakar	dakar:noun:0=nature.settlements; dakar:noun:1=sports_recreation.outdoor_recreation
-FOLIO:R1B58e7CA820c96Fc32A1f41	Edo	edo	edo:noun:0=history.modern_history; edo:noun:1=history.modern_history; edo:noun:2=people_society.ethnicity_race
 FOLIO:R1C22903B929851Abdf88e6c	Uri	uri	uri:noun:0=technology.internet_communication; uri:noun:1=technology.internet_communication
 FOLIO:R1C309eABD74cED0ffaA23d7	Bar	bar	bar:noun:0=technology.engineering; bar:noun:1=everyday_life.general; bar:noun:2=arts.music; bar:noun:3=everyday_life.food
-FOLIO:R1D7b22B39a035FAeea910a1	Liaoning	liaoning	liaoning:noun:0=nature.landforms; liaoning:noun:1=nature.landforms
-FOLIO:R1E54ec77219b11658dB7e57	Hiroshima	hiroshima	hiroshima:noun:0=history.modern_history; hiroshima:noun:1=history.world_wars
-FOLIO:R1E6b6783Aec80B3851FF1db	Kedah	kedah	kedah:noun:0=nature.landforms; kedah:noun:1=nature.landforms; kedah:noun:2=nature.landforms
-FOLIO:R1FB5b9BDF9c2E70ce5DB3a2	Bern	bern	bern:noun:0=nature.settlements
-FOLIO:R1FFcb78712f5BC639159541	Sucre	sucre	sucre:noun:0=everyday_life.food; sucre:noun:1=science.chemistry; sucre:noun:2=history.modern_history
 FOLIO:R1PY9E13YhPhV7QvMke50C	Exhibition of Speed	racing	racing:noun:0=sports_recreation.general; racing:noun:1=sports_recreation.general; racing:noun:2=technology.engineering
-FOLIO:R2084a8FCCfd243889097c73	Yogyakarta	yogyakarta	yogyakarta:noun:0=history.modern_history; yogyakarta:noun:1=people_society.community_life; yogyakarta:noun:2=history.historical_figures
-FOLIO:R20Ecf1DC5dd33EA81f35a97	Aurora	aurora	aurora:noun:0=science.earth_science; aurora:noun:1=nature.weather; aurora:noun:2=humanities.mythology
-FOLIO:R21279b14D40cFA9d5e46ae0	Egypt	egypt	egypt:noun:0=history.modern_history; egypt:noun:1=history.ancient_history
-FOLIO:R218b479BF527FAA68f40b50	Shiga	shiga	shiga:noun:0=science.biology; shiga:noun:1=science.biology; shiga:noun:2=nature.water_bodies
-FOLIO:R21B34b839a8b4DC0d286bc8	Hanover	hanover	hanover:noun:0=nature.settlements; hanover:noun:1=history.historical_figures; hanover:noun:2=education.higher_education
-FOLIO:R21C9152BA681EBBe43BDca2	Zeeland	zeeland	zeeland:noun:0=nature.water_bodies
-FOLIO:R21Dc1932926dEF41dd0F39f	Gansu	gansu	gansu:noun:0=nature.landforms; gansu:noun:1=nature.landforms
-FOLIO:R22673b34527e672fdaF37ee	Rivers	rivers	rivers:noun:0=nature.water_bodies; rivers:noun:1=humanities.literature
-FOLIO:R22D8983125d4AF92932Ebfa	Shizuoka	shizuoka	shizuoka:noun:0=nature.landforms; shizuoka:noun:1=nature.landforms; shizuoka:noun:2=nature.landforms
-FOLIO:R22Dcab6FAd5661Db3bEBac2	Drenthe	drenthe	drenthe:noun:0=nature.landforms
-FOLIO:R2311533686ac96916eE33cd	Riga	riga	riga:noun:0=nature.settlements
-FOLIO:R232719FB1f68482d6964b61	Salta	salta	salta:noun:0=nature.landforms; salta:noun:1=nature.landforms
-FOLIO:R23B4a3E5919f7498f5885ac	Constantine	constantine	constantine:noun:0=people_society.personal_names; constantine:noun:1=history.historical_figures; constantine:noun:2=nature.settlements
-FOLIO:R23F60e6F701456Da4630fc2	Wexford	wexford	wexford:noun:0=nature.landforms; wexford:noun:1=nature.landforms; wexford:noun:2=nature.landforms
-FOLIO:R2460f15BFddcF52861207d1	Kara	kara	kara:noun:0=people_society.personal_names
-FOLIO:R249bb9B5370670Fdbc5491e	Atacama	atacama	atacama:noun:0=nature.landforms; atacama:noun:1=nature.landforms
 FOLIO:R2514918A0c6f0D7ac65A90b	Manus	manus	manus:noun:0=health.anatomy; manus:noun:1=humanities.classical_studies; manus:noun:2=humanities.literature
-FOLIO:R256be089A624FCF9ec41e2b	Okayama	okayama	okayama:noun:0=nature.landforms; okayama:noun:1=nature.landforms; okayama:noun:2=nature.landforms
-FOLIO:R257789A4E178C6509c502f4	Mwanza	mwanza	mwanza:noun:0=nature.landforms; mwanza:noun:1=nature.landforms; mwanza:noun:2=nature.landforms
-FOLIO:R2586fc280a9f3B5e0c94cf7	Paramaribo	paramaribo	paramaribo:noun:0=nature.settlements
-FOLIO:R2835402E031d51D35692621	Galway	galway	galway:noun:0=history.modern_history; galway:noun:1=history.modern_history; galway:noun:2=nature.water_bodies
-FOLIO:R288d82EE680d8E0f71BA666	Porto Novo	porto novo	porto_novo:noun:0=nature.settlements
-FOLIO:R292e7aB2F8a3B0Cf843A83a	Bay	bay	bay:noun:0=nature.water_bodies; bay:noun:1=nature.animals; bay:noun:2=everyday_life.food
-FOLIO:R294302C734258AD0c020b85	Qinghai	qinghai	qinghai:noun:0=people_society.demographics; qinghai:noun:1=history.modern_history; qinghai:noun:2=science.environmental_science
-FOLIO:R2977fe864d1a1CBf779D5f9	Umbria	umbria	umbria:noun:0=nature.landforms; umbria:noun:1=nature.landforms; umbria:noun:2=nature.landforms
-FOLIO:R2A41deBDA16b1A4738FD9c6	Rivera	rivera	rivera:noun:0=people_society.personal_names; rivera:noun:1=nature.water_bodies
-FOLIO:R2B170f9EA636CBB9b1E9e75	Schaffhausen	schaffhausen	schaffhausen:noun:0=nature.landforms; schaffhausen:noun:1=nature.landforms; schaffhausen:noun:2=nature.landforms
-FOLIO:R2B3aa02E476dAF7cb8BDb8e	Rogaland	rogaland	rogaland:noun:0=nature.landforms; rogaland:noun:1=nature.landforms
-FOLIO:R2D9418DD716cBE8c6b53ac2	Sligo	sligo	sligo:noun:0=nature.landforms; sligo:noun:1=nature.landforms; sligo:noun:2=nature.landforms
 FOLIO:R2DCfcfEA33bfF4B51f0Acbf	Lib	lib	lib:noun:0=education.general; lib:noun:1=technology.computing_software
-FOLIO:R2DE156F07ca930447d47330	Pest	pest	pest:noun:0=nature.animals; pest:noun:1=people_society.character_traits
 FOLIO:R2EyNORGNyiB9mHeePFGD	Answer	answer	answer:noun:0=language.communication; answer:noun:1=mathematics.logic; answer:noun:2=education.assessment
-FOLIO:R2F3d1304Ce22315eef314f0	Asyut	asyut	asyut:noun:0=nature.settlements
-FOLIO:R2F8129C366e7DC53262617b	Finnmark	finnmark	finnmark:noun:0=history.modern_history; finnmark:noun:2=history.exploration_colonization
 FOLIO:R2IqyDZKnCcllp4nV93KMn	Shoshone	shoshone	shoshone:noun:0=people_society.ethnicity_race; shoshone:noun:1=language.linguistics
-FOLIO:R3042358A3d836C3478328c0	Fribourg	fribourg	fribourg:noun:0=nature.landforms; fribourg:noun:1=nature.landforms; fribourg:noun:2=nature.landforms
-FOLIO:R30A4596A4b5c532c0d7C58c	Saint Martin (French part)	saint martin	saint_martin:noun:0=nature.settlements
-FOLIO:R30Fc88FDC243A1C7b2749eb	Afghanistan	afghanistan	afghanistan:noun:0=history.modern_history; afghanistan:noun:2=history.modern_history
-FOLIO:R3150ad2908c99ABebcC2d5f	Lombardia	lombardia	lombardia:noun:0=nature.landforms
-FOLIO:R3255ebFEE54133886384e94	Barisal	barisal	barisal:noun:0=nature.landforms; barisal:noun:1=nature.landforms; barisal:noun:2=nature.landforms
-FOLIO:R32775a80Bc1a9CEcee5E2d8	Valletta	valletta	valletta:noun:0=nature.settlements; valletta:noun:1=nature.landforms
 FOLIO:R346a6c1B133e3C6d4d44bbe	Saga	saga	saga:noun:0=humanities.folklore; saga:noun:1=humanities.literature; saga:noun:2=humanities.classical_studies
-FOLIO:R34C5911EEe14BA5497821f2	Vaslui	vaslui	vaslui:noun:0=nature.landforms; vaslui:noun:1=nature.landforms; vaslui:noun:2=nature.landforms
-FOLIO:R34D41a788565CAB5d323035	Heilongjiang	heilongjiang	heilongjiang:noun:0=nature.landforms; heilongjiang:noun:1=nature.landforms
-FOLIO:R35Beb2F558ab6E4929F2676	Tucuman	tucuman	tucuman:noun:0=nature.landforms
-FOLIO:R376ff71FEf3c5E41d515721	Blantyre	blantyre	blantyre:noun:0=nature.landforms; blantyre:noun:1=nature.landforms
-FOLIO:R38Dcc045B8f1BE7335D3f99	Yap	yap	yap:noun:0=nature.animals; yap:noun:1=language.communication; yap:noun:2=people_society.character_traits
 FOLIO:R3978701C6399D7449117504	Tripura	tripura	tripura:noun:0=humanities.religion; tripura:noun:1=humanities.religion; tripura:noun:2=humanities.religion
-FOLIO:R39C4f7936056B5Edfa16da4	Wien	wien	wien:noun:0=history.modern_history; wien:noun:1=education.higher_education
-FOLIO:R3B6ac30EC207C27416651f2	Sibiu	sibiu	sibiu:noun:0=nature.landforms; sibiu:noun:1=nature.landforms; sibiu:noun:2=nature.landforms
-FOLIO:R3B6fd45665ca2B9a52DBf07	Oslo	oslo	oslo:noun:0=people_society.community_life; oslo:noun:1=people_society.demographics
 FOLIO:R3BC9c7B3B4772B9d1422a0e	Jinja	jinja	jinja:noun:0=humanities.religion; jinja:noun:2=technology.computing_software
-FOLIO:R3CE8f476E3b01DF295DA6cd	Erzurum	erzurum	erzurum:noun:0=nature.landforms; erzurum:noun:1=nature.landforms; erzurum:noun:2=nature.landforms
-FOLIO:R3D23cf2FCf794605deF26ad	Amazonas	amazonas	amazonas:noun:0=nature.landforms; amazonas:noun:1=nature.landforms; amazonas:noun:2=nature.landforms
-FOLIO:R3E3044772fa02F6c9232a19	Bari	bari	bari:noun:0=people_society.ethnicity_race; bari:noun:1=language.linguistics; bari:noun:2=people_society.ethnicity_race
-FOLIO:R3ECd8480Aed9AF8f57864db	Mombasa	mombasa	mombasa:noun:0=people_society.community_life
 FOLIO:R3RHvQasGDbNQrgRnK77SQ	Wampanoag	wampanoag	wampanoag:noun:0=people_society.ethnicity_race; wampanoag:noun:1=language.linguistics
-FOLIO:R40809323Bac25C80b2ED40f	Alger	alger	alger:noun:0=people_society.personal_names
 FOLIO:R40Dfb75CBa7b776711D818c	Corse	corse	corse:noun:0=health.anatomy; corse:noun:1=humanities.literature
-FOLIO:R40Fe9411138dEE6b8c5Fa0f	Lara	lara	lara:noun:0=people_society.personal_names; lara:noun:1=nature.settlements
-FOLIO:R427e8dBF3874EAD4e4ACd23	Terengganu	terengganu	terengganu:noun:0=nature.landforms; terengganu:noun:1=nature.landforms; terengganu:noun:2=nature.landforms
-FOLIO:R436b4b64F195EA991dCB0f8	Portuguesa	portuguesa	portuguesa:noun:0=people_society.ethnicity_race; portuguesa:noun:2=language.grammar
-FOLIO:R44D19aACFd516FE019271e7	Hebei	hebei	hebei:noun:0=nature.landforms
-FOLIO:R44Fa73BBE196532d16DC57e	Valais	valais	valais:noun:0=nature.landforms; valais:noun:2=nature.landforms
-FOLIO:R45D3d83F1c4603C9903Af83	Maldives	maldives	maldives:noun:0=nature.water_bodies; maldives:noun:1=nature.water_bodies
-FOLIO:R46B27aD4C648125051D2bb0	Liepaja	liepaja	liepaja:noun:0=nature.landforms; liepaja:noun:1=nature.landforms
-FOLIO:R46Cdb36853393D114f8E9a6	Kildare	kildare	kildare:noun:0=nature.landforms; kildare:noun:1=history.historical_figures; kildare:noun:2=people_society.social_roles
-FOLIO:R471c3bEC75c50241ee5061b	Kanal	kanal	kanal:noun:0=nature.landforms; kanal:noun:1=nature.landforms; kanal:noun:2=nature.landforms
-FOLIO:R475bd625C7d21F6b83C19b2	Westmeath	westmeath	westmeath:noun:0=nature.landforms; westmeath:noun:1=nature.landforms
-FOLIO:R48119b488e4725C2234E06f	Capiz	capiz	capiz:noun:0=nature.animals
-FOLIO:R486a874692b3A9Ee2d7D0b5	Vargas	vargas	vargas:noun:0=people_society.personal_names; vargas:noun:1=nature.settlements
-FOLIO:R49511188Eb498AF48a020a4	Gauteng	gauteng	gauteng:noun:0=nature.landforms; gauteng:noun:1=nature.landforms
 FOLIO:R498cacB296214FA21771b3d	Tubas	tubas	tubas:noun:0=arts.music
-FOLIO:R498f22ECF8186C16166A6d5	Tabasco	tabasco	tabasco:noun:0=nature.plants; tabasco:noun:1=everyday_life.food; tabasco:noun:2=nature.landforms
-FOLIO:R49D9931F70679BF25aFBad7	Santa Catarina	santa catarina	santa_catarina:noun:0=nature.settlements
-FOLIO:R4A0c3665Dc7896925352da3	Nord	nord	nord:noun:0=nature.general; nord:noun:1=nature.general; nord:noun:2=people_society.social_class
-FOLIO:R4A303506Dedc0B6cca84833	Arequipa	arequipa	arequipa:noun:0=nature.landforms; arequipa:noun:1=nature.landforms
 FOLIO:R4A44376C9d7d540853ECe53	Telemark	telemark	telemark:noun:0=sports_recreation.winter_sports; telemark:noun:1=sports_recreation.winter_sports
 FOLIO:R4AB33169Ed69698508265c4	Acre	acre	acre:noun:0=everyday_life.quantity_time
-FOLIO:R4C3f2d9FC5c84F34d63Aee7	Hidalgo	hidalgo	hidalgo:noun:0=history.medieval_history
-FOLIO:R4C6db217C9fe294ce7E06d8	Southern	southern	southern:noun:0=nature.general; southern:noun:1=people_society.culture_customs; southern:noun:2=language.linguistics
-FOLIO:R4D85912C5056F3Eee30B5ec	Nord	nord	nord:noun:0=nature.general; nord:noun:1=nature.general; nord:noun:2=people_society.social_class
-FOLIO:R4EA25dD913ac9E1c5e34fe9	Zambezi	zambezi	zambezi:noun:0=nature.water_bodies; zambezi:noun:1=nature.water_bodies
-FOLIO:R4EC808C8941d604d4fFF947	Vorarlberg	vorarlberg	vorarlberg:noun:0=nature.landforms
-FOLIO:R4EDbcbA5Eb33206c3b090b2	Pando	pando	pando:noun:0=nature.plants
-FOLIO:R4F0d5941B9e309Bf0cA0dae	Luanda	luanda	luanda:noun:0=nature.landforms
-FOLIO:R4F214aC8A1607BB6a386476	Maribor	maribor	maribor:noun:0=nature.landforms; maribor:noun:1=nature.landforms; maribor:noun:2=nature.landforms
-FOLIO:R4FA874C37d5b2C7061D9842	Longford	longford	longford:noun:0=nature.landforms; longford:noun:1=nature.landforms; longford:noun:2=nature.landforms
-FOLIO:R4FF840C157c390Eb0dB9f30	Formosa	formosa	formosa:noun:0=history.exploration_colonization; formosa:noun:1=people_society.general
 FOLIO:R4olkoqXdxjuNfJrjzI08R	Communication Event	communication event	communication_event:noun:0=language.communication; communication_event:noun:2=language.communication
-FOLIO:R506a55A9202eA5F75058b54	Chaco	chaco	chaco:noun:0=nature.landforms; chaco:noun:1=history.world_wars
-FOLIO:R50Fe66ACCd7785345551509	Nagasaki	nagasaki	nagasaki:noun:0=history.modern_history; nagasaki:noun:1=history.world_wars
-FOLIO:R52149e03E2a49C269dD60d8	Hormozgan	hormozgan	hormozgan:noun:0=nature.landforms
 FOLIO:R5257373C47e766Ece17Dae6	Sangha	sangha	sangha:noun:0=humanities.religion; sangha:noun:1=humanities.religion; sangha:noun:2=humanities.religion
-FOLIO:R535cfbFCF137C4Ef3182e54	Kisumu	kisumu	kisumu:noun:0=nature.landforms
-FOLIO:R53Bac7CBE6dc7177e25916b	Yangon	yangon	yangon:noun:0=nature.settlements
-FOLIO:R53C2c814Ab18AB9a66785fe	Pernambuco	pernambuco	pernambuco:noun:0=nature.landforms; pernambuco:noun:1=nature.landforms
-FOLIO:R5470c309489a3B0e2dF286f	Cotopaxi	cotopaxi	cotopaxi:noun:0=nature.landforms; cotopaxi:noun:1=nature.landforms
-FOLIO:R54Dfda371fef21A0acD7c8e	Rajasthan	rajasthan	rajasthan:noun:0=people_society.culture_customs; rajasthan:noun:2=history.modern_history
-FOLIO:R54F22104082386Ba60D11fc	Dublin	dublin	dublin:noun:0=history.modern_history
-FOLIO:R56C202A74d5f02Cb561Eb33	Limerick	limerick	limerick:noun:0=humanities.literature; limerick:noun:1=nature.settlements
-FOLIO:R56D295C2C2d45C035071b42	Kyoto	kyoto	kyoto:noun:0=history.modern_history
 FOLIO:R583fdd29C668D1B9705E41d	Quiche	quiche	quiche:noun:0=everyday_life.food
-FOLIO:R586cceC3E770D54a969Ccfa	Western	western	western:noun:0=nature.landforms; western:noun:1=arts.film; western:noun:2=people_society.culture_customs
-FOLIO:R5917c34E17cf654b66B126b	Line Islands	line islands	line_islands:noun:0=nature.water_bodies
-FOLIO:R5A9d2c9DA8484F7995DB216	Campeche	campeche	campeche:noun:0=nature.landforms; campeche:noun:1=nature.landforms
-FOLIO:R5AA5cf71Ea59ED44c9AF949	Antananarivo	antananarivo	antananarivo:noun:0=nature.landforms
-FOLIO:R5AFd47847f7cEEDaf432160	Mary	mary	mary:noun:0=people_society.personal_names; mary:noun:1=humanities.religion
-FOLIO:R5B62e71DC69c6A0ffeAB37d	North West	north west	north_west:noun:0=nature.landforms; north_west:noun:1=nature.landforms; north_west:noun:2=nature.landforms
-FOLIO:R5BB9d0441b6a56108732c71	Khuzestan	khuzestan	khuzestan:noun:0=nature.landforms; khuzestan:noun:1=nature.landforms
-FOLIO:R5D5d47C27bc930099a718b3	Kairouan	kairouan	kairouan:noun:0=nature.settlements
-FOLIO:R5DA68eE65a35FDD9ef5D7d9	Wellington	wellington	wellington:noun:0=everyday_life.clothing; wellington:noun:1=everyday_life.food; wellington:noun:2=people_society.community_life; wellington:noun:3=people_society.personal_names
-FOLIO:R5DB876CDFd707DA5d95D286	Dushanbe	dushanbe	dushanbe:noun:0=nature.settlements
 FOLIO:R5DE31fCF502672A1c2A3e42	Mara	mara	mara:noun:0=humanities.religion
-FOLIO:R5E0c679BE29e3F86383A5bc	Europe	europe	europe:noun:0=nature.general; europe:noun:1=people_society.culture_customs
-FOLIO:R5E8fd81D8b30E5Ef7c0Ccb6	Kilkenny	kilkenny	kilkenny:noun:0=nature.landforms; kilkenny:noun:1=nature.landforms; kilkenny:noun:2=nature.landforms
-FOLIO:R5F5ba9CFBf1b188d729F6b6	Coimbra	coimbra	coimbra:noun:0=history.modern_history; coimbra:noun:1=education.higher_education; coimbra:noun:2=humanities.cultural_studies
-FOLIO:R5FF45fAFC213CB071bDC9a9	Galapagos	galapagos	galapagos:noun:0=nature.water_bodies; galapagos:noun:1=science.biology; galapagos:noun:2=nature.conservation
-FOLIO:R5Qwp3bORFm04bmgiqdSxQ	Museums	museums	museums:noun:0=humanities.cultural_studies; museums:noun:1=arts.architecture; museums:noun:2=humanities.cultural_studies
-FOLIO:R5xhS2pISHRzJjuVje9wDF	Italian	italian	italian:noun:0=people_society.ethnicity_race; italian:noun:1=language.linguistics
-FOLIO:R604b479E7131E4B617685c5	Brasov	brasov	brasov:noun:0=nature.landforms; brasov:noun:1=nature.landforms; brasov:noun:2=nature.landforms
-FOLIO:R6062f0A6352c79Ae5c7E86b	Chile	chile	chile:noun:0=everyday_life.food; chile:noun:1=history.modern_history
-FOLIO:R61Cb55757af93CCb4dE7ea4	Sucre	sucre	sucre:noun:0=everyday_life.food; sucre:noun:1=science.chemistry; sucre:noun:2=history.modern_history
-FOLIO:R61Ce0aB84cd24A8aa588ff9	Malatya	malatya	malatya:noun:0=nature.settlements
-FOLIO:R61Dec6603ebd92E0a52D0b1	Taichung	taichung	taichung:noun:0=people_society.community_life; taichung:noun:1=people_society.community_life
-FOLIO:R63518cFC1375E41ca5DC84d	Sokoto	sokoto	sokoto:noun:0=history.modern_history; sokoto:noun:1=history.modern_history; sokoto:noun:2=history.modern_history
-FOLIO:R637589BB9e135D70c914156	Kilimanjaro	kilimanjaro	kilimanjaro:noun:0=nature.landforms
-FOLIO:R6388985663155902cbDC0c6	Perlis	perlis	perlis:noun:0=nature.landforms; perlis:noun:1=nature.landforms
-FOLIO:R63Cc12D782077AC0cf8A8da	Western	western	western:noun:0=nature.landforms; western:noun:1=arts.film; western:noun:2=people_society.culture_customs
-FOLIO:R644919C0E9af492b19E5fe3	Kelantan	kelantan	kelantan:noun:0=nature.landforms; kelantan:noun:2=nature.landforms
-FOLIO:R64Acd6AA6ea2C3Bdcd6C9ba	Guadalcanal	guadalcanal	guadalcanal:noun:0=nature.water_bodies; guadalcanal:noun:1=history.world_wars
+FOLIO:R62E6db5BA06f6E28c46825b	Antique	antique	antique:noun:0=everyday_life.shopping; antique:noun:1=business.trade_commerce
 FOLIO:R64Cf97674c65D4278f98753	Tonga	tonga	tonga:noun:0=everyday_life.transportation
-FOLIO:R65B6ad5DE7eeAB60a55F0d8	Aragon	aragon	aragon:noun:0=history.modern_history
-FOLIO:R65Dc044AEdde884d6d80506	Romania	romania	romania:noun:0=history.modern_history
 FOLIO:R66kux3H2uERxPz0E7KxtN	Emotion	emotion	emotion:noun:0=people_society.emotion_attitude
-FOLIO:R67D7f6E3F2f9BC18bdB5089	Cluj	cluj	cluj:noun:0=nature.settlements; cluj:noun:1=people_society.culture_customs
 FOLIO:R689b697347a14B03e2A884a	Bong	bong	bong:noun:0=everyday_life.household_tools; bong:noun:1=arts.music
-FOLIO:R6911de8069bb7A82ae45840	Pangasinan	pangasinan	pangasinan:noun:0=nature.landforms; pangasinan:noun:1=nature.landforms; pangasinan:noun:2=nature.landforms
-FOLIO:R692530B6B4266BA38798a0a	Burgas	burgas	burgas:noun:0=nature.landforms; burgas:noun:1=nature.landforms; burgas:noun:2=nature.landforms
-FOLIO:R6A45acB060fdDFC1b334878	Ankara	ankara	ankara:noun:0=nature.settlements; ankara:noun:1=everyday_life.clothing
-FOLIO:R6B202bD807c4B74cec02a5a	Algeria	algeria	algeria:noun:0=history.modern_history
-FOLIO:R6C281cBED4f8644b098A5c7	Osh	osh	osh:noun:0=nature.settlements
-FOLIO:R6C642b562e78037be3F7a97	Western	western	western:noun:0=nature.landforms; western:noun:1=arts.film; western:noun:2=people_society.culture_customs
-FOLIO:R6C841aD5Ca7eBC1c88B922d	Kalinga	kalinga	kalinga:noun:0=people_society.ethnicity_race; kalinga:noun:1=language.linguistics; kalinga:noun:2=history.ancient_history
-FOLIO:R6D79c3B89289CC7f6a556ad	Hainan	hainan	hainan:noun:0=nature.landforms; hainan:noun:1=nature.landforms; hainan:noun:2=nature.landforms
-FOLIO:R6D7c8aEB188f2932b632a08	Armenia	armenia	armenia:noun:0=history.modern_history; armenia:noun:1=history.ancient_history
-FOLIO:R6D88cdEA8e6e70184a593a3	Niger	niger	niger:noun:0=language.vocabulary; niger:noun:2=history.modern_history
-FOLIO:R6E29ef88F469FAA2da804e9	Batman	batman	batman:noun:0=arts.general; batman:noun:1=people_society.social_roles
-FOLIO:R6E77c5B2481c926d83B3e60	Palau	palau	palau:noun:0=nature.water_bodies
-FOLIO:R6E7fbe8FFc436B9adfE5152	Solothurn	solothurn	solothurn:noun:0=nature.landforms; solothurn:noun:1=nature.landforms; solothurn:noun:2=nature.landforms
-FOLIO:R6FC6b3604138A68a6f386af	Parana	parana	parana:noun:0=nature.landforms; parana:noun:1=nature.landforms
-FOLIO:R6FFeb9E9E0790DBe47A2a2a	Samsun	samsun	samsun:noun:0=nature.settlements
-FOLIO:R709b072BFc8b9C93113Cac4	Zomba	zomba	zomba:noun:0=nature.landforms
-FOLIO:R70B029B7Eb71135ae073182	Turkey	turkey	turkey:noun:0=nature.animals; turkey:noun:1=arts.film; turkey:noun:2=history.modern_history
-FOLIO:R712935EF6d6a33B83e501b7	Africa	africa	africa:noun:0=people_society.demographics
-FOLIO:R71qNACbDr5N2MmSNNjzepm	HTML	html	html:noun:0=technology.computing_software; html:noun:1=technology.computing_software; html:noun:2=technology.computing_software
-FOLIO:R72Ea21FF9858DE20e247cd8	Magdalena	magdalena	magdalena:noun:0=people_society.personal_names; magdalena:noun:1=nature.water_bodies; magdalena:noun:2=nature.landforms
-FOLIO:R72lOZM1yGI094Xre49Qsjc	Icelandic	icelandic	icelandic:noun:0=language.linguistics; icelandic:noun:1=people_society.demographics
 FOLIO:R73hoH1RXYjBTYiGfolpsAF	Event	event	event:noun:0=everyday_life.general; event:noun:1=people_society.community_life; event:noun:2=mathematics.statistics_probability
-FOLIO:R742f62628b7332Bb791B1f3	Arusha	arusha	arusha:noun:0=nature.landforms; arusha:noun:1=nature.landforms; arusha:noun:2=nature.landforms
-FOLIO:R75028e669b95B815faF9f0d	Lori	lori	lori:noun:0=everyday_life.transportation; lori:noun:1=people_society.personal_names
-FOLIO:R766d8bCD412b429d86D48c2	Ouest	ouest	ouest:noun:0=nature.landforms; ouest:noun:1=nature.landforms; ouest:noun:2=nature.landforms
-FOLIO:R768e2703Dd81189bd734790	Jambi	jambi	jambi:noun:0=nature.settlements
 FOLIO:R76RHEQOV5lf5HrdZ6uL0sf	Bias	bias	bias:noun:0=people_society.social_issues; bias:noun:1=science.scientific_method; bias:noun:2=language.communication
 FOLIO:R76ZXX5F2U3ZNFiP1HqoAae	Compilation	compilation	compilation:noun:0=language.writing; compilation:noun:1=language.writing
-FOLIO:R771058D5265501E568ABeb9	Offaly	offaly	offaly:noun:0=nature.landforms; offaly:noun:2=nature.landforms
-FOLIO:R77Db6d1250daA130c0DA133	Kingston	kingston	kingston:noun:0=nature.settlements; kingston:noun:1=people_society.personal_names; kingston:noun:2=technology.hardware_devices
-FOLIO:R785f9e8FB28b96683295702	Varna	varna	varna:noun:0=science.materials_science; varna:noun:1=people_society.social_class; varna:noun:2=language.phonetics_pronunciation
-FOLIO:R78951405Df214888a27F926	Bulawayo	bulawayo	bulawayo:noun:0=nature.landforms; bulawayo:noun:1=nature.landforms
-FOLIO:R78D19a8243d13A79455Dfff	Kinshasa	kinshasa	kinshasa:noun:0=people_society.community_life; kinshasa:noun:1=people_society.demographics
-FOLIO:R78D8bfDE1ce8CE66bbC2258	Yaren	yaren	yaren:noun:0=nature.settlements
 FOLIO:R78GjjjPmU6NWb1YWUPS8am	Training Materials	training materials	training_materials:noun:0=education.pedagogy
 FOLIO:R78U745sBIVGHkJwe1cJA9E	Asexual	asexual	asexual:noun:0=people_society.gender_identity
-FOLIO:R79Cc3a5B129e53A6635B5e6	Nagaland	nagaland	nagaland:noun:0=people_society.culture_customs; nagaland:noun:1=people_society.culture_customs
-FOLIO:R79aItNTJQwHgR002wuX3iC	Data Format	data format	data_format:noun:0=technology.computing_software
 FOLIO:R7A530950987e1180efF5d5c	Cork	cork	cork:noun:0=science.materials_science; cork:noun:1=everyday_life.household_tools
-FOLIO:R7AF6e85F99bf87C8beE22b1	Amazonas	amazonas	amazonas:noun:0=nature.landforms; amazonas:noun:1=nature.landforms; amazonas:noun:2=nature.landforms
-FOLIO:R7B6d6c12B6332CA03713b23	Basilicata	basilicata	basilicata:noun:0=nature.landforms
-FOLIO:R7B90dd3673d6987c980Ed63	Concepcion	concepcion	concepcion:noun:0=nature.landforms; concepcion:noun:1=nature.landforms; concepcion:noun:2=nature.landforms
-FOLIO:R7B93c780B00cF9F53dFB795	Cagayan	cagayan	cagayan:noun:0=nature.landforms; cagayan:noun:1=nature.landforms; cagayan:noun:2=nature.landforms
-FOLIO:R7BB23b1E4a69E517c7A1649	Anhui	anhui	anhui:noun:0=nature.landforms
-FOLIO:R7C1015EC439f3D80e758f17	Tobago	tobago	tobago:noun:0=nature.settlements
-FOLIO:R7C4614C4D7aeB1Ed0528f65	Bucuresti	bucuresti	bucuresti:noun:0=nature.landforms
-FOLIO:R7CB2af09388c0281027D332	Waikato	waikato	waikato:noun:0=nature.landforms; waikato:noun:1=nature.landforms; waikato:noun:2=nature.landforms
-FOLIO:R7CCfb544Db8eF041e0C1b27	Batangas	batangas	batangas:noun:0=nature.landforms; batangas:noun:1=nature.landforms; batangas:noun:2=nature.landforms
-FOLIO:R7DAf9c7A16281127d10023a	Loreto	loreto	loreto:noun:0=nature.landforms; loreto:noun:1=nature.landforms; loreto:noun:2=nature.landforms
-FOLIO:R7DC7ed164defE88ab1BB1f2	Extremadura	extremadura	extremadura:noun:0=nature.landforms
-FOLIO:R7E6c6d02866dCFC2c5B553c	Ghat	ghat	ghat:noun:0=arts.architecture; ghat:noun:2=nature.landforms
-FOLIO:R7FA1f83074301E0f05B31ab	Saarland	saarland	saarland:noun:0=nature.landforms; saarland:noun:1=nature.landforms; saarland:noun:2=nature.landforms
-FOLIO:R7FDb0cBEB214680f1e8148e	Kwajalein	kwajalein	kwajalein:noun:0=nature.landforms; kwajalein:noun:1=nature.landforms; kwajalein:noun:2=nature.landforms
 FOLIO:R7GnVIxy66F2kirVF7c0OS	Tonga (Nyasa)	tonga	tonga:noun:0=everyday_life.transportation
 FOLIO:R7I291Cta585JlhpZvxV48y	Educational Record	educational record	educational_record:noun:0=education.assessment; educational_record:noun:2=education.assessment
 FOLIO:R7Jdt796FlfxJBeCqnkZJQV	Homeowner	homeowner	homeowner:noun:0=everyday_life.home
-FOLIO:R7KDJyh80vhtCWC1jOuKzQw	Hittite	hittite	hittite:noun:0=language.linguistics; hittite:noun:1=history.ancient_history
 FOLIO:R7MAzHUZtwmTtToqN57q7V6	Neural Network	neural network	neural_network:noun:0=technology.robotics_ai; neural_network:noun:1=science.biology
-FOLIO:R7P7kd5lf60cWlSHHwGsH5k	Report	report	report:noun:0=language.writing; report:noun:1=language.communication; report:noun:2=business.general
 FOLIO:R7PX1rDXmNgCrkuDqtGGkIS	Bus	bus	bus:noun:0=everyday_life.transportation; bus:noun:1=technology.hardware_devices
 FOLIO:R7QWiAxrz8JDUrQnMjSWWkc	Reptiles	reptilia	reptilia:noun:0=science.biology; reptilia:noun:1=science.biology
 FOLIO:R7THdgb6vPCuvEA0fCDjLtd	Hypoglycemia	hypoglycemia	hypoglycemia:noun:0=health.disease_illness
@@ -275,282 +49,109 @@ FOLIO:R7XcGXa2rEcUSGCu7ccjEGU	Inside	inside	inside:noun:0=everyday_life.home; in
 FOLIO:R7Xjkk7EkIgiSA3LmsPofVx	Illegal Gambling	gambling	gambling:noun:0=sports_recreation.games_puzzles; gambling:noun:1=health.mental_health
 FOLIO:R7cwZdGnY26jz3hPtFTS2DU	Secrecy	secrecy	secrecy:noun:0=language.communication
 FOLIO:R7e6JFsdgxEOnQLXBpY1lD3	Public Intoxication	drunkenness	drunkenness:noun:0=health.disease_illness; drunkenness:noun:2=health.public_health
-FOLIO:R7eVYpVEsDqKqMUL2HL23Zr	Board of Directors	board of directors	board_of_directors:noun:0=business.management
 FOLIO:R7enUoy4ZHx0ta0z1u6FYOc	Melanoma	melanoma	melanoma:noun:0=health.disease_illness; melanoma:noun:1=health.disease_illness
-FOLIO:R7fwZiSjoYa5rxaKAZrRRBl	Persian	persian	persian:noun:0=people_society.ethnicity_race; persian:noun:1=language.linguistics; persian:noun:2=nature.animals
-FOLIO:R7gETKu9y17QgudVCw9ywFL	Arawak	arawak	arawak:noun:0=people_society.ethnicity_race; arawak:noun:1=language.linguistics
 FOLIO:R7i2ORoKxk0xBatFZVBghvU	Creek	creek	creek:noun:0=nature.water_bodies; creek:noun:1=nature.water_bodies
-FOLIO:R7kd2PgfuPfkKfRR9ot6j67	Zapotec	zapotec	zapotec:noun:0=people_society.ethnicity_race; zapotec:noun:1=language.linguistics; zapotec:noun:2=language.writing
 FOLIO:R7m7hUozBtx7JODLD9VRxlY	Motorcyclist	motorcyclist	motorcyclist:noun:0=everyday_life.transportation; motorcyclist:noun:1=sports_recreation.individual_sports
 FOLIO:R7nqxxlAfhYqqSA2UQ5UxpX	Negligence	negligence	negligence:noun:0=people_society.character_traits
 FOLIO:R7oBWHStfmqTLn2MypkW3Pj	Entity	entity	entity:noun:0=humanities.philosophy
 FOLIO:R7oBWHStfmqTLn2MypkW3Pj	Entity	organization	organization:noun:0=language.writing; organization:noun:1=people_society.community_life
 FOLIO:R7pmemTPiA07Ig74u5U5ETD	Tonga	tonga	tonga:noun:0=everyday_life.transportation
-FOLIO:R7qxVfcFITBa22T7miUZb0x	Cattle	cattle	cattle:noun:0=nature.animals
-FOLIO:R7qxVfcFITBa22T7miUZb0x	Cattle	cows	cows:noun:0=nature.animals
-FOLIO:R7yYrJ0JY2Mn3NH89SKwVGf	Assamese	assamese	assamese:noun:0=people_society.demographics; assamese:noun:1=language.linguistics
+FOLIO:R7stuyBOVoKONmbxJyfKzkl	Komi	komi	komi:noun:0=sports_recreation.games_puzzles; komi:noun:1=law_government.government_structure
 FOLIO:R7ycrZHHD5JqaYqf3qOIU46	Monitoring	monitoring	monitoring:noun:0=science.scientific_method
-FOLIO:R7z0wkcHx9WmE4Embu9PeZo	Xhosa	xhosa	xhosa:noun:0=language.linguistics; xhosa:noun:1=people_society.ethnicity_race
 FOLIO:R7zWBvIqiJSsycwsIWy550C	Transgender	transgender	transgender:noun:0=people_society.gender_identity; transgender:noun:1=people_society.gender_identity
-FOLIO:R81F237CCB4166713e9A4866	Isabela	isabela	isabela:noun:0=people_society.personal_names; isabela:noun:1=nature.settlements
-FOLIO:R82F6e3AADf0d1230489Baed	Palladium	palladium	palladium:noun:0=science.chemistry; palladium:noun:1=humanities.mythology
 FOLIO:R83QdGrsILzbGVfk0bqF1kw	Interview	interview	interview:noun:0=language.communication
-FOLIO:R847af262Aef8663fd585f44	Isla	isla	isla:noun:0=nature.water_bodies; isla:noun:1=people_society.personal_names
 FOLIO:R84Bb30349da3D80a7902d2b	Bender	bender	bender:noun:0=technology.engineering; bender:noun:1=health.disease_illness; bender:noun:2=humanities.folklore
-FOLIO:R8555b1DD3eab76Da64C13bc	Saitama	saitama	saitama:noun:0=nature.settlements
-FOLIO:R862cda5CAc0762Cade80e56	Bushehr	bushehr	bushehr:noun:0=nature.landforms; bushehr:noun:1=nature.landforms; bushehr:noun:2=nature.landforms
-FOLIO:R862f7f21Cca4B81ac0FBd6e	Mbeya	mbeya	mbeya:noun:0=nature.landforms; mbeya:noun:1=nature.landforms
-FOLIO:R86340c91Ca3cD4208fB951a	Falcon	falcon	falcon:noun:0=nature.animals; falcon:noun:1=humanities.cultural_studies; falcon:noun:2=technology.transportation_technology
-FOLIO:R864d8781D532473bdfD1d9e	Santa Catarina	santa catarina	santa_catarina:noun:0=nature.settlements
-FOLIO:R872308548d6997Bb09BBe0a	Skopje	skopje	skopje:noun:0=people_society.community_life; skopje:noun:1=people_society.demographics
-FOLIO:R872e3e5kIyoshDoSHVM94B	Landlord	landlord	landlord:noun:0=business.real_estate; landlord:noun:1=history.medieval_history
-FOLIO:R87300a502a07202ae0BB5d6	Alborz	alborz	alborz:noun:0=nature.landforms
-FOLIO:R87D50d3C24cb29E86b462a3	Braga	braga	braga:noun:0=nature.settlements
-FOLIO:R880e07BECc5495A6d4D7e80	Ascension	ascension	ascension:noun:0=everyday_life.actions_routines; ascension:noun:1=humanities.religion; ascension:noun:2=people_society.social_roles
-FOLIO:R884ONg45BgT9DZH0Ma0vDE	Vietnamese	vietnamese	vietnamese:noun:0=people_society.ethnicity_race; vietnamese:noun:1=language.linguistics
-FOLIO:R8865ff7FC4767B6651F4a14	Sofia	sofia	sofia:noun:0=nature.settlements; sofia:noun:1=people_society.personal_names
-FOLIO:R886a721175d1062d693C48b	Aguascalientes	aguascalientes	aguascalientes:noun:0=nature.landforms; aguascalientes:noun:1=nature.landforms; aguascalientes:noun:2=nature.landforms
-FOLIO:R89E5f4185a14D400208Befa	Martinique	martinique	martinique:noun:0=nature.landforms
-FOLIO:R8A816a9D0508349125284ea	Porto	porto	porto:noun:0=everyday_life.transportation; porto:noun:1=nature.settlements
 FOLIO:R8AAblwlQ22IXUTUQKLe3eq	Asian	asian	asian:noun:0=people_society.ethnicity_race
 FOLIO:R8AORuzsRXk52eNiFeQb1Oh	Algonquian	algonquian	algonquian:noun:0=people_society.ethnicity_race; algonquian:noun:1=language.linguistics
-FOLIO:R8B2d2cC26fc4EF27b6F55c3	Portland	portland	portland:noun:0=history.modern_history; portland:noun:1=technology.engineering; portland:noun:2=science.materials_science
-FOLIO:R8B32140849027A711010ec3	Puducherry	puducherry	puducherry:noun:0=nature.landforms; puducherry:noun:1=nature.landforms; puducherry:noun:2=nature.landforms
-FOLIO:R8C2e43863ce61A85aeA47db	Otago	otago	otago:noun:0=nature.landforms; otago:noun:1=nature.landforms; otago:noun:2=nature.landforms
-FOLIO:R8C78a9608b0c8AAa3fE7867	Bolivar	bolivar	bolivar:noun:0=business.finance; bolivar:noun:1=people_society.personal_names; bolivar:noun:2=nature.settlements
-FOLIO:R8CB3b2FD1a09700e24A2aba	Western	western	western:noun:0=nature.landforms; western:noun:1=arts.film; western:noun:2=people_society.culture_customs
-FOLIO:R8D0ded7A2082A0Cae7C8fb5	Zulia	zulia	zulia:noun:0=nature.landforms; zulia:noun:1=nature.landforms; zulia:noun:2=nature.landforms
-FOLIO:R8D4cf8B4B23bEDD5adFC7b3	Antofagasta	antofagasta	antofagasta:noun:0=nature.landforms; antofagasta:noun:1=nature.landforms; antofagasta:noun:2=nature.landforms
-FOLIO:R8D845d84E6641F96f2ABe01	Granada	granada	granada:noun:0=everyday_life.food; granada:noun:1=nature.settlements
 FOLIO:R8DAc864CCb1b181b775C446	Ebon	ebon	ebon:noun:0=arts.visual_art; ebon:noun:1=arts.crafts; ebon:noun:2=humanities.literature
 FOLIO:R8EV9YbyezketlccJqvPgWI	Addendum	addendum	addendum:noun:0=language.writing
-FOLIO:R8F0b2cE1Ff3322E5a027124	Liege	liege	liege:noun:0=history.medieval_history; liege:noun:1=people_society.social_roles; liege:noun:2=people_society.social_roles
-FOLIO:R8F8ad653D498CFDe9a5C960	Arno	arno	arno:noun:0=nature.water_bodies; arno:noun:1=people_society.personal_names
-FOLIO:R8GKqXm8iayNKUMNuFHSrN	Chuvash	chuvash	chuvash:noun:0=people_society.ethnicity_race; chuvash:noun:1=language.linguistics
 FOLIO:R8Gn7fCY4bwZYcotFK7je9z	Podcast	podcast	podcast:noun:0=technology.internet_communication; podcast:noun:1=technology.internet_communication
 FOLIO:R8H9foK2FqmL2yHmJoYVtik	Book	book	book:noun:0=language.writing; book:noun:2=humanities.literature
 FOLIO:R8IcihguxvFkp0sFl513KKO	Precis	precis	precis:noun:0=language.reading_comprehension; precis:noun:1=language.writing
-FOLIO:R8Jgkb8zAsxQEH7BoHCCqy4	Fon	fon	fon:noun:0=language.phonetics_pronunciation
-FOLIO:R8M2Pz3TDqMnZZVx8TMoYgs	Bengali	bengali	bengali:noun:0=language.linguistics; bengali:noun:1=people_society.ethnicity_race
-FOLIO:R8NcEcKGyel5bjJtbeSaJpa	Tsimshian	tsimshian	tsimshian:noun:0=people_society.ethnicity_race; tsimshian:noun:1=language.linguistics
-FOLIO:R8Owlw8lExgVrP33uVeEYD1	Norwegian	norwegian	norwegian:noun:0=people_society.demographics; norwegian:noun:1=language.linguistics
+FOLIO:R8P4TfMxPJDoohmXd80aX2H	Nauru	nauru	nauru:noun:0=law_government.polities
 FOLIO:R8QBuMoK1uPFeLW0sg40CdA	Contact Information	contact information	contact_information:noun:0=language.communication
 FOLIO:R8Qj3vVE60T2ayHgCD8V4S0	Blood Test	blood test	blood_test:noun:0=health.medicine_treatment
 FOLIO:R8R8UmW7BMpj43ijJNKhIaQ	Kickapoo	kickapoo	kickapoo:noun:0=people_society.ethnicity_race; kickapoo:noun:1=language.linguistics; kickapoo:noun:2=nature.settlements
-FOLIO:R8RHDWYB8AvApZyPoBsWSOP	Mohawk	mohawk	mohawk:noun:0=everyday_life.clothing; mohawk:noun:1=people_society.ethnicity_race
-FOLIO:R8WUx6cvHnC768ZgHgv8R9N	Syriac	syriac	syriac:noun:0=language.linguistics; syriac:noun:1=language.writing
-FOLIO:R8YvDQ0MFsIxCp9axP8Cb2y	Arabic	arabic	arabic:noun:0=language.linguistics; arabic:noun:1=language.writing
-FOLIO:R8Z1N9HSgc8psAq3zYsdbTK	Neapolitan	neapolitan	neapolitan:noun:0=people_society.demographics; neapolitan:noun:1=language.linguistics; neapolitan:noun:2=everyday_life.food
 FOLIO:R8ZoexvKaSha3flQBRpbS5A	Powhatan	powhatan	powhatan:noun:0=people_society.ethnicity_race; powhatan:noun:1=language.linguistics; powhatan:noun:2=history.modern_history
-FOLIO:R8bPFVkkz9RvEmNQsSvxu6e	Tatar	tatar	tatar:noun:0=people_society.ethnicity_race; tatar:noun:1=language.linguistics
-FOLIO:R8br5uBchlOFIutyelMh4Cl	Shan	shan	shan:noun:0=people_society.ethnicity_race; shan:noun:1=language.linguistics
 FOLIO:R8cAniiiBonXRUaslS04fix	Birth	birth	birth:noun:0=health.reproduction_growth; birth:noun:1=everyday_life.general
 FOLIO:R8dNg6hfHZAawQHYgaqgTcJ	Paiute	paiute	paiute:noun:0=people_society.ethnicity_race; paiute:noun:1=language.linguistics; paiute:noun:2=people_society.ethnicity_race
-FOLIO:R8gGh4aVqAw2psozkfHq4ZY	Ido	ido	ido:noun:0=language.linguistics
 FOLIO:R8gp8WXnaGLbKNizT4VWTZj	De Minimis	triviality	triviality:noun:0=language.vocabulary
 FOLIO:R8gv167m4FSkg9GYN88nuq2	Volunteer	volunteer	volunteer:noun:0=people_society.social_roles; volunteer:noun:1=people_society.social_roles
 FOLIO:R8hnGOe7W6bbC8HjkaMmkPb	Technical Report	technical report	technical_report:noun:0=science.scientific_method; technical_report:noun:2=science.scientific_method
-FOLIO:R8k6imDKa8sTJXJOt1i5OVn	Herero	herero	herero:noun:0=people_society.ethnicity_race; herero:noun:1=language.linguistics
 FOLIO:R8ks4EFK3G3kUjRP4Fu5gtK	Death	death	death:noun:0=health.disease_illness; death:noun:1=everyday_life.actions_routines; death:noun:2=humanities.folklore
-FOLIO:R8ltWSvJgHxq0FIdULjl942	Japanese	japanese	japanese:noun:0=people_society.ethnicity_race; japanese:noun:1=language.linguistics
-FOLIO:R8mVQPOiTPBSdYKLHfBN7wA	Slovenian	slovenian	slovenian:noun:0=people_society.ethnicity_race; slovenian:noun:1=language.linguistics
-FOLIO:R8mcful9ybHs1jjHXvXvISk	Occitan	occitan	occitan:noun:0=language.linguistics; occitan:noun:1=people_society.ethnicity_race
-FOLIO:R8miiXZzcMCmlChCuhliRzS	AIDS	aids	aids:noun:0=everyday_life.general; aids:noun:1=business.finance
-FOLIO:R8pJLnvoKFUYUeDJsF2d9uF	Estonian	estonian	estonian:noun:0=people_society.ethnicity_race; estonian:noun:1=language.linguistics
-FOLIO:R8qOFsKkZMT4pf5DZrmzLEX	Trees	timber	timber:noun:0=business.manufacturing; timber:noun:1=nature.plants
-FOLIO:R8rXyHyHKWqqlml4e0t5GMq	Tajik	tajik	tajik:noun:0=people_society.ethnicity_race; tajik:noun:1=language.linguistics
 FOLIO:R8sMcpQMoO3EOWAx73lpZ16	Religion	religion	religion:noun:0=humanities.religion; religion:noun:1=humanities.religion; religion:noun:2=humanities.religion
-FOLIO:R8te32edjcSUX4tMurhyng6	Basque	basque	basque:noun:0=people_society.ethnicity_race; basque:noun:1=language.linguistics; basque:noun:2=people_society.culture_customs
 FOLIO:R8uCJkVrnbXkz39DmzRAgTq	ZIP	zip	zip:noun:0=everyday_life.clothing; zip:noun:1=everyday_life.quantity_time; zip:noun:2=people_society.character_traits
 FOLIO:R8uVWChGsC92Bmw3gMJD9bg	Creativity	creativity	creativity:noun:0=science.scientific_method; creativity:noun:2=technology.engineering
-FOLIO:R8yo65qSNd6fmLhDiMiHAld	Swahili	swahili	swahili:noun:0=language.linguistics; swahili:noun:1=people_society.ethnicity_race; swahili:noun:2=people_society.culture_customs
 FOLIO:R8zA9PP2uC2sydC86U0I4Gi	Prompt	prompt	prompt:noun:0=language.communication; prompt:noun:1=technology.computing_software
-FOLIO:R90Aa080A2e04365863B5573	Kochi	kochi	kochi:noun:0=history.exploration_colonization; kochi:noun:1=people_society.community_life; kochi:noun:2=people_society.community_life
-FOLIO:R90E76fB059ffBDC4e2DC24d	Namur	namur	namur:noun:0=nature.landforms; namur:noun:1=nature.landforms
-FOLIO:R9105b0F1B63e42C18855bd1	Paola	paola	paola:noun:0=people_society.personal_names; paola:noun:1=people_society.personal_names
 FOLIO:R91CQ352NcMwQEbSNARnvYd	Anger	anger	anger:noun:0=people_society.emotion_attitude; anger:noun:1=people_society.emotion_attitude
-FOLIO:R91E9649581f178D8fcDC8d1	Herrera	herrera	herrera:noun:0=people_society.personal_names
 FOLIO:R93oC7LagxAP0b2nzlVq1ET	Effective Beginning Date	start date	start_date:noun:0=everyday_life.quantity_time
-FOLIO:R9456f354Ea6c80F0bc004ce	Shaanxi	shaanxi	shaanxi:noun:0=nature.landforms
-FOLIO:R94D44794Da9696A1d2E5e7e	Lac	lac	lac:noun:0=nature.animals; lac:noun:1=mathematics.arithmetic
-FOLIO:R94E2762E87443A60951Eb7a	Andalucia	andalucia	andalucia:noun:0=nature.landforms
-FOLIO:R95F99fC01183D1Dced58c2d	Denizli	denizli	denizli:noun:0=nature.settlements
-FOLIO:R9659ecCDEd43AEA6f169d24	Yamagata	yamagata	yamagata:noun:0=nature.landforms; yamagata:noun:1=nature.landforms; yamagata:noun:2=nature.landforms; yamagata:noun:3=nature.landforms
-FOLIO:R9726fd3271e5C84efa5Ea51	Chiang Mai	chiang mai	chiang_mai:noun:0=nature.settlements
-FOLIO:R981472117ffd1F57f19A75e	Tartus	tartus	tartus:noun:0=nature.settlements
-FOLIO:R9819e29D2ef197C97a5F855	Aargau	aargau	aargau:noun:0=nature.landforms; aargau:noun:1=nature.landforms; aargau:noun:2=nature.landforms
-FOLIO:R9877e14688670F33d9D2e96	Nayarit	nayarit	nayarit:noun:0=nature.landforms; nayarit:noun:1=nature.landforms; nayarit:noun:2=nature.landforms
-FOLIO:R9884a0AAD35aF44fcc08f10	Jerusalem	jerusalem	jerusalem:noun:0=history.modern_history; jerusalem:noun:2=humanities.religion
-FOLIO:R9893541A09c0DFC18a61a8a	Wicklow	wicklow	wicklow:noun:0=nature.landforms; wicklow:noun:1=nature.landforms; wicklow:noun:2=nature.landforms
-FOLIO:R98Bb89C93fb511D12fF29b6	Fukui	fukui	fukui:noun:0=nature.landforms; fukui:noun:1=nature.landforms; fukui:noun:2=nature.landforms
 FOLIO:R98LwwW6Zozu5EHwFgpns7	Fish	fish	fish:noun:0=nature.animals; fish:noun:1=everyday_life.food; fish:noun:2=people_society.social_roles
 FOLIO:R996WtCH3h9VroTEbPc4hpS	Suspension	suspension	suspension:noun:0=everyday_life.actions_routines; suspension:noun:1=technology.transportation_technology; suspension:noun:2=education.school_life; suspension:noun:3=science.chemistry
-FOLIO:R99EkHSzi9hQi6pRYWKXIHn	Serer	serer	serer:noun:0=people_society.ethnicity_race
-FOLIO:R99Fd9b8DD51a3E24949C79d	Bethlehem	bethlehem	bethlehem:noun:0=nature.settlements
-FOLIO:R9A0e9a55806139A41a7Bc49	Wakayama	wakayama	wakayama:noun:0=nature.landforms; wakayama:noun:1=nature.landforms
-FOLIO:R9AD7f708Bba44E400560df2	Rocha	rocha	rocha:noun:0=science.earth_science; rocha:noun:1=nature.landforms
-FOLIO:R9AFbdb9EEa2dAF54792C20e	Rio Negro	rio negro	rio_negro:noun:0=nature.water_bodies
 FOLIO:R9B1a42B7Fb8b209485D1a28	Batna	batna	batna:noun:0=business.management
-FOLIO:R9BAa9eA4B48b07D560402d6	Nordland	nordland	nordland:noun:0=nature.landforms; nordland:noun:1=nature.landforms
-FOLIO:R9BBcc241C14fA0869d175db	Helmand	helmand	helmand:noun:0=nature.climate; helmand:noun:1=nature.water_bodies; helmand:noun:2=history.world_wars
 FOLIO:R9C75f0FE7240C84986870e8	Meta	meta	meta:noun:0=technology.computing_software; meta:noun:1=science.scientific_method
-FOLIO:R9CB0c8323c1e07Ec80BEf22	Taranaki	taranaki	taranaki:noun:0=nature.landforms; taranaki:noun:1=nature.landforms; taranaki:noun:2=nature.landforms
 FOLIO:R9CCB4r40McaT5uTnKxGaDX	Interpreter	interpreter	interpreter:noun:0=language.translation; interpreter:noun:1=technology.computing_software; interpreter:noun:2=language.communication
 FOLIO:R9CPTzQXRonakaswNB7cgH9	Audiobook	audiobook	audiobook:noun:0=arts.general
-FOLIO:R9DB51aA3Ee3c09Ed4b941ee	Fujian	fujian	fujian:noun:0=nature.landforms; fujian:noun:1=nature.landforms; fujian:noun:2=nature.landforms
-FOLIO:R9EOkKjFMzLEwh7coNAwXjX	Parent	parent	parent:noun:0=people_society.family_relationships; parent:noun:1=business.management; parent:noun:2=technology.computing_software
-FOLIO:R9EPskaLLUecJZfcEaPij3F	Yoruba	yoruba	yoruba:noun:0=language.linguistics; yoruba:noun:1=people_society.ethnicity_race
-FOLIO:R9F643bF73e237B21517F82b	Sofia	sofia	sofia:noun:0=nature.settlements; sofia:noun:1=people_society.personal_names
-FOLIO:R9FF99b05Dc6366Eb9a57d24	Tanganyika	tanganyika	tanganyika:noun:0=nature.water_bodies; tanganyika:noun:1=history.exploration_colonization
 FOLIO:R9HsbQwajjK8Wz4gWE3mBsT	Kiowa	kiowa	kiowa:noun:0=people_society.ethnicity_race; kiowa:noun:1=language.linguistics
 FOLIO:R9HuNkpWm24qMFuntuug6RB	Evidence	evidence	evidence:noun:0=science.scientific_method; evidence:noun:1=science.physics
-FOLIO:R9I2QOa7u8LwCRqKo4FKdPd	Timberland Real Estate Asset	forest	forest:noun:0=nature.ecosystems
-FOLIO:R9IzhAblo458C3KocqvlM7J	vendor	vendor	vendor:noun:0=business.trade_commerce; vendor:noun:1=business.trade_commerce; vendor:noun:2=business.real_estate
-FOLIO:R9JHdxc5JeJIZii5dRB6fnJ	Mari	mari	mari:noun:0=language.grammar; mari:noun:1=nature.water_bodies
-FOLIO:R9KCAfWPm4canGsqQQCXmTx	XML	xml	xml:noun:0=technology.computing_software; xml:noun:1=technology.computing_software
 FOLIO:R9L8for79Fum92Mnj3AXvoX	Synchronous Broadcast Transmission	live broadcast	live_broadcast:noun:0=arts.film; live_broadcast:noun:1=arts.film
 FOLIO:R9MMlqzfd7rJU1iHr9qsrdG	Mentoring	mentoring	mentoring:noun:0=education.pedagogy; mentoring:noun:1=education.pedagogy; mentoring:noun:2=education.pedagogy
 FOLIO:R9MYE9royNkdydgCkQkCwkN	Bystander	bystander	bystander:noun:0=people_society.community_life
-FOLIO:R9Mf6FzXmAtZfF3eSLrb8Fa	Filer	filer	filer:noun:0=business.occupations_careers; filer:noun:1=technology.computing_software
-FOLIO:R9NIOuuJ0SaNPWjNPtVGlol	Montenegrin	montenegrin	montenegrin:noun:0=people_society.demographics; montenegrin:noun:1=language.linguistics
-FOLIO:R9OzLGaxH8FUa0QvIz14ZLA	Lender	lender	lender:noun:0=business.finance
 FOLIO:R9PFE70Bk4pAE3ezQJLJ3UN	Iroquois	iroquois	iroquois:noun:0=history.modern_history; iroquois:noun:1=people_society.ethnicity_race; iroquois:noun:2=language.linguistics
 FOLIO:R9PQzGkaFkFgcMvZOKrmbqT	Time	time	time:noun:0=science.physics; time:noun:1=science.physics; time:noun:2=science.scientific_method
-FOLIO:R9Q9CszYRTjTgwQ8JRqVZ0x	Broker	broker	broker:noun:0=business.trade_commerce
 FOLIO:R9QxJZ2V1DDLTPgviKpGISS	Pedestrian	pedestrian	pedestrian:noun:0=everyday_life.transportation; pedestrian:noun:1=people_society.character_traits
 FOLIO:R9QxJZ2V1DDLTPgviKpGISS	Pedestrian	walker	walker:noun:0=health.fitness_exercise; walker:noun:1=everyday_life.transportation
-FOLIO:R9TV772Ei6IQ2ycke1hD5t0	Hindi	hindi	hindi:noun:0=language.linguistics
 FOLIO:R9VgIGcn57gilWLqtXc5cNb	Class	class	class:noun:0=education.school_life; class:noun:1=people_society.social_class; class:noun:2=science.biology
-FOLIO:R9XzhwCpeRMiamNWRROfb75	Meeting	meeting	meeting:noun:0=business.management; meeting:noun:2=people_society.family_relationships
 FOLIO:R9ZfQLUD6x5jCYfUMTaf8m9	Sex	sex	sex:noun:0=health.reproduction_growth; sex:noun:1=health.reproduction_growth
 FOLIO:R9aSzp9cEiBCzObnP92jYFX	Location	location	location:noun:0=everyday_life.general; location:noun:1=everyday_life.quantity_time; location:noun:2=technology.internet_communication
 FOLIO:R9ax95LqcYtqPK458D1g7aP	Animals	animals	animals:noun:0=nature.animals; animals:noun:2=people_society.character_traits
-FOLIO:R9bNFLT15UrffRdPxe2BMdo	Somali	somali	somali:noun:0=people_society.ethnicity_race; somali:noun:1=language.linguistics
-FOLIO:R9bhPKiJf79yZ1HaV0g6wFE	Slovak	slovak	slovak:noun:0=people_society.ethnicity_race; slovak:noun:1=language.linguistics
-FOLIO:R9dsfVGAzHq2wmzins8Dte2	Sindhi	sindhi	sindhi:noun:0=people_society.ethnicity_race; sindhi:noun:1=language.linguistics
 FOLIO:R9dxqPk9QlxrOdg67ESvC34	Film	film	film:noun:0=science.materials_science; film:noun:1=arts.film; film:noun:2=arts.photography
 FOLIO:R9e4vWWs6WrhQwNxabY3ra5	White	caucasian	caucasian:noun:0=people_society.ethnicity_race; caucasian:noun:1=people_society.ethnicity_race
 FOLIO:R9e4vWWs6WrhQwNxabY3ra5	White	white	white:noun:0=arts.visual_art; white:noun:1=arts.visual_art; white:noun:2=people_society.ethnicity_race
-FOLIO:R9eW4sfeFepDiQThY7iRxkq	Car	car	car:noun:0=everyday_life.transportation; car:noun:1=everyday_life.transportation
-FOLIO:R9fxfUhT4J5OgPl0jSg2PvB	Danish	danish	danish:noun:0=everyday_life.food; danish:noun:1=people_society.demographics
-FOLIO:R9g0W8aJlZGxI0YFXt31EPN	Aragonese	aragonese	aragonese:noun:0=people_society.demographics; aragonese:noun:1=language.linguistics; aragonese:noun:2=history.historical_figures
 FOLIO:R9iT6lOJFRf3RRgQvWcSXdT	Tutoring	tutoring	tutoring:noun:0=education.pedagogy; tutoring:noun:1=education.pedagogy
 FOLIO:R9iyfOK29HyCZIFSph4dyTF	Shawnee	shawnee	shawnee:noun:0=people_society.ethnicity_race; shawnee:noun:1=language.linguistics
-FOLIO:R9lL6FAaXWCq2v8t7r1cHiy	Polish	polish	polish:noun:0=everyday_life.household_tools; polish:noun:1=everyday_life.household_tools; polish:noun:2=people_society.character_traits
 FOLIO:R9leXQCbF3uoIF8Vb7tTi1n	Jute	jute	jute:noun:0=nature.plants; jute:noun:1=nature.plants; jute:noun:2=arts.crafts
 FOLIO:R9mXb4AjxTfwjZ5tIx50Hbc	Chimariko	chimariko	chimariko:noun:0=people_society.culture_customs; chimariko:noun:1=language.communication
-FOLIO:R9nTelkONEuehaZJPSTLbFb	Thai	thai	thai:noun:0=language.linguistics; thai:noun:1=people_society.demographics
 FOLIO:R9q3ww86gR2YzIpw6PiWdIq	Organization for Security and Co-operation in Europe	osce	osce:noun:0=education.assessment
-FOLIO:R9qc3aBn8yLjeP2zODDmZj	Coptic	coptic	coptic:noun:0=language.linguistics; coptic:noun:1=people_society.ethnicity_race; coptic:noun:2=language.writing
 FOLIO:R9rAx8tTZaguHOK8Gku2h8L	Document Version	document version	document_version:noun:0=technology.computing_software
-FOLIO:R9rCTJl0hn4plwHOJOXuJqF	Russian	russian	russian:noun:0=people_society.ethnicity_race; russian:noun:1=language.linguistics
-FOLIO:R9rxv5WMJD8242JYhxiXyUg	Hebrew	hebrew	hebrew:noun:0=history.ancient_history; hebrew:noun:1=language.linguistics
-FOLIO:R9sHkXLOO1RvTe8yjJ6E7A4	Pali	pali	pali:noun:0=language.linguistics; pali:noun:1=humanities.religion
 FOLIO:R9twyHb3yZtdEWn4hwBuoLk	Treatise	treatise	treatise:noun:0=language.writing
 FOLIO:R9vpB76lhr0zURJ6S0xV22q	Academic Paper	academic paper	academic_paper:noun:0=education.higher_education; academic_paper:noun:1=education.higher_education; academic_paper:noun:2=education.higher_education
-FOLIO:R9xmtQ6KmUrpnuuE70mnBpW	Yakut	yakut	yakut:noun:0=people_society.ethnicity_race; yakut:noun:1=language.linguistics
-FOLIO:R9ykFDK4FWIDYcF9bPLOdzy	Tamil	tamil	tamil:noun:0=language.linguistics; tamil:noun:1=people_society.ethnicity_race
 FOLIO:R9yxbDuVoy3DTGPFCjwuh3K	Virtual Reality	virtual reality	virtual_reality:noun:0=technology.computing_software
 FOLIO:R9zRwvXrLQn2vzdF5GTL8sE	Miami (Tribe)	miami	miami:noun:0=people_society.community_life; miami:noun:1=people_society.demographics
-FOLIO:RA082449D732240C1952Cb5b	Suceava	suceava	suceava:noun:0=nature.landforms; suceava:noun:1=nature.landforms; suceava:noun:2=nature.landforms
-FOLIO:RA12ab1581bd89B7e980Ce59	Yazd	yazd	yazd:noun:0=history.modern_history; yazd:noun:1=history.modern_history; yazd:noun:2=humanities.religion
-FOLIO:RA16fe1B0C97aB289d6C6f05	Amazonas	amazonas	amazonas:noun:0=nature.landforms; amazonas:noun:1=nature.landforms; amazonas:noun:2=nature.landforms
 FOLIO:RA1Fa13CB0252574cb295421	Mono	mono	mono:noun:0=health.disease_illness; mono:noun:1=technology.device_operation
-FOLIO:RA20afb3779f5E3B98229218	Utrecht	utrecht	utrecht:noun:0=history.modern_history; utrecht:noun:1=education.higher_education
-FOLIO:RA2De3cB934f5942aa13Bed2	Sylhet	sylhet	sylhet:noun:0=nature.landforms; sylhet:noun:1=nature.landforms; sylhet:noun:2=nature.landforms
-FOLIO:RA4Ca832861b2FADe1603e78	Portugal	portugal	portugal:noun:0=history.modern_history
-FOLIO:RA50539508bdb8CFbdeF9ed3	Mersin	mersin	mersin:noun:0=nature.landforms; mersin:noun:1=nature.landforms; mersin:noun:2=nature.landforms
-FOLIO:RA5064d91A11e4A54c8A3494	Meghalaya	meghalaya	meghalaya:noun:0=nature.landforms
-FOLIO:RA52be7D7E4e60319e9A78c6	Shanghai	shanghai	shanghai:noun:0=nature.settlements; shanghai:noun:1=history.modern_history
-FOLIO:RA586c0E1F18e831c96EA86b	Maseru	maseru	maseru:noun:0=nature.landforms; maseru:noun:1=nature.landforms
 FOLIO:RA6C67c40515cD4132bD26de	Vas	vas	vas:noun:0=health.anatomy
-FOLIO:RA6Fd547CB5ca7DBca5C0430	Tehran	tehran	tehran:noun:0=nature.settlements
 FOLIO:RA721bd3C5ee7E604d0A9366	Marche	marche	marche:noun:0=arts.music; marche:noun:1=arts.dance
-FOLIO:RA7Cb1f7FCd3850B6c86A42f	Mandalay	mandalay	mandalay:noun:0=nature.settlements; mandalay:noun:1=history.modern_history
-FOLIO:RA85a9722Ef251CB9cfEC648	Kayseri	kayseri	kayseri:noun:0=nature.settlements
-FOLIO:RA8631728464fAEF18944048	Platinum	platinum	platinum:noun:0=science.chemistry; platinum:noun:1=business.value_quality; platinum:noun:2=arts.design
-FOLIO:RA8879e86C913652e376D10c	Palawan	palawan	palawan:noun:0=nature.landforms; palawan:noun:1=nature.landforms; palawan:noun:2=nature.landforms
-FOLIO:RA8A15b0D67c92124931F6ab	Veneto	veneto	veneto:noun:0=nature.landforms
-FOLIO:RA8Fde4272de4F262f8138c1	Balkan	balkan	balkan:noun:0=history.modern_history; balkan:noun:1=people_society.demographics
 FOLIO:RA94fa6345f509FA855F3af3	Saida	saida	saida:noun:0=everyday_life.actions_routines; saida:noun:1=technology.computing_software; saida:noun:2=business.finance
 FOLIO:RA97781F3Ee4c57D5303E55e	Pita	pita	pita:noun:0=everyday_life.food; pita:noun:1=everyday_life.food
-FOLIO:RAA10e043A3e52EDbb81B54b	Khartoum	khartoum	khartoum:noun:0=nature.settlements
-FOLIO:RAA1bc735F29816Ed4b84acf	Qom	qom	qom:noun:0=nature.landforms
-FOLIO:RAB8975E2D7e1E91cef81f44	Asuncion	asuncion	asuncion:noun:0=nature.landforms; asuncion:noun:1=nature.landforms
-FOLIO:RABBc153190687193c1A5f9b	Gold	gold	gold:noun:0=science.chemistry; gold:noun:1=arts.design; gold:noun:2=business.finance
-FOLIO:RAC3f13D68745E6D1bf26c9c	Volta	volta	volta:noun:0=humanities.literature; volta:noun:1=arts.music; volta:noun:2=nature.water_bodies
-FOLIO:RACB7a43AEa667D9665E16d0	Ibaraki	ibaraki	ibaraki:noun:0=nature.landforms; ibaraki:noun:2=nature.landforms
-FOLIO:RAD96249CAf2aFD75588D09d	Georgia	georgia	georgia:noun:0=history.modern_history; georgia:noun:1=history.modern_history; georgia:noun:2=people_society.personal_names
-FOLIO:RADAb12314695E937bdCAc01	Bolivar	bolivar	bolivar:noun:0=business.finance; bolivar:noun:1=people_society.personal_names; bolivar:noun:2=nature.settlements
-FOLIO:RAE19c75DEaab2B09f8379de	Northland	northland	northland:noun:0=nature.landforms; northland:noun:1=nature.landforms
-FOLIO:RAEDdedB17b205D7472E0c0d	Chimborazo	chimborazo	chimborazo:noun:0=nature.landforms; chimborazo:noun:1=nature.landforms; chimborazo:noun:2=nature.landforms
-FOLIO:RAF581b1853b081F570F2468	Calabria	calabria	calabria:noun:0=history.modern_history; calabria:noun:2=history.medieval_history
-FOLIO:RAFF1e61975c71C88e1C929c	Niigata	niigata	niigata:noun:0=nature.landforms; niigata:noun:1=nature.landforms; niigata:noun:2=nature.landforms
-FOLIO:RAFFa3b92D32172E88bF2331	Pampanga	pampanga	pampanga:noun:0=nature.landforms; pampanga:noun:1=nature.landforms; pampanga:noun:2=nature.landforms
-FOLIO:RB22af426927f9BE79e78399	Madagascar	madagascar	madagascar:noun:0=history.modern_history
-FOLIO:RB26761CB303f1EF4b13Fcf4	Tunis	tunis	tunis:noun:0=nature.settlements
-FOLIO:RB2A1ad54B43aF91735458f6	Campania	campania	campania:noun:0=nature.landforms; campania:noun:2=nature.landforms
-FOLIO:RB2D8e336Eb320C5d6f8600a	Antarctica	antarctica	antarctica:noun:0=nature.landforms; antarctica:noun:1=history.exploration_colonization; antarctica:noun:2=nature.climate
-FOLIO:RB344e11C16adBE9d21B2258	Aceh	aceh	aceh:noun:0=nature.landforms; aceh:noun:1=nature.landforms; aceh:noun:2=nature.landforms
-FOLIO:RB36a7dFF65e01F181a2C0da	Leyte	leyte	leyte:noun:0=nature.landforms; leyte:noun:1=nature.landforms
-FOLIO:RB371ab6302b0540019EF495	Mwanza	mwanza	mwanza:noun:0=nature.landforms; mwanza:noun:1=nature.landforms; mwanza:noun:2=nature.landforms
 FOLIO:RB3FT9lFNQIjRnFIueLgCa7	Notice	notice	notice:noun:0=language.communication; notice:noun:2=language.communication
 FOLIO:RB3UzdWYQ0uSYl9gpPAEncu	Mongo	mongo	mongo:noun:0=technology.computing_software
-FOLIO:RB49b0a50E483365c8013306	Ghazni	ghazni	ghazni:noun:0=history.modern_history; ghazni:noun:1=history.archaeology; ghazni:noun:2=history.medieval_history
-FOLIO:RB4F4393683828E33212Fb27	Cesar	cesar	cesar:noun:0=history.ancient_history
 FOLIO:RB4F61f2AC08575F618C22ca	Pool	pool	pool:noun:0=sports_recreation.water_sports; pool:noun:1=business.finance; pool:noun:2=sports_recreation.games_puzzles
-FOLIO:RB57086FF0eb9CCC933BCf23	Uttarakhand	uttarakhand	uttarakhand:noun:0=nature.landforms; uttarakhand:noun:1=nature.landforms
-FOLIO:RB62c1302E565752670C3401	Georgia (Asian Country)	georgia	georgia:noun:0=history.modern_history; georgia:noun:1=history.modern_history; georgia:noun:2=people_society.personal_names
-FOLIO:RB6C54eC594d1D41193F2877	Salzburg	salzburg	salzburg:noun:0=nature.settlements
-FOLIO:RB6ePdof62o3oIWPXS4Iezm	Individual Retirement Account	ira	ira:noun:0=humanities.classical_studies
 FOLIO:RB6itVnmDad4Fzd1jcVzzGH	Atakapa	atakapa	atakapa:noun:0=people_society.ethnicity_race; atakapa:noun:1=language.linguistics
-FOLIO:RB783d73427ae3152ed3Da21	Tokushima	tokushima	tokushima:noun:0=nature.landforms; tokushima:noun:1=nature.landforms; tokushima:noun:2=nature.landforms
-FOLIO:RB7B346BF864a550487105a3	Tianjin	tianjin	tianjin:noun:0=nature.settlements
 FOLIO:RB80d4853F0392932a3667ea	Uvea	uvea	uvea:noun:0=health.anatomy
-FOLIO:RB95e94DF867cAD3e7c8Fa67	Western	western	western:noun:0=nature.landforms; western:noun:1=arts.film; western:noun:2=people_society.culture_customs
 FOLIO:RB9KYScePkcsYDfU9boRFAZ	Pequot	pequot	pequot:noun:0=people_society.ethnicity_race; pequot:noun:1=language.linguistics; pequot:noun:2=people_society.ethnicity_race
 FOLIO:RB9NKoy2x35Ft1dozqn5cYR	Amphibians	amphibia	amphibia:noun:0=science.biology
-FOLIO:RB9ojf15IXksU2tQQIjK24X	Sanskrit	sanskrit	sanskrit:noun:0=language.linguistics; sanskrit:noun:1=language.linguistics
 FOLIO:RBA19ac9D0711EE1b6567085	Salto	salto	salto:noun:0=sports_recreation.fitness_training
-FOLIO:RBA4b589F55ee0A2dce272a7	Roscommon	roscommon	roscommon:noun:0=nature.landforms; roscommon:noun:1=nature.landforms; roscommon:noun:2=nature.landforms
-FOLIO:RBB010c636dbe641089BC353	Conakry	conakry	conakry:noun:0=nature.settlements
-FOLIO:RBB3783BC71e151E00c3Fb5c	Beograd	beograd	beograd:noun:0=nature.landforms; beograd:noun:1=nature.landforms; beograd:noun:2=nature.landforms
-FOLIO:RBB3c5410B510CF2ce031fe9	Dodoma	dodoma	dodoma:noun:0=nature.landforms; dodoma:noun:1=nature.landforms
 FOLIO:RBBJ63wBBDn5PiGzYqJ7yrZ	Surprise	surprise	surprise:noun:0=everyday_life.general; surprise:noun:1=people_society.emotion_attitude
 FOLIO:RBBNGfCRL0x4GSTGGrYx0e	Tribes	tribes	tribes:noun:0=people_society.ethnicity_race; tribes:noun:2=people_society.culture_customs; tribes:noun:3=science.biology
 FOLIO:RBBZq2pnKF4F034vAf1WDmG	Skin Color	skin color	skin_color:noun:0=science.biology; skin_color:noun:1=people_society.ethnicity_race
-FOLIO:RBC27d2FA402eAAC548A931d	Mazandaran	mazandaran	mazandaran:noun:0=nature.landforms; mazandaran:noun:1=nature.landforms; mazandaran:noun:2=nature.landforms
 FOLIO:RBC623eD2022f3BC828A80b2	Van	van	van:noun:0=everyday_life.transportation; van:noun:1=sports_recreation.general
-FOLIO:RBC6925BF9d71E1B1ec257a2	Corrientes	corrientes	corrientes:noun:0=nature.landforms; corrientes:noun:1=nature.landforms; corrientes:noun:2=nature.landforms
-FOLIO:RBCrnv227GXKUayegdsnCQA	Igbo	igbo	igbo:noun:0=people_society.ethnicity_race; igbo:noun:1=language.linguistics; igbo:noun:2=people_society.culture_customs
+FOLIO:RBCr7M9P9y4qMzImnraaK2a	Tuvalu	tuvalu	tuvalu:noun:0=law_government.polities
 FOLIO:RBCxHdIqa5Tqg7ZHa3r4BeT	Snohomish	snohomish	snohomish:noun:0=people_society.ethnicity_race; snohomish:noun:1=language.linguistics; snohomish:noun:2=nature.settlements
 FOLIO:RBD73e6238bc8408d7fF09a2	Silver	silver	silver:noun:0=science.chemistry; silver:noun:2=arts.visual_art
-FOLIO:RBD9ef70FDd219DFa5d6C748	Pahang	pahang	pahang:noun:0=nature.landforms; pahang:noun:1=nature.landforms; pahang:noun:2=nature.landforms
 FOLIO:RBDqcAr3d1kTppeIjAvdiTG	Ethnicity	ethnicity	ethnicity:noun:0=people_society.ethnicity_race
 FOLIO:RBE78Mm4K5ZmjzUOnFO2eg4	Intimidation	intimidation	intimidation:noun:0=people_society.emotion_attitude; intimidation:noun:1=health.mental_health
-FOLIO:RBE91acD73ac3E934df19b3c	Zacatecas	zacatecas	zacatecas:noun:0=nature.landforms; zacatecas:noun:1=nature.landforms; zacatecas:noun:2=nature.landforms
-FOLIO:RBED3111D3b6d192d6c88eeb	Toledo	toledo	toledo:noun:0=history.medieval_history; toledo:noun:1=business.manufacturing
-FOLIO:RBF11032F548606D1fc87e76	Thessalia	thessalia	thessalia:noun:0=nature.landforms; thessalia:noun:1=nature.landforms
-FOLIO:RBF133cFE4bb3FAF6afE3784	Akita	akita	akita:noun:0=nature.animals; akita:noun:1=nature.settlements
-FOLIO:RBF64d913C5faC5Cd17830e6	Haiti	haiti	haiti:noun:0=history.modern_history
-FOLIO:RBF9d4a4F540e1C4d71CAf37	Kachin	kachin	kachin:noun:0=people_society.ethnicity_race; kachin:noun:1=language.linguistics
+FOLIO:RBFAcd1AACbbfC7Bc940F698	Bale	bale	bale:noun:0=business.manufacturing
 FOLIO:RBGe54FCodZ301aheaOkljj	Deaf	deaf	deaf:noun:0=health.anatomy; deaf:noun:1=people_society.ethnicity_race
 FOLIO:RBIwSlbMNuX8KrgXCubPSJb	Seminole	seminole	seminole:noun:0=people_society.ethnicity_race; seminole:noun:1=language.linguistics; seminole:noun:2=sports_recreation.team_sports
 FOLIO:RBKDKlGW3vdxaMYLo53GCYs	Ewe	ewe	ewe:noun:0=nature.animals
-FOLIO:RBNgZtdFKaair4wrZERAE96	Corsican	corsican	corsican:noun:0=people_society.ethnicity_race; corsican:noun:1=language.linguistics
 FOLIO:RBNyQ414T2ijFKU5Ah2vloV	Pomo	pomo	pomo:noun:0=humanities.philosophy; pomo:noun:1=humanities.philosophy
 FOLIO:RBOReteI49MXsR0ckTqtj83	Yuki	yuki	yuki:noun:0=people_society.personal_names; yuki:noun:1=nature.weather; yuki:noun:2=people_society.personal_names
-FOLIO:RBP4kXjC5pUWkL6xlMEJzOb	Bosnian	bosnian	bosnian:noun:0=people_society.demographics; bosnian:noun:1=language.linguistics
 FOLIO:RBPMe7LV0zZKmlYM4iXpTyD	Adaptive Learning	adaptive learning	adaptive_learning:noun:0=technology.computing_software
 FOLIO:RBQQdyAblpiT87dhhTg7LGK	Ute	ute	ute:noun:0=technology.transportation_technology
 FOLIO:RBQY7Pn5oyAj8JroU6RUUw8	Takelma	takelma	takelma:noun:0=language.linguistics; takelma:noun:1=people_society.ethnicity_race
 FOLIO:RBRmBlop1vdGAw1yi4ZP2Qh	Deceit	deceit	deceit:noun:0=people_society.emotion_attitude; deceit:noun:1=people_society.character_traits
-FOLIO:RBSP9uK9FlokkuGv1dHmNv9	Nepali	nepali	nepali:noun:0=people_society.ethnicity_race; nepali:noun:1=language.linguistics
 FOLIO:RBVxfxyUpQovOvEzsMlR5wR	Biloxi	biloxi	biloxi:noun:0=people_society.ethnicity_race; biloxi:noun:1=people_society.community_life; biloxi:noun:2=people_society.personal_names
-FOLIO:RBX75rpb8maqfgj95cwtp8H	Belarusian	belarusian	belarusian:noun:0=people_society.ethnicity_race; belarusian:noun:1=language.linguistics
 FOLIO:RBXLxktY5N0q3aCYxxk3TGA	Request	request	request:noun:0=language.communication; request:noun:1=language.communication
 FOLIO:RBY7RqQQSCz2UGSYPxbmtS4	Micmac	micmac	micmac:noun:0=people_society.ethnicity_race; micmac:noun:1=language.linguistics
-FOLIO:RBZNh3aE4RTaPfgJEpbBwxs	Ukrainian	ukrainian	ukrainian:noun:0=people_society.ethnicity_race; ukrainian:noun:1=language.linguistics
 FOLIO:RBao5EUoMrCMBNi3z27Uiv4	Black	black	black:noun:0=arts.visual_art; black:noun:1=people_society.ethnicity_race
 FOLIO:RBartzGrOte2TVksxcDR8iH	Biological Parent	biological parent	biological_parent:noun:0=health.reproduction_growth; biological_parent:noun:1=health.reproduction_growth
 FOLIO:RBeH9htBENggQCUNKD1Uj0N	sequence	sequence	sequence:noun:0=everyday_life.quantity_time
@@ -558,71 +159,29 @@ FOLIO:RBfi3eGJmdDDpV4EDEf8lVL	Confabulation	hallucination	hallucination:noun:0=h
 FOLIO:RBfjycAy2MGoz0ZBxpZO1W2	Beets	beetroot	beetroot:noun:0=everyday_life.food
 FOLIO:RBfrwBLjBrmgTAYWglbfRls	app	app	app:noun:0=technology.computing_software
 FOLIO:RBjlEXNJFb78tpTVLXX90gu	Eskimo	eskimo	eskimo:noun:0=people_society.ethnicity_race
-FOLIO:RBkH8fgONlywQUnUzzPpeCE	English	english	english:noun:0=language.communication; english:noun:1=education.curriculum; english:noun:2=people_society.ethnicity_race
 FOLIO:RBl1hItEnqhZyZo15Zn32St	Moment	moment	moment:noun:0=everyday_life.quantity_time; moment:noun:1=language.vocabulary
 FOLIO:RBl1hItEnqhZyZo15Zn32St	Moment	point in time	point_in_time:noun:0=everyday_life.quantity_time
-FOLIO:RBl2WJxJ69U7TybdQRUInbs	Insurer	insurer	insurer:noun:0=business.finance
 FOLIO:RBlMQShFCW2nipKYiWJqTC5	Shasta	shasta	shasta:noun:0=nature.landforms; shasta:noun:1=everyday_life.food
-FOLIO:RBlZnLWj2FLHJZQdtrCwLzn	Bhojpuri	bhojpuri	bhojpuri:noun:0=language.linguistics
 FOLIO:RBljxm8feoK8sjRTBUlB6zk	Oneida	oneida	oneida:noun:0=people_society.ethnicity_race; oneida:noun:1=language.linguistics; oneida:noun:2=nature.settlements; oneida:noun:3=history.modern_history
 FOLIO:RBn8qeuK5FwQJEfnTJCuNIx	Fang	fang	fang:noun:0=nature.animals
-FOLIO:RBoxAa69miX70xDjof3IzhZ	Kamba	kamba	kamba:noun:0=people_society.ethnicity_race; kamba:noun:1=language.linguistics
 FOLIO:RBpYiYjUoQjdkt4YLBAfT3g	Editor	drafter	drafter:noun:0=arts.architecture; drafter:noun:1=language.writing
 FOLIO:RBpYiYjUoQjdkt4YLBAfT3g	Editor	editor	editor:noun:0=language.writing; editor:noun:1=technology.computing_software
 FOLIO:RBq1p3bwUpzZk9djzM7JoHb	Coconut	coconut	coconut:noun:0=everyday_life.food; coconut:noun:1=everyday_life.food; coconut:noun:2=everyday_life.food
 FOLIO:RBrdS7myGcpuRge2p2N0O9K	Apache	apache	apache:noun:0=people_society.ethnicity_race; apache:noun:1=technology.internet_communication
 FOLIO:RBsAkw0vmuyvixo5idPdDC8	phone	phone	phone:noun:0=technology.hardware_devices; phone:noun:1=technology.hardware_devices; phone:noun:2=technology.hardware_devices
 FOLIO:RBsoKzIgyNkEeQX7ln7C4Qm	Gay	gay	gay:noun:0=people_society.gender_identity; gay:noun:1=people_society.gender_identity
-FOLIO:RBt3Kyn3iW32LWSjKBgKL9U	Custodian	custodian	custodian:noun:0=everyday_life.household_tools; custodian:noun:1=business.management; custodian:noun:2=humanities.ethics
 FOLIO:RBtrwbGZQrKLsaMfwzafcYQ	Sioux	sioux	sioux:noun:0=people_society.ethnicity_race; sioux:noun:1=language.linguistics
-FOLIO:RBw4QGqu7KaYX7Z4KyFbvwl	Sango	sango	sango:noun:0=language.linguistics; sango:noun:1=people_society.ethnicity_race
-FOLIO:RBweqaHNxwkEbdKlg1Wthoc	Chibcha	chibcha	chibcha:noun:0=language.linguistics; chibcha:noun:1=people_society.ethnicity_race
 FOLIO:RBxsGEnNaCuScNMawpvTjF3	Directory	directory	directory:noun:0=language.writing; directory:noun:1=technology.computing_software
 FOLIO:RC01c83EFC92e6A08ebAEe14	Sal	sal	sal:noun:0=science.chemistry
-FOLIO:RC0Eb980C6841AE430c1870c	Osaka	osaka	osaka:noun:0=nature.settlements; osaka:noun:1=people_society.demographics
-FOLIO:RC0F9797D7f1fCF8d3bCE299	Flores	flores	flores:noun:0=nature.plants; flores:noun:1=people_society.personal_names
 FOLIO:RC0klWYtBTII6YnYAQkUD2J	date	date	date:noun:0=everyday_life.quantity_time; date:noun:1=everyday_life.food; date:noun:2=people_society.family_relationships
-FOLIO:RC126a7D75b407327649C22c	Guerrero	guerrero	guerrero:noun:0=history.world_wars
-FOLIO:RC2C44715A34f2EB2a7D156a	Adana	adana	adana:noun:0=nature.landforms
 FOLIO:RC2pPwetBTxjVcH4DJq4S6M	Contact ZIP or Postal Code	postal code	postal_code:noun:0=everyday_life.quantity_time; postal_code:noun:1=people_society.demographics
-FOLIO:RC332796C6a88C7Bb607410d	Valparaiso	valparaiso	valparaiso:noun:0=nature.settlements; valparaiso:noun:1=nature.settlements; valparaiso:noun:2=education.higher_education
 FOLIO:RC3NPYKmo5ax7ksZ92FZWhl	Guardian	guardian	guardian:noun:0=people_society.family_relationships; guardian:noun:1=people_society.social_roles
-FOLIO:RC457c9552f43B6C8476D109	Ljubljana	ljubljana	ljubljana:noun:0=nature.settlements
-FOLIO:RC481ca3DBeb9B319d5481b0	Shimane	shimane	shimane:noun:0=nature.landforms
-FOLIO:RC4KmeViI8WuMVbDCfvctF4	Esperanto	esperanto	esperanto:noun:0=language.linguistics; esperanto:noun:1=people_society.community_life
-FOLIO:RC4ub9fP4Mfee6LZtucUvQd	Malay	malay	malay:noun:0=people_society.ethnicity_race; malay:noun:1=language.linguistics
-FOLIO:RC571eb4A5906518861F36be	Paul	paul	paul:noun:0=people_society.personal_names
-FOLIO:RC5Beab72Fa203940ff9Bcc8	Trujillo	trujillo	trujillo:noun:0=nature.settlements; trujillo:noun:1=people_society.personal_names; trujillo:noun:2=history.historical_figures
-FOLIO:RC5F52aEA1fe646Be2aD843c	Ararat	ararat	ararat:noun:0=nature.landforms; ararat:noun:1=history.ancient_history
-FOLIO:RC5UxgyyVCwYeNUnCC4xjiN	Guarantor	guarantor	guarantor:noun:0=business.finance
 FOLIO:RC5eY5DEvsYieBeP4fHKcN2	Sidebar	sidebar	sidebar:noun:0=language.writing; sidebar:noun:1=language.communication
-FOLIO:RC7516fC69e2933383297f6a	Thimphu	thimphu	thimphu:noun:0=nature.settlements
 FOLIO:RC7D4f784569913D1309C75a	Bam	bam	bam:noun:0=language.communication; bam:noun:1=science.genetics
-FOLIO:RC934d090C5980BC99c135da	Tottori	tottori	tottori:noun:0=nature.landforms; tottori:noun:1=nature.landforms
-FOLIO:RC9B810DA8a0872D8de5554c	Monaghan	monaghan	monaghan:noun:0=people_society.community_life; monaghan:noun:1=nature.landforms; monaghan:noun:2=people_society.personal_names
-FOLIO:RC9F2ff7F588406562fDFeef	Luzern	luzern	luzern:noun:0=history.modern_history; luzern:noun:1=history.modern_history; luzern:noun:2=people_society.community_life
 FOLIO:RC9b4fKiLmEJ0HsPGFGQTEW	Interval	duration	duration:noun:0=everyday_life.quantity_time
 FOLIO:RC9b4fKiLmEJ0HsPGFGQTEW	Interval	interval	interval:noun:0=everyday_life.quantity_time; interval:noun:1=mathematics.general; interval:noun:2=arts.music
-FOLIO:RCA77ce5550e18CC25f94df4	Leitrim	leitrim	leitrim:noun:0=nature.landforms; leitrim:noun:1=nature.landforms; leitrim:noun:2=nature.landforms
-FOLIO:RCAD34e11728104A864376c5	Ouest	ouest	ouest:noun:0=nature.landforms; ouest:noun:1=nature.landforms; ouest:noun:2=nature.landforms
-FOLIO:RCAE8ef9A0ff1216339D4ec4	Niamey	niamey	niamey:noun:0=nature.settlements
-FOLIO:RCAF1e36F180eE76611B5896	Tasman	tasman	tasman:noun:0=people_society.demographics; tasman:noun:1=people_society.personal_names; tasman:noun:2=nature.water_bodies
-FOLIO:RCApxxXadTDf30sTtRCszfE	Tagalog	tagalog	tagalog:noun:0=language.linguistics; tagalog:noun:1=people_society.ethnicity_race
-FOLIO:RCBC3524A425fF9F2e278140	Halab	halab	halab:noun:0=nature.landforms; halab:noun:1=nature.landforms
-FOLIO:RCBSRLEL4GADQBjhrQzqzYg	Baluchi	baluchi	baluchi:noun:0=people_society.ethnicity_race; baluchi:noun:1=language.linguistics
-FOLIO:RCC2ca6C9Cf72F4674b8C2ea	Plateau	plateau	plateau:noun:0=nature.landforms; plateau:noun:1=business.value_quality
-FOLIO:RCD609e5043d8680de3A2564	North-West	north west	north_west:noun:0=nature.landforms; north_west:noun:1=nature.landforms; north_west:noun:2=nature.landforms
 FOLIO:RCEEeefE3C7397AFb2f3D0e4	Sangha	sangha	sangha:noun:0=humanities.religion; sangha:noun:1=humanities.religion; sangha:noun:2=humanities.religion
-FOLIO:RCEgYmLLXy9FSwpbOEqS6mR	Mandar	mandar	mandar:noun:0=language.linguistics
-FOLIO:RCF1b9626E4ea3BB80011b8a	Lola	lola	lola:noun:0=people_society.personal_names; lola:noun:1=everyday_life.family
-FOLIO:RCFEf2b513e79A3E6f24E4ab	Alba	alba	alba:noun:0=science.biology; alba:noun:1=humanities.literature; alba:noun:2=nature.settlements
-FOLIO:RCFNFUnIV8ISLNqtoUH2LZp	Maltese	maltese	maltese:noun:0=people_society.ethnicity_race; maltese:noun:1=nature.animals; maltese:noun:2=language.linguistics
-FOLIO:RCGEbsIMcwPm77vzI1wtvUL	Website	website	website:noun:0=technology.internet_communication
-FOLIO:RCHg2UuTPmcbUHsqIfrrGkp	Tswana	tswana	tswana:noun:0=people_society.ethnicity_race; tswana:noun:1=language.linguistics
 FOLIO:RCIZeiLKrIH7yHDyo7XZBrX	Bisexual	bisexual	bisexual:noun:0=people_society.gender_identity
-FOLIO:RCJAigsSZoXSvPazxoKjhGd	Sardinian	sardinian	sardinian:noun:0=people_society.demographics; sardinian:noun:1=language.linguistics
-FOLIO:RCJBJn8MYy2i02uE1nVNsMd	Retainer	retainer	retainer:noun:0=business.finance; retainer:noun:1=technology.engineering; retainer:noun:2=business.occupations_careers; retainer:noun:3=health.medicine_treatment
-FOLIO:RCKELbeNBph8a01OLRSUtBw	Playbook	playbook	playbook:noun:0=business.management
 FOLIO:RCLzAnLlcCjfFg827Yywk1I	Article	article	article:noun:0=language.writing; article:noun:1=everyday_life.general; article:noun:2=language.grammar
 FOLIO:RCM3e0nEvIdOmiCEVyCuVT4	total_amount	total amount	total_amount:noun:0=mathematics.arithmetic
 FOLIO:RCMDxHr82PYrDL4pAsPRSRj	Assessment	assessment	assessment:noun:0=education.assessment; assessment:noun:1=education.assessment
@@ -630,21 +189,10 @@ FOLIO:RCOAttIoMLbO1VAdvmk1Ym1	Montauk	montauk	montauk:noun:0=nature.water_bodies
 FOLIO:RCOEo683nGTMlV6VjomHQ8D	Bullying	bullying	bullying:noun:0=people_society.social_issues
 FOLIO:RCOl82SkXkUy6FcE4C28jPT	Outside	external	external:noun:0=people_society.social_roles; external:noun:1=everyday_life.home
 FOLIO:RCOl82SkXkUy6FcE4C28jPT	Outside	outside	outside:noun:0=everyday_life.home; outside:noun:1=nature.general; outside:noun:2=mathematics.geometry
-FOLIO:RCQ95ei2TAZKlSaIC0BUeVv	Interlingua	interlingua	interlingua:noun:0=language.translation
-FOLIO:RCSqK9ot9v4ON86uZWxkR42	Chagatai	chagatai	chagatai:noun:0=language.linguistics
-FOLIO:RCTyWuwAAdk4X3BrHs0kara	Akkadian	akkadian	akkadian:noun:0=language.linguistics; akkadian:noun:1=history.ancient_history
 FOLIO:RCU0vhYMGrdY9EsjmN2mkqQ	Data Leakage	data leakage	data_leakage:noun:0=science.scientific_method
 FOLIO:RCWpJVQosPsfEO3EbEfbdPo	Burns	burns	burns:noun:0=health.first_aid; burns:noun:1=everyday_life.household_tools
 FOLIO:RCXo6eQMlbZx9milrSaYo1v	Environmental Risk	environmental risk	environmental_risk:noun:0=science.environmental_science; environmental_risk:noun:1=science.environmental_science
-FOLIO:RCY7ICwJXQDaZ5H4Dei8f5x	Zuni	zuni	zuni:noun:0=people_society.ethnicity_race; zuni:noun:1=language.linguistics
-FOLIO:RCZ9I5zrMz731FLCpcwBY0h	Swedish	swedish	swedish:noun:0=language.linguistics; swedish:noun:1=people_society.demographics
 FOLIO:RCZdG7bztfQT8BuzFadwgir	Opacity	opacity	opacity:noun:0=science.materials_science; opacity:noun:1=language.communication; opacity:noun:2=science.physics
-FOLIO:RCagzwBlECIMsAAMe5Rdk5c	Scots	scots	scots:noun:0=people_society.ethnicity_race; scots:noun:1=language.linguistics; scots:noun:2=humanities.cultural_studies
-FOLIO:RCaqPYOxlEaxPg3cZKMlxcv	TIFF	tiff	tiff:noun:0=people_society.family_relationships; tiff:noun:1=technology.hardware_devices
-FOLIO:RCeZAhlt48BDPGyJqTt5SrX	Manchu	manchu	manchu:noun:0=people_society.ethnicity_race; manchu:noun:1=language.linguistics
-FOLIO:RCh0dPMEViohzUfOeyicCq0	Cebuano	cebuano	cebuano:noun:0=language.linguistics; cebuano:noun:1=people_society.ethnicity_race
-FOLIO:RChjSc2XuaDiZnlxpusNIxT	Physical Examination	physical examination	physical_examination:noun:0=health.medicine_treatment; physical_examination:noun:1=business.manufacturing
-FOLIO:RCjLilUc43EXwD1xNTUDDL3	Manx	manx	manx:noun:0=people_society.demographics; manx:noun:1=language.linguistics; manx:noun:2=nature.animals
 FOLIO:RCjzziHz1nZDSuNKZcGkyWm	Pangasinan	pangasinan	pangasinan:noun:0=nature.landforms; pangasinan:noun:1=nature.landforms; pangasinan:noun:2=nature.landforms
 FOLIO:RCkVEfL4H41pColicGhkXJb	Lymphoma	lymphoma	lymphoma:noun:0=health.disease_illness; lymphoma:noun:2=health.disease_illness
 FOLIO:RCluw0QncwzmFHLcQodpLY	Hidatsa	hidatsa	hidatsa:noun:0=people_society.ethnicity_race; hidatsa:noun:1=language.linguistics
@@ -652,270 +200,95 @@ FOLIO:RCmuig88QJ7hFTNdW3SBrrZ	Age-Related Cognitive Decline	senility	senility:no
 FOLIO:RCndCXCSYlmim5FMJU7gZkO	Sadness	sadness	sadness:noun:0=people_society.emotion_attitude; sadness:noun:1=arts.general
 FOLIO:RCoXvGg5LXK9dGHQMqGPNCe	Originality	originality	originality:noun:0=arts.general
 FOLIO:RCpfHqAg9WjVsZ26p1Movwl	Ancestry	ancestry	ancestry:noun:0=people_society.demographics; ancestry:noun:1=humanities.cultural_studies; ancestry:noun:2=people_society.family_relationships
-FOLIO:RCqEOIQE7piF24rITlbKn6q	Literary Work	literary work	literary_work:noun:0=humanities.literature; literary_work:noun:2=humanities.literature
-FOLIO:RCtFIirbvfhYX6LWgN674fi	Mongolian	mongolian	mongolian:noun:0=people_society.ethnicity_race; mongolian:noun:1=language.linguistics
-FOLIO:RCtbS6xiCv6ms49UDzfjCG2	DOC	doc	doc:noun:0=language.writing; doc:noun:1=health.medicine_treatment
 FOLIO:RCuLCDo6EMKAYab9NxbUhjn	Dogs	dogs	dogs:noun:0=nature.animals
 FOLIO:RCurvxSL5eDB7IasGyFBZvH	Native American	native american	native_american:noun:0=people_society.ethnicity_race; native_american:noun:1=people_society.ethnicity_race
-FOLIO:RCuv1eyebu3W695hYQutNMO	Akan	akan	akan:noun:0=people_society.ethnicity_race; akan:noun:1=language.linguistics; akan:noun:2=humanities.cultural_studies
-FOLIO:RCxwC01n8FdwfSGWRSs9sJU	Serbian	serbian	serbian:noun:0=people_society.ethnicity_race; serbian:noun:1=language.linguistics
-FOLIO:RD007a58913daB790fc08a69	North East	north east	north_east:noun:0=nature.landforms; north_east:noun:1=nature.landforms
-FOLIO:RD00e7b288acbD3771163310	Antioquia	antioquia	antioquia:noun:0=nature.landforms; antioquia:noun:2=nature.landforms
-FOLIO:RD0FhhP94TinC3s0Sfut7Ux	Lao	lao	lao:noun:0=people_society.ethnicity_race
 FOLIO:RD0oo5Ny1qyvDZPLYDJPnBg	Truck	truck	truck:noun:0=everyday_life.transportation
-FOLIO:RD1267b9D66705225ec102bc	Southern	southern	southern:noun:0=nature.general; southern:noun:1=people_society.culture_customs; southern:noun:2=language.linguistics
-FOLIO:RD1C0d99C8ddeB989b6517ef	Centre	centre	centre:noun:0=mathematics.geometry; centre:noun:1=everyday_life.general; centre:noun:2=people_society.community_life
-FOLIO:RD1C99b66Fe3aF00896BC6fa	Blagoevgrad	blagoevgrad	blagoevgrad:noun:0=nature.landforms; blagoevgrad:noun:1=nature.landforms
-FOLIO:RD1ndmzqWSi90QjndEpGGLw	Turkmen	turkmen	turkmen:noun:0=people_society.ethnicity_race; turkmen:noun:1=language.linguistics; turkmen:noun:2=arts.crafts
 FOLIO:RD2zOAhFnr74YvmiP6yNXOE	Natural Hair	natural hair	natural_hair:noun:0=everyday_life.personal_care; natural_hair:noun:1=people_society.ethnicity_race
-FOLIO:RD3805f5D35d1B75fbeB1ad8	Miyazaki	miyazaki	miyazaki:noun:0=people_society.personal_names; miyazaki:noun:1=arts.film; miyazaki:noun:2=history.modern_history
 FOLIO:RD3Rm0v57Dm7MKz7MtKCrwB	Salish	salish	salish:noun:0=people_society.ethnicity_race; salish:noun:1=language.linguistics
-FOLIO:RD41f2eEAE4b8BCDdd51Be57	Berlin	berlin	berlin:noun:0=nature.settlements; berlin:noun:1=people_society.demographics
-FOLIO:RD51d3eBFDe34798f2a53220	Hubei	hubei	hubei:noun:0=history.modern_history; hubei:noun:2=people_society.culture_customs
-FOLIO:RD53b6d2FBb7686161d4Cf05	Morelos	morelos	morelos:noun:0=nature.landforms; morelos:noun:1=nature.landforms; morelos:noun:2=nature.landforms
-FOLIO:RD6359cBBA069757ca325f66	Bretagne	bretagne	bretagne:noun:0=nature.landforms; bretagne:noun:1=nature.landforms; bretagne:noun:2=nature.landforms
-FOLIO:RD6364c16821eD6Ea95FC5ed	Tbilisi	tbilisi	tbilisi:noun:0=people_society.community_life; tbilisi:noun:1=people_society.demographics
-FOLIO:RD6D5d3B932115AF9c9CFba4	Laois	laois	laois:noun:0=nature.landforms
-FOLIO:RD85046142549297c2aE4da3	Bihar	bihar	bihar:noun:0=history.modern_history; bihar:noun:2=history.ancient_history
-FOLIO:RD93401D4F038EEA4822Cc56	Ticino	ticino	ticino:noun:0=nature.landforms; ticino:noun:1=nature.landforms; ticino:noun:2=nature.landforms
-FOLIO:RD9B5c631F4173E68b1F243f	Taoyuan	taoyuan	taoyuan:noun:0=nature.landforms; taoyuan:noun:1=nature.landforms; taoyuan:noun:2=nature.landforms
-FOLIO:RDA20e8A2Bd12326d84EB325	Isabel	isabel	isabel:noun:0=people_society.personal_names
-FOLIO:RDB101f059c1b779ae35F580	Selangor	selangor	selangor:noun:0=nature.landforms; selangor:noun:1=nature.landforms; selangor:noun:2=nature.landforms
-FOLIO:RDCCa1cF31d845EBc1e74f0c	Kumamoto	kumamoto	kumamoto:noun:0=nature.landforms; kumamoto:noun:1=nature.landforms; kumamoto:noun:2=nature.landforms
 FOLIO:RDCD00dFF5ca7B17d9b0B7aa	Bursa	bursa	bursa:noun:0=health.anatomy
 FOLIO:RDCbopUcNJ7SCPPVAuRA4GO	Presentation	presentation	presentation:noun:0=language.communication; presentation:noun:1=education.pedagogy; presentation:noun:2=language.communication; presentation:noun:3=health.disease_illness
 FOLIO:RDCbopUcNJ7SCPPVAuRA4GO	Presentation	slides	slides:noun:0=sports_recreation.outdoor_recreation; slides:noun:1=arts.design; slides:noun:2=arts.photography; slides:noun:3=everyday_life.clothing
-FOLIO:RDD1WQE9QcKEr0gX1HHUSPR	Education - Real Estate Asset	school	school:noun:0=education.school_life; school:noun:1=education.higher_education; school:noun:2=education.pedagogy
-FOLIO:RDD6d1375E1ffD977d6C81c9	Liberia	liberia	liberia:noun:0=history.modern_history
-FOLIO:RDDAde946207b8533f30A280	Aruba	aruba	aruba:noun:0=nature.water_bodies; aruba:noun:1=technology.internet_communication
-FOLIO:RDECe1f1A4aebC870a217388	Kunduz	kunduz	kunduz:noun:0=nature.water_bodies
-FOLIO:RDEwosxEprOqbg0gz3twqgq	Indonesian	indonesian	indonesian:noun:0=people_society.ethnicity_race; indonesian:noun:1=language.linguistics
-FOLIO:RDF2b69BABa96EDA68d249e5	Gifu	gifu	gifu:noun:0=nature.landforms; gifu:noun:1=nature.landforms; gifu:noun:2=nature.landforms
 FOLIO:RDF3VrmH1eapfkrSQstevLs	Cancer	cancer	cancer:noun:0=health.disease_illness; cancer:noun:1=humanities.general
 FOLIO:RDFoKM7HHYoemFKMblV3PRd	Appearance	appearance	appearance:noun:0=everyday_life.general; appearance:noun:2=people_society.social_roles
-FOLIO:RDGIZfcVMbKaH4Q9q1qdqdU	Bulgarian	bulgarian	bulgarian:noun:0=people_society.ethnicity_race; bulgarian:noun:1=language.linguistics
-FOLIO:RDHTwlPyr72N3yrVb8Ts11Z	Masai	masai	masai:noun:0=people_society.ethnicity_race; masai:noun:1=language.linguistics
-FOLIO:RDHjAwlLByKLSxzNMXuMYG1	Malayalam	malayalam	malayalam:noun:0=language.linguistics; malayalam:noun:1=language.writing; malayalam:noun:2=language.rhetoric
 FOLIO:RDID0cGe2fNM0q91Gft7bAs	Bulletin	bulletin	bulletin:noun:0=language.communication; bulletin:noun:1=language.writing
 FOLIO:RDID0cGe2fNM0q91Gft7bAs	Bulletin	newsletter	newsletter:noun:0=language.writing
-FOLIO:RDJrTFbZzszQTzfaqdDQ7CW	Minangkabau	minangkabau	minangkabau:noun:0=people_society.ethnicity_race; minangkabau:noun:1=language.linguistics; minangkabau:noun:2=people_society.culture_customs
 FOLIO:RDJwn8LJKJJfFEQ6r16Pf8D	Alpine	alpine	alpine:noun:0=people_society.demographics; alpine:noun:1=nature.plants; alpine:noun:2=nature.ecosystems
 FOLIO:RDK6KqszFBwtJBxdJtoGdQ9	Squash	squash	squash:noun:0=nature.plants; squash:noun:1=sports_recreation.individual_sports
-FOLIO:RDLA7xQQZfuDjATh4LOOhcj	Urdu	urdu	urdu:noun:0=language.linguistics; urdu:noun:1=language.writing
-FOLIO:RDM1qeBjyKPU0FCQHOyqLd	Hungarian	hungarian	hungarian:noun:0=people_society.ethnicity_race; hungarian:noun:1=language.linguistics
-FOLIO:RDM4k8t0O3hy93vQwQzEcpg	Issuer	issuer	issuer:noun:0=business.finance
-FOLIO:RDNOqfCVAhPu7lEHc6go0cv	Living	living	living:noun:0=science.biology; living:noun:1=business.occupations_careers; living:noun:2=people_society.general
-FOLIO:RDOvAHsvY8TKJ1O1orXPM9o	Language	language	language:noun:0=language.linguistics; language:noun:1=language.linguistics; language:noun:2=technology.computing_software
 FOLIO:RDP26qpm9CAgrdlDgqkoLkw	Inuit	inuit	inuit:noun:0=people_society.ethnicity_race; inuit:noun:1=people_society.ethnicity_race
-FOLIO:RDP4p0cqewPAloY9jpew4jt	Sicilian	sicilian	sicilian:noun:0=people_society.ethnicity_race; sicilian:noun:1=language.linguistics
-FOLIO:RDQ8OLRtdpe6rk6RaPaERQ5	Shona	shona	shona:noun:0=language.linguistics; shona:noun:1=people_society.ethnicity_race; shona:noun:2=humanities.cultural_studies
-FOLIO:RDR2XuDtkJLVnUyAZLkTDTK	Cabbage	cabbage	cabbage:noun:0=everyday_life.food; cabbage:noun:2=business.finance
-FOLIO:RDRQ8kHj86R1wPX4sdLNypp	Romansh	romansh	romansh:noun:0=language.linguistics; romansh:noun:1=people_society.ethnicity_race
 FOLIO:RDVksGCGgEEaWuSkfRlkwaS	Georgetown	georgetown	georgetown:noun:0=education.higher_education; georgetown:noun:1=history.modern_history; georgetown:noun:2=nature.settlements
-FOLIO:RDWljjqIvgyFd309wsZciqi	Caddo	caddo	caddo:noun:0=people_society.ethnicity_race; caddo:noun:1=language.linguistics; caddo:noun:2=people_society.ethnicity_race
-FOLIO:RDYXXp95X3xGt2LwsMQcos4	Kurdish	kurdish	kurdish:noun:0=people_society.ethnicity_race; kurdish:noun:1=language.linguistics; kurdish:noun:2=people_society.culture_customs
-FOLIO:RDZXRFqBEyaZfhzAPC6PF66	Afrikaans	afrikaans	afrikaans:noun:0=language.linguistics; afrikaans:noun:1=language.linguistics
 FOLIO:RDZbM5hSq8pd1l1K8IScw0	Yana	yana	yana:noun:0=humanities.religion; yana:noun:2=humanities.religion
-FOLIO:RDa235W3e4GpNFMzMKxIQJJ	Gujarati	gujarati	gujarati:noun:0=language.linguistics; gujarati:noun:1=people_society.ethnicity_race
-FOLIO:RDaigFnprDRzy8eup60auMm	Macedonian	macedonian	macedonian:noun:0=people_society.migration; macedonian:noun:1=language.linguistics; macedonian:noun:2=people_society.ethnicity_race
-FOLIO:RDajnccd65kNvgaHQukMft2	Yiddish	yiddish	yiddish:noun:0=language.linguistics; yiddish:noun:1=humanities.cultural_studies
 FOLIO:RDatLu9dZnKX5r6ztRWH7AA	Buddhist Religion	buddhism	buddhism:noun:0=humanities.religion; buddhism:noun:3=humanities.religion
 FOLIO:RDbQNmI3UopeglxG3PTOVeS	Chumash	chumash	chumash:noun:0=humanities.religion; chumash:noun:2=humanities.religion
-FOLIO:RDcEbdiv7bBBmCCHnufifJp	Wolof	wolof	wolof:noun:0=people_society.ethnicity_race
-FOLIO:RDcVpfRrSd4FwqGHfy1m3NM	Tibetan	tibetan	tibetan:noun:0=people_society.ethnicity_race; tibetan:noun:1=language.linguistics
-FOLIO:RDcp2uVE5L0VTqsmiMbGgw8	Oromo	oromo	oromo:noun:0=people_society.ethnicity_race; oromo:noun:1=language.linguistics
 FOLIO:RDdKdHIfAjPJQwlfd0mc7LW	Potawatomi	potawatomi	potawatomi:noun:0=people_society.ethnicity_race; potawatomi:noun:1=people_society.ethnicity_race; potawatomi:noun:2=language.linguistics
 FOLIO:RDeZlellOVEkUBkTSbLgxUC	Student	student	student:noun:0=education.school_life; student:noun:1=education.general
 FOLIO:RDi3Lq2bR8EsG5eTnSk9xkC	Sunflowers	sunflowers	sunflowers:noun:0=arts.visual_art
 FOLIO:RDiv7JSMR8QXdJG121JCQpP	Long Form	long form	long_form:noun:0=language.writing; long_form:noun:1=language.writing; long_form:noun:2=language.vocabulary
 FOLIO:RDkB4hqzLrfXeDv4AyntCzX	Appendix	appendix	appendix:noun:0=health.anatomy; appendix:noun:1=language.writing
-FOLIO:RDkRMPTPEu06hA4xUSOSGlf	Quechua	quechua	quechua:noun:0=language.linguistics; quechua:noun:1=people_society.ethnicity_race
 FOLIO:RDkZBjHchWXuRh8dwpGuJwX	Demolition	demolition	demolition:noun:0=technology.engineering; demolition:noun:2=language.rhetoric
-FOLIO:RDljZRxiKX6dlHTKEHffKf2	Oriya	oriya	oriya:noun:0=people_society.ethnicity_race; oriya:noun:1=language.linguistics; oriya:noun:2=language.writing
-FOLIO:RDlr5S451KBicxyvfYICPgN	Chinese	chinese	chinese:noun:0=people_society.ethnicity_race; chinese:noun:1=language.linguistics
-FOLIO:RDm4rfXgHt9wIDHbrUUGCGL	Management	management	management:noun:0=business.management; management:noun:1=business.management; management:noun:2=business.management
-FOLIO:RDn0Wn8ZBClXqSOIhdLcA6a	Kongo	kongo	kongo:noun:0=people_society.ethnicity_race; kongo:noun:1=language.linguistics; kongo:noun:2=history.ancient_history
 FOLIO:RDo00CLlnwYJISZbyYUTXTA	Hyperglycemia	hyperglycemia	hyperglycemia:noun:0=health.disease_illness
 FOLIO:RDo84hNAJ8jArm6IstXz88	Response	response	response:noun:0=science.biology; response:noun:1=science.scientific_method; response:noun:2=science.biology
 FOLIO:RDoBt2Jgqz0zeHUEjLHirvP	Class Size	class size	class_size:noun:0=education.school_life; class_size:noun:1=education.school_life
 FOLIO:RDpg8PAvhGegjDxWexeVTLH	Alexander	alexander	alexander:noun:0=people_society.personal_names; alexander:noun:1=history.historical_figures; alexander:noun:2=people_society.personal_names; alexander:noun:3=nature.settlements
-FOLIO:RDqgSZq9it4dKcFtVEGdigH	Avestan	avestan	avestan:noun:0=language.linguistics; avestan:noun:1=language.writing
 FOLIO:RDrgrPYJPo0Rj0YG5xJ2OMX	Data Management	data management	data_management:noun:0=technology.computing_software; data_management:noun:1=technology.computing_software; data_management:noun:2=technology.computing_software
 FOLIO:RDrxE6R22Oc5nTiVjdjnuBr	Dissolution	dissolution	dissolution:noun:0=science.chemistry; dissolution:noun:1=science.chemistry
 FOLIO:RDs4RXqtrzif7ulCp2kI0mO	Survey	survey	survey:noun:0=mathematics.statistics_probability; survey:noun:1=education.curriculum
 FOLIO:RDtUyydgG9BnNFPZ3MivHK2	Trinity	trinity	trinity:noun:0=everyday_life.general; trinity:noun:1=humanities.religion
 FOLIO:RDu9DwOMBQd0dIKhEhUPKo2	Monoplegia	monoplegia	monoplegia:noun:0=health.disease_illness
-FOLIO:RDvgpVtu5XifhG7S8qkkHy9	Instance	instance	instance:noun:0=language.vocabulary; instance:noun:1=everyday_life.quantity_time; instance:noun:2=technology.computing_software
-FOLIO:RDwKxHFcrBZNohdOalDtvuZ	Rajasthani	rajasthani	rajasthani:noun:0=people_society.ethnicity_race; rajasthani:noun:1=language.linguistics
-FOLIO:RDx4PuWu7ZznwNEGW6rXll0	Fruit Crops	fruit crops	fruit_crops:noun:0=nature.plants
 FOLIO:RDxGK5OqVpRO03T7ZY8jtBe	Intent	intent	intent:noun:0=people_society.character_traits; intent:noun:1=people_society.character_traits
-FOLIO:RDzw3uGoITu0I0TexwT0BbK	Cheyenne	cheyenne	cheyenne:noun:0=people_society.ethnicity_race; cheyenne:noun:1=people_society.community_life; cheyenne:noun:2=people_society.personal_names
-FOLIO:RE06a029A45c380412dF7600	Antwerpen	antwerpen	antwerpen:noun:0=nature.landforms; antwerpen:noun:1=nature.landforms
-FOLIO:RE1495010A9ccD049c2245e5	Anguilla	anguilla	anguilla:noun:0=nature.animals; anguilla:noun:1=nature.animals
-FOLIO:RE160a80D599cF311eaABb0a	Antarctica	antarctica	antarctica:noun:0=nature.landforms; antarctica:noun:1=history.exploration_colonization; antarctica:noun:2=nature.climate
-FOLIO:RE1Bffd5D200bE5157dDA7d1	Henan	henan	henan:noun:0=nature.landforms; henan:noun:1=nature.landforms; henan:noun:2=nature.landforms
-FOLIO:RE23c5eBB3672F23391A8ca9	Colima	colima	colima:noun:0=nature.landforms; colima:noun:1=nature.landforms; colima:noun:2=nature.landforms
-FOLIO:RE2513c74Ae9cC85014CBf9a	Shan	shan	shan:noun:0=people_society.ethnicity_race; shan:noun:1=language.linguistics
-FOLIO:RE272879468d54AE22bBC962	Geneve	geneve	geneve:noun:0=nature.landforms
-FOLIO:RE30168F36cf6358ec004159	Laguna	laguna	laguna:noun:0=nature.water_bodies; laguna:noun:1=humanities.literature
-FOLIO:RE30cb26BB7d1386c530D385	Charlotte	charlotte	charlotte:noun:0=everyday_life.food; charlotte:noun:1=people_society.personal_names
-FOLIO:RE3520bBAFa1900B11bDB73b	Colorado	colorado	colorado:noun:0=nature.landforms
-FOLIO:RE385a9A25bfbD9C8ed7C666	Samar	samar	samar:noun:0=nature.water_bodies; samar:noun:1=people_society.personal_names
-FOLIO:RE3B2bd37Cb45F8566cD7cc3	Chongqing	chongqing	chongqing:noun:0=nature.settlements
+FOLIO:RE37a2e3D000c4642ed9F624	Lira	lira	lira:noun:0=business.finance
 FOLIO:RE41d72A803dcCAB06b6C64b	Mascara	mascara	mascara:noun:0=everyday_life.personal_care
-FOLIO:RE43eda0074165A69bcF8c85	Unity	unity	unity:noun:0=people_society.general; unity:noun:1=people_society.community_life; unity:noun:2=mathematics.arithmetic
-FOLIO:RE5838d24E876C554db34bf0	Burundi	burundi	burundi:noun:0=people_society.demographics; burundi:noun:1=people_society.demographics
-FOLIO:RE5F4ca4CDe78059a240493f	Guanajuato	guanajuato	guanajuato:noun:0=nature.landforms; guanajuato:noun:1=nature.landforms; guanajuato:noun:2=nature.landforms
-FOLIO:RE614da82A19e48C730F2f16	Bulgaria	bulgaria	bulgaria:noun:0=history.modern_history
-FOLIO:RE662737232b6B374eb11196	Okinawa	okinawa	okinawa:noun:0=history.modern_history; okinawa:noun:1=nature.water_bodies; okinawa:noun:2=nature.water_bodies; okinawa:noun:3=humanities.cultural_studies
-FOLIO:RE740a99B2a576E7a0893205	Cusco	cusco	cusco:noun:0=nature.landforms; cusco:noun:1=nature.landforms; cusco:noun:2=nature.landforms
-FOLIO:RE7868473B39204441f4F201	Santander	santander	santander:noun:0=nature.landforms; santander:noun:1=nature.landforms; santander:noun:2=nature.landforms
-FOLIO:RE7E6c82B54603ECda58Deae	Colonia	colonia	colonia:noun:0=history.ancient_history; colonia:noun:1=everyday_life.home; colonia:noun:2=people_society.social_issues
 FOLIO:RE84a1d9AE18616Ebaf49bc8	Seti	seti	seti:noun:0=science.astronomy; seti:noun:1=science.astronomy; seti:noun:2=science.astronomy
-FOLIO:RE87be8BBC0355FCd13DB741	Donegal	donegal	donegal:noun:0=nature.landforms; donegal:noun:1=nature.landforms; donegal:noun:2=nature.landforms
-FOLIO:RE88c2bBAFd58A7Ea5a3A342	Farah	farah	farah:noun:0=people_society.personal_names; farah:noun:1=people_society.personal_names; farah:noun:2=people_society.emotion_attitude
-FOLIO:RE92f81791f3f5862fdEA970	Valverde	valverde	valverde:noun:0=people_society.personal_names; valverde:noun:1=nature.settlements; valverde:noun:2=language.writing
-FOLIO:RE982f9B0C551CBD441A0fce	Liguria	liguria	liguria:noun:0=nature.landforms; liguria:noun:1=nature.landforms
-FOLIO:RE9922bCE4a7aA47ffdF42c4	Austria	austria	austria:noun:0=history.modern_history; austria:noun:1=history.modern_history
-FOLIO:REA23a28ED560BCB7b13Ca03	Nord	nord	nord:noun:0=nature.general; nord:noun:1=nature.general; nord:noun:2=people_society.social_class
-FOLIO:REAA820FB073b571ef68C9e3	Hessen	hessen	hessen:noun:0=history.modern_history; hessen:noun:1=history.medieval_history
-FOLIO:REB2a5dF550da16E8790Cfef	Kano	kano	kano:noun:0=people_society.community_life
-FOLIO:REBBfedE693ee51B04a5D8c4	Kerman	kerman	kerman:noun:0=nature.settlements
-FOLIO:REBDec16FD55eBBC10aFAa7c	Montserrat	montserrat	montserrat:noun:0=nature.landforms; montserrat:noun:1=nature.landforms; montserrat:noun:2=arts.design
-FOLIO:REC40ac5DE8d9DE90a9727b3	Kaohsiung	kaohsiung	kaohsiung:noun:0=nature.settlements; kaohsiung:noun:1=people_society.demographics
-FOLIO:RECAcd214C715ACB2a127a87	Abruzzo	abruzzo	abruzzo:noun:0=nature.landforms; abruzzo:noun:1=nature.landforms; abruzzo:noun:2=nature.landforms
-FOLIO:RECDae7BC93770FD53cCC7dc	Pleven	pleven	pleven:noun:0=nature.landforms; pleven:noun:1=nature.landforms
-FOLIO:RED16daF7974980563d3Ba49	Carlow	carlow	carlow:noun:0=nature.landforms; carlow:noun:1=nature.landforms; carlow:noun:2=nature.landforms
-FOLIO:RED4a3986B97e936a1eC5cfc	Merida	merida	merida:noun:0=nature.landforms
-FOLIO:REDB94e413850DD035512b4a	Roraima	roraima	roraima:noun:0=nature.landforms
-FOLIO:REDC012974f1fABDd09706f8	Ucayali	ucayali	ucayali:noun:0=nature.landforms; ucayali:noun:1=nature.landforms
 FOLIO:REDE920FF5ed13EE59853c69	SUCRE	sucre	sucre:noun:0=everyday_life.food; sucre:noun:1=science.chemistry; sucre:noun:2=history.modern_history
-FOLIO:REE18b0A7D9caEC1a15ED865	Johor	johor	johor:noun:0=nature.landforms; johor:noun:1=nature.landforms; johor:noun:2=nature.landforms
-FOLIO:REE360f4F9defA34250E048a	Kazakhstan	kazakhstan	kazakhstan:noun:0=history.modern_history
-FOLIO:REEFe8f6DD74cC46955C61de	Cortes	cortes	cortes:noun:0=science.biology; cortes:noun:1=people_society.personal_names
-FOLIO:REFF7da3F5abeF59fe5E04a5	Budapest	budapest	budapest:noun:0=nature.settlements
 FOLIO:REGXoYYhM0kwLwMTfS9SDl	Vagrancy	vagrancy	vagrancy:noun:0=people_society.social_issues
 FOLIO:RF01227DF45ca2C31b3843d4	Ica	ica	ica:noun:0=language.writing; ica:noun:1=mathematics.statistics_probability
-FOLIO:RF0F54d536331639198069a4	Tainan	tainan	tainan:noun:0=nature.settlements
-FOLIO:RF1C64c666a9dE05e17BB1e7	Guangxi	guangxi	guangxi:noun:0=nature.landforms
-FOLIO:RF265c2BA72d221Cbf62477a	Annaba	annaba	annaba:noun:0=nature.landforms; annaba:noun:1=nature.landforms
-FOLIO:RF28bfb2254066002b381c9d	Ehime	ehime	ehime:noun:0=nature.landforms; ehime:noun:1=nature.landforms
-FOLIO:RF2Ebe7FD24ac95Fcfc10b8b	Bishkek	bishkek	bishkek:noun:0=people_society.community_life
 FOLIO:RF2X79KlZBzUDG0AWHASka	Mollusks	mollusca	mollusca:noun:0=science.biology
 FOLIO:RF31c901CBde8DA6ddb7Ab5d	Mayo	mayo	mayo:noun:0=everyday_life.food
-FOLIO:RF33cf8E94ba03A201f2C0ac	Banten	banten	banten:noun:0=history.modern_history; banten:noun:1=history.modern_history; banten:noun:2=history.modern_history
-FOLIO:RF3Ad706F83afC9Faf504fc1	Pasco	pasco	pasco:noun:0=people_society.personal_names; pasco:noun:1=nature.settlements; pasco:noun:2=education.general
-FOLIO:RF4039eBDB3850FAbe1B7c6b	Kanagawa	kanagawa	kanagawa:noun:0=nature.landforms; kanagawa:noun:2=nature.landforms
 FOLIO:RF4Cc794AF64684Abd697491	Mie	mie	mie:noun:0=everyday_life.food
-FOLIO:RF4F95514032f50Abac2781d	Praia	praia	praia:noun:0=nature.water_bodies; praia:noun:1=nature.settlements
-FOLIO:RF52248509dda5F1841843df	Santiago	santiago	santiago:noun:0=nature.settlements; santiago:noun:1=humanities.religion; santiago:noun:2=people_society.personal_names; santiago:noun:3=nature.settlements
 FOLIO:RF66aa31F366f311e47A91b0	Colon	colon	colon:noun:0=language.grammar; colon:noun:1=health.anatomy
-FOLIO:RF6Cba46B3af69A47244E9ef	Czechia	czechia	czechia:noun:0=nature.landforms; czechia:noun:1=nature.landforms
-FOLIO:RF71b9d83B28dB16bbb107c8	Mardin	mardin	mardin:noun:0=history.modern_history; mardin:noun:1=people_society.demographics; mardin:noun:2=people_society.culture_customs
-FOLIO:RF7E85a47734a478740311fe	Abidjan	abidjan	abidjan:noun:0=nature.settlements; abidjan:noun:1=nature.settlements
-FOLIO:RF866cf263447EEC662141fb	Serbia	serbia	serbia:noun:0=history.modern_history; serbia:noun:1=history.modern_history
-FOLIO:RF9614b1EF2241207c2DE04d	Tamaulipas	tamaulipas	tamaulipas:noun:0=nature.landforms; tamaulipas:noun:2=nature.landforms
-FOLIO:RF96568774943195ed1A8a93	Yamanashi	yamanashi	yamanashi:noun:0=nature.landforms; yamanashi:noun:1=nature.landforms; yamanashi:noun:2=nature.landforms
-FOLIO:RFAC37232Fd9b9196e32C85c	Louth	louth	louth:noun:0=nature.landforms; louth:noun:1=nature.landforms; louth:noun:2=nature.landforms
-FOLIO:RFB1d54BD3eeeD4D347D3161	Lisboa	lisboa	lisboa:noun:0=nature.landforms; lisboa:noun:1=nature.landforms
-FOLIO:RFB7d09CFEbb9FA2cf084a20	Zhejiang	zhejiang	zhejiang:noun:0=nature.landforms; zhejiang:noun:1=nature.landforms; zhejiang:noun:2=nature.landforms
-FOLIO:RFBBa9d72E61e79A71d33fca	Saki	saki	saki:noun:0=nature.animals
 FOLIO:RFC91b9348f28E469d99Cff3	Centrale	centrale	centrale:noun:0=business.management; centrale:noun:1=technology.engineering
-FOLIO:RFCD0ea790bc967Ba899570b	Dhaka	dhaka	dhaka:noun:0=nature.settlements
-FOLIO:RFD272235588318F42b50da7	Faro	faro	faro:noun:0=sports_recreation.games_puzzles; faro:noun:1=technology.transportation_technology; faro:noun:2=nature.settlements
-FOLIO:RFDCb7923103b3C99bdFE109	Brazzaville	brazzaville	brazzaville:noun:0=nature.landforms; brazzaville:noun:1=nature.landforms
-FOLIO:RFE3f7765278806A6d24Fa87	Hebron	hebron	hebron:noun:0=history.modern_history; hebron:noun:2=nature.settlements
-FOLIO:RFEC0ea542b2d4CB738A7f33	Gafsa	gafsa	gafsa:noun:0=nature.landforms; gafsa:noun:1=nature.landforms; gafsa:noun:2=nature.landforms
-FOLIO:RFEFa54DC0980E6Bc0c02be4	Jiangsu	jiangsu	jiangsu:noun:0=nature.landforms
-FOLIO:RFF3b9989849633940eE6de8	Benin	benin	benin:noun:0=history.modern_history
-FOLIO:RFFDda2FCE082AEE46cF1bbd	Plateau	plateau	plateau:noun:0=nature.landforms; plateau:noun:1=business.value_quality
-FOLIO:RG2VC0UICfxNt0lJNFcz7n	PDF	pdf	pdf:noun:0=technology.computing_software; pdf:noun:1=technology.computing_software
 FOLIO:RGFG6LdQMDh5PGrImjEWps	Statement	statement	statement:noun:0=language.communication; statement:noun:1=mathematics.logic
 FOLIO:RGgud6WEj4JVLWr3BQEcSy	Jewish Religion	judaism	judaism:noun:0=humanities.religion; judaism:noun:1=people_society.ethnicity_race; judaism:noun:2=humanities.religion; judaism:noun:3=humanities.religion
 FOLIO:RH3E5nD8r0YneI6AAPhiWF	Short Form	short form	short_form:noun:0=language.writing; short_form:noun:1=people_society.personal_names
-FOLIO:RI17i7CTo0jyl3UdFuT8WV	Korean	korean	korean:noun:0=language.linguistics; korean:noun:1=people_society.ethnicity_race
-FOLIO:RISXpicfJlkGlawzTdc9Eb	Kashmiri	kashmiri	kashmiri:noun:0=people_society.ethnicity_race; kashmiri:noun:1=language.linguistics
 FOLIO:RIqYcsErxZAv7NKf4FnvU	Serrano	serrano	serrano:noun:0=everyday_life.food; serrano:noun:1=people_society.migration; serrano:noun:2=people_society.personal_names
 FOLIO:RJ9ORBE2bbdkqT1X753x8l	Modality	modality	modality:noun:0=education.pedagogy; modality:noun:1=language.grammar; modality:noun:3=health.anatomy
 FOLIO:RJSlyaZIuNwnFZmW16u8si	Ripeness	ripeness	ripeness:noun:0=everyday_life.food; ripeness:noun:1=everyday_life.quantity_time; ripeness:noun:2=people_society.character_traits
 FOLIO:RK0i5py6LdHGXhMS9gJ26I	Stillbirth	stillbirth	stillbirth:noun:0=health.reproduction_growth; stillbirth:noun:1=health.public_health; stillbirth:noun:2=health.medicine_treatment
-FOLIO:RKHoFLg3ZAgHUi07aaYpdq	German	german	german:noun:0=people_society.ethnicity_race; german:noun:1=language.linguistics
 FOLIO:RKSIz4oGG9KLzzQzIGoZa2	Chippewa	chippewa	chippewa:noun:0=people_society.ethnicity_race; chippewa:noun:1=language.linguistics; chippewa:noun:2=nature.settlements
-FOLIO:RLl5ev7XncBWFiLCNbh0hI	Gondi	gondi	gondi:noun:0=people_society.ethnicity_race; gondi:noun:1=language.linguistics
-FOLIO:RMU5qv8bY9otUKGsCAyygf	Abkhazian	abkhazian	abkhazian:noun:0=people_society.ethnicity_race; abkhazian:noun:1=language.linguistics
-FOLIO:RMvmHuPrVv8kPZn8PePFly	Hawaiian	hawaiian	hawaiian:noun:0=people_society.ethnicity_race; hawaiian:noun:1=language.linguistics
 FOLIO:RNJR37ek3zONvzTVH9PxqS	Database	database	database:noun:0=technology.computing_software; database:noun:1=technology.computing_software
 FOLIO:RNdgiymWwkT49ZpJ74JZ3a	Statement of Intent	statement of intent	statement_of_intent:noun:0=language.writing
 FOLIO:ROIbmwwbCnM89hySGAAquR	Pima	pima	pima:noun:0=people_society.ethnicity_race; pima:noun:1=nature.plants; pima:noun:2=language.linguistics
 FOLIO:ROZmTXLTXjHkl2dG0WM5DT	Reasonableness	reasonableness	reasonableness:noun:0=people_society.character_traits; reasonableness:noun:1=people_society.character_traits
 FOLIO:ROon9w3fWFgCuXMEGnkMzK	Synthetic Data	synthetic data	synthetic_data:noun:0=science.scientific_method
 FOLIO:RPMrJHn2PYVBDPJQtoqiWZ	fax	fax	fax:noun:0=technology.hardware_devices; fax:noun:1=technology.internet_communication
-FOLIO:RQAqmmGxk00iFPwlR9AvkY	Mayan languages	mayan languages	mayan_languages:noun:0=language.linguistics
 FOLIO:RQCqQcWqriNQ2XBCucDmpq	Child	child	child:noun:0=people_society.demographics; child:noun:1=everyday_life.family; child:noun:2=technology.computing_software
 FOLIO:RQH0MZXg0Ea0oxPr8fH5kN	Temecula	temecula	temecula:noun:0=nature.landforms; temecula:noun:1=nature.landforms
+FOLIO:RRUXCA9aW6bv7Rdf2DaM5M	Tokelau	tokelau	tokelau:noun:0=law_government.polities
 FOLIO:RRymHWraKRzGRb3sGRE22e	Sorghum	sorghum	sorghum:noun:0=nature.plants; sorghum:noun:1=nature.plants; sorghum:noun:2=nature.plants
-FOLIO:RSxqnpTrjCFiSvwj6Qmsxf	Sundanese	sundanese	sundanese:noun:0=people_society.ethnicity_race; sundanese:noun:1=language.linguistics
-FOLIO:RSzCwueGYDrOVEQKbRyZGr	Yao	yao	yao:noun:0=language.linguistics
-FOLIO:RTE0eeHp93LZeYq8iA2vWy	Telephone Call	telephone call	telephone_call:noun:0=technology.internet_communication
-FOLIO:RTdz0XIy1RFA1hRKHlzWHU	Latvian	latvian	latvian:noun:0=people_society.ethnicity_race; latvian:noun:1=language.linguistics
-FOLIO:RTfHZC0YshysT9Mc1Ica7i	Latin	latin	latin:noun:0=language.linguistics
 FOLIO:RU20xmO7EqpYUmPGUbjt4L	Contact Name Suffix - III (Third)	iii	iii:noun:0=mathematics.number_theory; iii:noun:2=arts.music
 FOLIO:RUrIiX9pApJERjw9wlyjXg	Muslim Religion	islam	islam:noun:0=humanities.religion; islam:noun:1=humanities.religion
 FOLIO:RUz5QyUsRrfB4wcSSaGA8w	Local	local	local:noun:0=people_society.community_life; local:noun:1=nature.settlements
-FOLIO:RVIYQNBMB0MGLfA80mWbFi	Inuktitut	inuktitut	inuktitut:noun:0=language.linguistics; inuktitut:noun:1=language.writing
-FOLIO:RVYE8m0kOdcthY0Q7Nzy1h	Marathi	marathi	marathi:noun:0=language.linguistics; marathi:noun:1=people_society.ethnicity_race; marathi:noun:2=humanities.literature
-FOLIO:RWBJWyGRVpzzWPJzkMQGAy	Cornish	cornish	cornish:noun:0=people_society.ethnicity_race; cornish:noun:1=language.linguistics
-FOLIO:RWQJp6eT8pE6nx0CIBf6MF	Query	query	query:noun:0=language.communication; query:noun:1=technology.computing_software; query:noun:2=technology.computing_software
-FOLIO:RWrcINuspgUzc0EOUVrxJF	Konkani	konkani	konkani:noun:0=language.linguistics; konkani:noun:1=people_society.ethnicity_race
-FOLIO:RXTVFyja2dLSk6WhA4XT20	Romany	romany	romany:noun:0=people_society.ethnicity_race; romany:noun:1=language.linguistics
-FOLIO:RYWWnM51k3hccPjevnOf5D	rate	rate	rate:noun:0=mathematics.statistics_probability; rate:noun:1=business.value_quality; rate:noun:2=education.assessment
 FOLIO:RYnn9r6SuFsFjPsqHHuXNg	Recklessness	recklessness	recklessness:noun:0=people_society.character_traits
 FOLIO:Ra6EHlbqrpUT9rxM2PtwIP	Author	author	author:noun:0=humanities.literature; author:noun:1=language.writing
-FOLIO:RcAwkSXDTnSdFMAo2cFLEd	Bearer	bearer	bearer:noun:0=everyday_life.actions_routines; bearer:noun:1=business.finance; bearer:noun:3=technology.information_security
 FOLIO:RcKu6XW304hK2ONeNuXgkS	Pueblo	pueblo	pueblo:noun:0=people_society.community_life; pueblo:noun:1=people_society.ethnicity_race; pueblo:noun:2=arts.architecture
-FOLIO:RdIpoQFFV2Z2rT6sRnky3I	Galician	galician	galician:noun:0=people_society.ethnicity_race; galician:noun:1=language.linguistics
 FOLIO:Re6iIaFBYiUPt64JyRgsjd	Genetic Information	genetic information	genetic_information:noun:0=science.genetics; genetic_information:noun:1=science.genetics
 FOLIO:ReA0gy8mOLrqG7eTtFxnTh	Spouse	spouse	spouse:noun:0=people_society.family_relationships
-FOLIO:ReMJJlpBGGio3lgHL6r4n3	Croatian	croatian	croatian:noun:0=people_society.ethnicity_race; croatian:noun:1=language.linguistics
-FOLIO:RfSV5TP9lvM2Xd6B5dsm8W	Lithuanian	lithuanian	lithuanian:noun:0=people_society.ethnicity_race; lithuanian:noun:1=language.linguistics
-FOLIO:Rg51VJguKy2cEMB8MQUTU	Amharic	amharic	amharic:noun:0=language.linguistics; amharic:noun:1=language.linguistics
-FOLIO:RgIkxeLlMUgdaRvarT5LCT	Turkish	turkish	turkish:noun:0=language.linguistics; turkish:noun:1=people_society.ethnicity_race
 FOLIO:Rif2nijVwenF5TjHlpZGmi	Queer	queer	queer:noun:0=people_society.gender_identity; queer:noun:1=people_society.gender_identity
-FOLIO:RkIejtiO3CUzgQe98NWyPq	Manager	manager	manager:noun:0=business.management; manager:noun:1=technology.computing_software
 FOLIO:RkZEAQckzKSYkegDiztFb6	Causation	causation	causation:noun:0=science.scientific_method; causation:noun:1=science.scientific_method
 FOLIO:RkzeibZyGqJ71RjWdj1Ic0	Monitor	monitor	monitor:noun:0=technology.hardware_devices; monitor:noun:1=education.school_life; monitor:noun:2=nature.animals
 FOLIO:RlY5TKYP7Vrr3FIPsrnFZE	Disfigurement	disfigurement	disfigurement:noun:0=health.anatomy
 FOLIO:RlZdd14uUrCvqa8YJ7RzNd	Authorship	authorship	authorship:noun:0=humanities.literature; authorship:noun:1=humanities.literature; authorship:noun:2=humanities.literature
-FOLIO:RlicKF1VRKASGfpu8nDBIk	Realization	realization	realization:noun:0=people_society.emotion_attitude; realization:noun:1=business.management; realization:noun:3=business.accounting
-FOLIO:Rm7fenxGXdqeqZ9xvpexrE	Chechen	chechen	chechen:noun:0=people_society.ethnicity_race; chechen:noun:1=language.linguistics
 FOLIO:Rm9G5bYwzX45njbt2oQJh7	Pelican	pelican	pelican:noun:0=nature.animals
 FOLIO:RnKWv1E6U2Ssc5SRsG14NO	Factual Statement	factual statement	factual_statement:noun:0=education.literacy
-FOLIO:RqItoKI3H03BkiGTjwRYG3	Appointment	appointment	appointment:noun:0=everyday_life.actions_routines; appointment:noun:1=business.human_resources
-FOLIO:Rr3DYkbD7XSrb6bUfCIFbx	Karelian	karelian	karelian:noun:0=people_society.demographics; karelian:noun:1=language.linguistics
 FOLIO:Rr5uuLGspjpJZoB9AYY81V	Gothic	gothic	gothic:noun:0=history.medieval_history
-FOLIO:RrcCXlGpVB5y2DhQaori9M	French	french	french:noun:0=language.linguistics; french:noun:1=people_society.ethnicity_race
-FOLIO:RrjGTPu6JzbBZWhk4nahCu	Burmese	burmese	burmese:noun:0=people_society.ethnicity_race; burmese:noun:1=language.linguistics
 FOLIO:RruZqndu4LsKmDkgSlSLOY	Search	search	search:noun:0=everyday_life.actions_routines; search:noun:1=technology.computing_software; search:noun:2=everyday_life.actions_routines
 FOLIO:RsT8B5hvzdc3eJzDQFQTkr	Chinook	chinook	chinook:noun:0=nature.weather; chinook:noun:1=nature.animals; chinook:noun:2=people_society.ethnicity_race; chinook:noun:3=language.linguistics
 FOLIO:RsqMQgECqaEzYd0KAwhRx1	Pawnee	pawnee	pawnee:noun:0=people_society.ethnicity_race; pawnee:noun:1=nature.landforms
-FOLIO:Rsz1ZKYTNGjBNHN0a1utqV	Cherokee	cherokee	cherokee:noun:0=people_society.ethnicity_race; cherokee:noun:1=language.linguistics
-FOLIO:Rt4K0sTb3lb3Y8vIZb8wzJ	Designation	designation	designation:noun:0=language.vocabulary; designation:noun:1=business.human_resources
 FOLIO:RtFk0DtDnLCfqYCNJntDbC	Winnebago	winnebago	winnebago:noun:0=everyday_life.travel; winnebago:noun:1=everyday_life.travel; winnebago:noun:2=people_society.ethnicity_race
-FOLIO:RtQgohkpDAYX2dOBE8IicW	Appraiser	appraiser	appraiser:noun:0=business.real_estate; appraiser:noun:1=business.value_quality; appraiser:noun:2=business.finance
-FOLIO:RtQgohkpDAYX2dOBE8IicW	Appraiser	assessor	assessor:noun:0=education.assessment; assessor:noun:1=business.real_estate
 FOLIO:Ru41sI42cmsEoPZNzlCVbW	Peppers	peppers	peppers:noun:0=everyday_life.food; peppers:noun:1=nature.plants; peppers:noun:2=everyday_life.food
 FOLIO:RumDhEGZaR4LvYIQUoJ1Wd	Attachment	attachment	attachment:noun:0=technology.engineering; attachment:noun:1=people_society.family_relationships; attachment:noun:2=technology.internet_communication
-FOLIO:Rv279y8wg9Lh0P6PqXPsbz	Pahlavi	pahlavi	pahlavi:noun:0=language.writing; pahlavi:noun:1=language.linguistics; pahlavi:noun:2=history.historical_figures
 FOLIO:RvKP6GwVs7lzIl3UhnvLjU	Funeral	funeral	funeral:noun:0=people_society.culture_customs; funeral:noun:1=people_society.culture_customs
 FOLIO:RvMJ7ObuftNAJlQ6nGteOy	Yaqui	yaqui	yaqui:noun:0=people_society.ethnicity_race; yaqui:noun:1=language.linguistics; yaqui:noun:2=nature.water_bodies
 FOLIO:RvbRSzDcNkv9gOKfqyn0bP	Bristol Bay	bristol bay	bristol_bay:noun:0=nature.water_bodies
 FOLIO:RwTy8429IDRUYEjuukVPYo	Statement of Work	sow	sow:noun:0=nature.animals
-FOLIO:RxqIcTNrdb7PdqIlGaowV4	Sign Languages	sign languages	sign_languages:noun:0=language.linguistics
 FOLIO:RyKcIn62llXcjUfXlSsx1M	Systemic Lupus Erythematosus	lupus	lupus:noun:0=nature.animals; lupus:noun:1=health.disease_illness
 FOLIO:Rz1A9HqRrlTwPEyl8an8u5	Wenatchee	wenatchee	wenatchee:noun:0=nature.landforms; wenatchee:noun:1=nature.landforms
-FOLIO:XexgvEZ_TOatkR05KoePvQ	Museums	museums	museums:noun:0=humanities.cultural_studies; museums:noun:1=arts.architecture; museums:noun:2=humanities.cultural_studies
-FOLIO:k1--YiHSSZyZN1utWHa5xQ	Veterinary Services	veterinary services	veterinary_services:noun:0=health.medicine_treatment
-FOLIO:mQolPJBWRzKoqlg6oCOsQA	Interior Design Services	interior design services	interior_design_services:noun:0=arts.design
-FOLIO:nSv2xP7YS9qZV7SMY7Aknw	Apiculture	apiculture	apiculture:noun:0=nature.animals; apiculture:noun:1=science.biology
-FOLIO:sXm1WT0CT1uKfnDtU3UmSw	Logging	logging	logging:noun:0=business.manufacturing; logging:noun:1=technology.computing_software
-FOLIO:xiRvMBuZQ2Wqd5-r2rGPUw	Veterinary Services	veterinary services	veterinary_services:noun:0=health.medicine_treatment

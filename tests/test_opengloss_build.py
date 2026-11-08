@@ -16,12 +16,12 @@ sys.path.insert(0, str(ROOT / 'scripts'))
 FIXTURES = ROOT / 'tests/fixtures/opengloss/build'
 
 
-def build(directory: Path):
+def build(directory: Path, folio: str = 'folio-mini.owl', senses: str = 'senses-mini.json'):
     paths = [directory / name for name in ('m.tsv', 's.tsv', 'g.tsv')]
     result = subprocess.run([
         sys.executable, str(ROOT / 'scripts/build_opengloss_mappings.py'),
-        '--folio', str(FIXTURES / 'folio-mini.owl'),
-        '--senses-json', str(FIXTURES / 'senses-mini.json'),
+        '--folio', str(FIXTURES / folio),
+        '--senses-json', str(FIXTURES / senses),
         '--out', str(paths[0]), '--senses-out', str(paths[1]),
         '--gaps-out', str(paths[2]), '--mapping-date', '2026-11-08',
         '--folio-version', 'fixture; sha256:fixture',
@@ -110,7 +110,7 @@ def test_rank_ties_secondary_threshold_and_altlabel_cap():
     alias = FolioClass(cls.iri, (('Tenant', 'skos:altLabel'),))
     rows, _ = match([alias], senses[:1])
     assert rows[0]['predicate_id'] == 'skos:closeMatch'
-    assert rows[0]['comment'] == 'altlabel-phrase; score=1.000'
+    assert rows[0]['comment'] == 'altlabel-phrase; score=1.000; profile=legal'
     # Legal prior alone allows only the best phrase sense at 0.500;
     # the other sense does not clear the 0.550 secondary threshold.
     unrelated = [Sense(s.sense_id, s.lexeme_id, s.headword, s.pos, s.sense_index,
@@ -292,7 +292,7 @@ def test_word_only_mapping_suppresses_class_gap():
     assert len(rows) == 1
     assert rows[0]['object_id'] == 'OGS:interest:noun:0'
     assert rows[0]['predicate_id'] == 'skos:broadMatch'
-    assert rows[0]['comment'] == 'head-word; score=0.475'
+    assert rows[0]['comment'] == 'head-word; score=0.475; profile=legal'
     assert gaps == []
 
 
@@ -386,3 +386,128 @@ def test_parquet_nouns_sources_and_normalization(tmp_path, with_source):
     if not with_source:
         expected.insert(1, 'tenant:noun:1')
     assert [s.sense_id for s in load_parquet(tmp_path, pins, {'tenant'})] == expected
+
+
+def test_branch_walk_inheritance_cycles_and_missing_parents():
+    from opengloss_mapping.folio_forms import FOLIO_PREFIX, load_folio
+    classes = {c.subject_id: c for c in load_folio(FIXTURES / 'branches.owl')}
+    place = FOLIO_PREFIX + 'R9aSzp9cEiBCzObnP92jYFX'
+    legal = FOLIO_PREFIX + 'legal'
+    assert classes['FOLIO:R9aSzp9cEiBCzObnP92jYFX'].branches == (place,)
+    assert classes['FOLIO:cordillera'].branches == (place,)
+    for local in ('multi-nature', 'multi-business', 'cycle-a', 'cycle-b', 'cycle-child'):
+        assert classes['FOLIO:' + local].branches == tuple(sorted((place, legal)))
+    assert classes['FOLIO:self-cycle'].branches == (place,)
+    for local in ('isolated-a', 'isolated-b', 'orphan'):
+        assert classes['FOLIO:' + local].branches == ()
+
+
+def test_branch_build_profiles_and_determinism(tmp_path):
+    from opengloss_mapping.matcher import METHOD_VERSION
+    assert METHOD_VERSION == 'opengloss-lexical/0.2'
+    paths, _, rows = build(tmp_path / 'first', 'branches.owl', 'branch-senses.json')
+    second, _, _ = build(tmp_path / 'second', 'branches.owl', 'branch-senses.json')
+    assert [p.read_bytes() for p in paths] == [p.read_bytes() for p in second]
+    links = {(r['subject_id'], r['object_id']): r for r in rows}
+    for local, sense, score, profile in (
+        ('cordillera', 'cordillera:noun:0', '0.500', 'place'),
+        ('aquaculture', 'aquaculture:noun:0', '0.400', 'commerce'),
+        ('multi-nature', 'cordillera:noun:0', '0.500', 'place'),
+        ('multi-business', 'tenant:noun:0', '0.475', 'legal'),
+        ('multi-tie', 'license:noun:0', '1.000', 'legal'),
+    ):
+        row = links['FOLIO:' + local, 'OGS:' + sense]
+        assert row['comment'] == f'label-phrase; score={score}; profile={profile}'
+    assert all(r['object_id'] != 'OGS:nan:noun:0' for r in rows)
+    gaps = list(csv.DictReader(paths[2].open(), delimiter='\t'))
+    assert [r['subject_id'] for r in gaps] == ['FOLIO:nan']
+
+
+def test_legal_rows_unchanged_except_profile_comment(tmp_path):
+    from opengloss_mapping.folio_forms import load_folio
+    classes = {c.subject_id: c for c in load_folio(FIXTURES / 'folio-mini.owl')}
+    assert classes['FOLIO:breach'].branches == ('https://folio.openlegalstandard.org/parent',)
+    _, _, rows = build(tmp_path)
+    baseline_path = FIXTURES / 'legal-rows-0.1.tsv'
+    baseline = list(csv.DictReader(io.StringIO(baseline_path.read_text()), delimiter='\t'))
+    assert [(r['predicate_id'], r['object_id'], r['confidence']) for r in rows] == [
+        (r['predicate_id'], r['object_id'], r['confidence']) for r in baseline]
+    for row in rows:
+        assert row['comment'].endswith('; profile=legal')
+    output = io.StringIO()
+    writer = csv.DictWriter(output, fieldnames=list(baseline[0]), delimiter='\t', lineterminator='\n')
+    writer.writeheader()
+    writer.writerows({**r, 'comment': r['comment'].removesuffix('; profile=legal')} for r in rows)
+    assert output.getvalue().encode() == baseline_path.read_bytes()
+
+
+@pytest.mark.parametrize('profile, root, prior', [
+    ('legal', 'law_government', 1.0), ('legal', 'business', 0.7),
+    ('place', 'nature', 1.0), ('place', 'people_society', 1.0), ('place', 'history', 0.7),
+    ('place', 'business', 0.3), ('place', 'technology', 0.3),
+    ('commerce', 'business', 1.0), ('commerce', 'science', 0.8),
+    ('commerce', 'technology', 0.8), ('commerce', 'nature', 0.8),
+    ('commerce', 'health', 0.8), ('commerce', 'arts', 0.8),
+    ('commerce', 'everyday_life', 0.8), ('commerce', 'sports_recreation', 0.8),
+    ('commerce', 'education', 0.8), ('commerce', 'law_government', 0.7),
+    ('finance', 'business', 1.0), ('finance', 'law_government', 0.8),
+    ('finance', 'mathematics', 0.7), ('language', 'language', 1.0),
+    ('language', 'humanities', 0.8), ('language', 'people_society', 0.8),
+    ('technical', 'technology', 1.0), ('technical', 'language', 0.8),
+    ('technical', 'business', 0.7), ('technical', 'law_government', 0.7),
+    ('service', 'business', 1.0), ('service', 'law_government', 1.0),
+    ('service', 'technology', 0.8), ('service', 'health', 0.8),
+    *[(profile, 'unknown', 0.3) for profile in
+      ('legal', 'place', 'commerce', 'finance', 'language', 'technical', 'service')],
+])
+def test_profile_domain_priors_and_fallback(profile, root, prior):
+    from dataclasses import replace
+    from opengloss_mapping.matcher import domain_prior
+    from opengloss_mapping.senses import Sense
+    sense = Sense('test:noun:0', 'test:noun', 'test', 'noun', 0, root + '.topic', root, '')
+    assert domain_prior(sense, (profile,)) == prior
+    assert domain_prior(replace(sense, domain_root=''), (profile,)) == prior
+    # A populated domain_root wins over a contradictory domain.
+    assert domain_prior(replace(sense, domain='business.topic'), (profile,)) == prior
+
+
+def test_gaps_require_no_prior_at_least_point_seven():
+    from opengloss_mapping.folio_forms import FolioClass, FOLIO_PREFIX
+    from opengloss_mapping.matcher import match
+    from opengloss_mapping.senses import Sense
+    sense = Sense('tenant:noun:0', 'tenant:noun', 'tenant', 'noun', 0,
+                  'business.real_estate', 'business', '')
+    cls = FolioClass(FOLIO_PREFIX + 't', (('Tenant', 'rdfs:label'),))
+    # The legal business prior is 0.7, but score 0.35 is below the phrase floor.
+    assert match([cls], [sense]) == ([], [])
+    place = FolioClass(cls.iri, cls.labels, branches=(FOLIO_PREFIX + 'R9aSzp9cEiBCzObnP92jYFX',))
+    rows, gaps = match([place], [sense])
+    assert rows == []
+    assert len(gaps) == 1 and gaps[0]['subject_id'] == 'FOLIO:t'
+
+
+@pytest.mark.parametrize('branch, profile, root, score', [
+    ('R9aSzp9cEiBCzObnP92jYFX', 'place', 'nature', '1.000'),
+    ('R8f4qGdjxuiQary8OBpq8W9', 'commerce', 'science', '0.900'),
+    ('R767niCLQVC5zIcO5WDQMSl', 'finance', 'mathematics', '0.850'),
+    ('RhBgnef56iLBXYfPqWQE41', 'finance', 'mathematics', '0.850'),
+    ('RCIwc6WJi6IT7xePURxsi4T', 'finance', 'mathematics', '0.850'),
+    ('RDOvAHsvY8TKJ1O1orXPM9o', 'language', 'humanities', '0.900'),
+    ('R79aItNTJQwHgR002wuX3iC', 'technical', 'technology', '1.000'),
+    ('R8EoZh39tWmXCkmP2Xzjl6E', 'technical', 'technology', '1.000'),
+    ('R8qItBwG2pRMFhUq1HQEMnb', 'technical', 'technology', '1.000'),
+    ('RDK1QEdQg1T8B5HQqMK2pZN', 'service', 'health', '0.900'),
+])
+def test_real_branch_iris_select_expected_profile(branch, profile, root, score):
+    from opengloss_mapping.folio_forms import FOLIO_PREFIX, FolioClass
+    from opengloss_mapping.matcher import match
+    from opengloss_mapping.senses import Sense
+    cls = FolioClass(FOLIO_PREFIX + 'test', (('Test', 'rdfs:label'),),
+                     branches=(FOLIO_PREFIX + branch,))
+    sense = Sense('test:noun:0', 'test:noun', 'test', 'noun', 0, root, root, 'Test')
+    rows, gaps = match([cls], [sense])
+    assert gaps == []
+    assert len(rows) == 1
+    assert rows[0]['predicate_id'] == 'skos:exactMatch'
+    assert rows[0]['confidence'] == score
+    assert rows[0]['comment'] == f'label-phrase; score={score}; profile={profile}'

@@ -28,6 +28,7 @@ class FolioClass:
     definitions: tuple[str, ...] = ()
     parents: tuple[str, ...] = ()
     parent_labels: tuple[str, ...] = ()
+    branches: tuple[str, ...] = ()
 
     @property
     def subject_id(self) -> str:
@@ -75,11 +76,40 @@ def load_folio(path: str | Path) -> list[FolioClass]:
             if p.get(RESOURCE)
         }))
         records[iri] = FolioClass(iri, tuple(sorted(set(labels))), definitions, parents)
+    branch_cache: dict[str, frozenset[str]] = {}
+    thing = NS['owl'] + 'Thing'
+
+    def walk_branches(iri: str, visiting: set[str]) -> tuple[frozenset[str], bool]:
+        if iri in branch_cache:
+            return branch_cache[iri], False
+        if iri in visiting:
+            return frozenset(), True
+        if iri not in records or iri == thing:
+            return frozenset(), False
+        visiting.add(iri)
+        cls = records[iri]
+        branches = {iri} if thing in cls.parents else set()
+        cyclic = False
+        for parent in cls.parents:
+            inherited, parent_cyclic = walk_branches(parent, visiting)
+            branches.update(inherited)
+            cyclic |= parent_cyclic
+        visiting.remove(iri)
+        found = frozenset(branches)
+        # A walk cut short at an ancestor can omit that ancestor's other exits.
+        # Cache it only after a complete traversal from its own starting node.
+        if not cyclic:
+            branch_cache[iri] = found
+        return found, cyclic
+
     result = []
     for cls in sorted(records.values(), key=lambda c: c.iri):
+        branches, _ = walk_branches(cls.iri, set())
+        branch_cache[cls.iri] = branches
         parent_labels = tuple(sorted({
             label for parent in cls.parents if parent in records
             for label, _ in records[parent].labels
         }))
-        result.append(FolioClass(cls.iri, cls.labels, cls.definitions, cls.parents, parent_labels))
+        result.append(FolioClass(cls.iri, cls.labels, cls.definitions, cls.parents,
+                                 parent_labels, tuple(sorted(branches))))
     return result

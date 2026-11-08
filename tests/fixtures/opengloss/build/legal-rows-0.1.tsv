@@ -1,0 +1,16 @@
+subject_id	subject_label	predicate_id	object_id	object_label	mapping_justification	confidence	subject_match_field	object_match_field	match_string	comment
+FOLIO:agreements	Agreements / Contracts	skos:exactMatch	OGS:agreements:noun:0	agreements	semapv:LexicalMatching	1.000	rdfs:label	rdfs:label	agreements	label-phrase; score=1.000
+FOLIO:agreements	Agreements / Contracts	skos:exactMatch	OGS:contracts:noun:0	contracts	semapv:LexicalMatching	1.000	rdfs:label	rdfs:label	contracts	label-phrase; score=1.000
+FOLIO:alias	Pact	skos:closeMatch	OGS:contract:noun:0	contract	semapv:LexicalMatching	1.000	skos:altLabel	rdfs:label	contract	altlabel-phrase; score=1.000
+FOLIO:breach	Breach of Contract	skos:broadMatch	OGS:breach:noun:1	breach	semapv:LexicalMatching	0.800	rdfs:label	rdfs:label	breach	head-word; score=1.000
+FOLIO:breach	Breach of Contract	skos:exactMatch	OGS:breach_of_contract:noun:0	breach of contract	semapv:LexicalMatching	1.000	rdfs:label	rdfs:label	breach of contract	label-phrase; score=1.000
+FOLIO:breach	Breach of Contract	skos:relatedMatch	OGS:contract:noun:0	contract	semapv:LexicalMatching	0.700	rdfs:label	rdfs:label	contract	modifier-word; score=0.875
+FOLIO:landlord	Landlord	skos:closeMatch	OGS:landlord:noun:0	landlord	semapv:LexicalMatching	0.406	rdfs:label	rdfs:label	landlord	label-phrase; score=0.406
+FOLIO:license	License (Agreement)	skos:exactMatch	OGS:license:noun:0	license	semapv:LexicalMatching	1.000	rdfs:label	rdfs:label	license	label-phrase; score=1.000
+FOLIO:material-breach	Material Breach of Contract	skos:broadMatch	OGS:breach:noun:1	breach	semapv:LexicalMatching	0.800	rdfs:label	rdfs:label	breach	head-word; score=1.000
+FOLIO:material-breach	Material Breach of Contract	skos:relatedMatch	OGS:contract:noun:0	contract	semapv:LexicalMatching	0.450	rdfs:label	rdfs:label	contract	modifier-word; score=0.562
+FOLIO:material-breach	Material Breach of Contract	skos:relatedMatch	OGS:material:noun:0	material	semapv:LexicalMatching	0.400	rdfs:label	rdfs:label	material	modifier-word; score=0.500
+FOLIO:pref	Document	skos:exactMatch	OGS:contract:noun:0	contract	semapv:LexicalMatching	1.000	skos:prefLabel	rdfs:label	contract	label-phrase; score=1.000
+FOLIO:real	Real Property	skos:exactMatch	OGS:real_property:noun:1	real property	semapv:LexicalMatching	1.000	rdfs:label	rdfs:label	real property	label-phrase; score=1.000
+FOLIO:tenant	Tenant	skos:exactMatch	OGS:tenant:noun:0	tenant	semapv:LexicalMatching	0.850	rdfs:label	rdfs:label	tenant	label-phrase; score=0.850
+FOLIO:unclassified	Unclassified Term	skos:exactMatch	OGS:unclassified_term:noun:0	unclassified term	semapv:LexicalMatching	0.650	rdfs:label	rdfs:label	unclassified term	label-phrase; score=0.650
