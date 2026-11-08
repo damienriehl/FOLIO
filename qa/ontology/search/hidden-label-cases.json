@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "source_revision": "417a5e2ece96b011d4209986aa8a5a454c521cca",
+  "cases": [
+    {
+      "case_id": "agreements-hidden-accord",
+      "query": "Accord",
+      "target_iri": "https://folio.openlegalstandard.org/R88D8i8AcSTUig2X3yPbFHg",
+      "predicate": "http://www.w3.org/2004/02/skos/core#hiddenLabel",
+      "lexical_form": "Accord",
+      "language": null,
+      "datatype": null,
+      "producer_expected": true,
+      "consumer_expected": {"result_count": 1, "display_label": "Agreements"}
+    },
+    {
+      "case_id": "agreements-hidden-accords",
+      "query": "Accords",
+      "target_iri": "https://folio.openlegalstandard.org/R88D8i8AcSTUig2X3yPbFHg",
+      "predicate": "http://www.w3.org/2004/02/skos/core#hiddenLabel",
+      "lexical_form": "Accords",
+      "language": null,
+      "datatype": null,
+      "producer_expected": true,
+      "consumer_expected": {"result_count": 1, "display_label": "Agreements"}
+    },
+    {
+      "case_id": "agreements-hidden-pact",
+      "query": "Pact",
+      "target_iri": "https://folio.openlegalstandard.org/R88D8i8AcSTUig2X3yPbFHg",
+      "predicate": "http://www.w3.org/2004/02/skos/core#hiddenLabel",
+      "lexical_form": "Pact",
+      "language": null,
+      "datatype": null,
+      "producer_expected": true,
+      "consumer_expected": {"result_count": 1, "display_label": "Agreements", "hidden_only_sentinel": true}
+    },
+    {
+      "case_id": "agreements-hidden-pacts",
+      "query": "Pacts",
+      "target_iri": "https://folio.openlegalstandard.org/R88D8i8AcSTUig2X3yPbFHg",
+      "predicate": "http://www.w3.org/2004/02/skos/core#hiddenLabel",
+      "lexical_form": "Pacts",
+      "language": null,
+      "datatype": null,
+      "producer_expected": true,
+      "consumer_expected": {"result_count": 1, "display_label": "Agreements"}
+    },
+    {
+      "case_id": "agreements-hidden-compact",
+      "query": "Compact",
+      "target_iri": "https://folio.openlegalstandard.org/R88D8i8AcSTUig2X3yPbFHg",
+      "predicate": "http://www.w3.org/2004/02/skos/core#hiddenLabel",
+      "lexical_form": "Compact",
+      "language": null,
+      "datatype": null,
+      "producer_expected": true,
+      "consumer_expected": {"result_count": 1, "display_label": "Agreements", "hidden_only_sentinel": true}
+    },
+    {
+      "case_id": "agreements-hidden-compacts",
+      "query": "Compacts",
+      "target_iri": "https://folio.openlegalstandard.org/R88D8i8AcSTUig2X3yPbFHg",
+      "predicate": "http://www.w3.org/2004/02/skos/core#hiddenLabel",
+      "lexical_form": "Compacts",
+      "language": null,
+      "datatype": null,
+      "producer_expected": true,
+      "consumer_expected": {"result_count": 1, "display_label": "Agreements"}
+    },
+    {
+      "case_id": "agreements-visible-rdfs",
+      "query": "Agreements",
+      "target_iri": "https://folio.openlegalstandard.org/R88D8i8AcSTUig2X3yPbFHg",
+      "predicate": "http://www.w3.org/2000/01/rdf-schema#label",
+      "lexical_form": "Agreements",
+      "language": null,
+      "datatype": null,
+      "producer_expected": true,
+      "consumer_expected": {"result_count": 1, "display_label": "Agreements"}
+    },
+    {
+      "case_id": "agreements-visible-pref",
+      "query": "Contracts",
+      "target_iri": "https://folio.openlegalstandard.org/R88D8i8AcSTUig2X3yPbFHg",
+      "predicate": "http://www.w3.org/2004/02/skos/core#prefLabel",
+      "lexical_form": "Contracts",
+      "language": null,
+      "datatype": null,
+      "producer_expected": true,
+      "consumer_expected": {"result_count": 1, "display_label": "Agreements"}
+    },
+    {
+      "case_id": "agreements-visible-agreement",
+      "query": "Agreement",
+      "target_iri": "https://folio.openlegalstandard.org/R88D8i8AcSTUig2X3yPbFHg",
+      "predicate": "http://www.w3.org/2004/02/skos/core#altLabel",
+      "lexical_form": "Agreement",
+      "language": null,
+      "datatype": null,
+      "producer_expected": true,
+      "consumer_expected": {"result_count": 1, "display_label": "Agreements"}
+    },
+    {
+      "case_id": "agreements-visible-contract",
+      "query": "Contract",
+      "target_iri": "https://folio.openlegalstandard.org/R88D8i8AcSTUig2X3yPbFHg",
+      "predicate": "http://www.w3.org/2004/02/skos/core#altLabel",
+      "lexical_form": "Contract",
+      "language": null,
+      "datatype": null,
+      "producer_expected": true,
+      "consumer_expected": {"result_count": 1, "display_label": "Agreements"}
+    },
+    {
+      "case_id": "agreements-visible-accords-fr",
+      "query": "Accords",
+      "target_iri": "https://folio.openlegalstandard.org/R88D8i8AcSTUig2X3yPbFHg",
+      "predicate": "http://www.w3.org/2004/02/skos/core#altLabel",
+      "lexical_form": "Accords",
+      "language": "fr-fr",
+      "datatype": null,
+      "producer_expected": true,
+      "consumer_expected": {"result_count": 1, "display_label": "Agreements"}
+    },
+    {
+      "case_id": "obligation-visible-covenant",
+      "query": "Covenant",
+      "target_iri": "https://folio.openlegalstandard.org/RDtFkLR3v97fran5zQ3ugao",
+      "predicate": "http://www.w3.org/2004/02/skos/core#prefLabel",
+      "lexical_form": "Covenant",
+      "language": null,
+      "datatype": null,
+      "producer_expected": true,
+      "consumer_expected": {"result_count": 1, "display_label": "Obligation"}
+    },
+    {
+      "case_id": "indenture-visible-label",
+      "query": "Indenture",
+      "target_iri": "https://folio.openlegalstandard.org/R8NLKPDCyexTiBJCz8mdsjz",
+      "predicate": "http://www.w3.org/2000/01/rdf-schema#label",
+      "lexical_form": "Indenture",
+      "language": null,
+      "datatype": null,
+      "producer_expected": true,
+      "consumer_expected": {"result_count": 1, "display_label": "Indenture"}
+    }
+  ]
+}
